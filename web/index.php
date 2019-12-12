@@ -1,7 +1,7 @@
 <?php
 // comment out the following two lines when deployed to production
-defined('YII_DEBUG') or define('YII_DEBUG', true);
-defined('YII_ENV') or define('YII_ENV', 'dev');
+defined('YII_DEBUG') or define('YII_DEBUG', false);
+defined('YII_ENV') or define('YII_ENV', 'prod');
 defined("BASE_PATH") or define("BASE_PATH", dirname(__DIR__) . '/app/Modules/Main/Trad3r');
 
 require __DIR__ . '/../vendor/autoload.php';
