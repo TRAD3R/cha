@@ -13,6 +13,10 @@ class MainAsset extends AssetBundle
         'css/main.css'
     ];
 
+    public $js = [
+        'js/main.js'
+    ];
+    
     public $depends = [
         CommonTrad3rAssets::class
     ];
