@@ -13,7 +13,7 @@ class m191212_092059_create_device_specifications_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%device_specifications}}', [
-            'id' => $this->primaryKey(),
+            'device_id' => $this->primaryKey(),
             'date_created' => $this->dateTime(),
             'date_updated' => $this->dateTime(),
             'type_id' => $this->integer()->notNull(),
@@ -21,6 +21,7 @@ class m191212_092059_create_device_specifications_table extends Migration
             'length' => $this->float(1)->defaultValue(0),
             'width' => $this->float(1)->defaultValue(0),
             'depth' => $this->float(1)->defaultValue(0),
+            'screensize' => $this->float(1)->defaultValue(0),
             'card_memory_id' => $this->integer(),
             'jack_35' => $this->boolean()->defaultValue(false),
             'bluetooth' => $this->boolean()->defaultValue(false),
@@ -30,11 +31,10 @@ class m191212_092059_create_device_specifications_table extends Migration
             'fast_charge' => $this->boolean()->defaultValue(false),
             'removable_battery' => $this->boolean()->defaultValue(false),
             'price' => $this->integer(7),
-            'quantity' => $this->integer(5),
             'image' => $this->string(255),
         ]);
         
-        $this->batchInsert('{{%device_specifications}}', ['date_created', 'date_updated', 'id', 'length', 'width', 'depth', 'usb_type_id', 'year', 'wireless_charge', 'card_memory_id', 'type_id'], [
+        $this->batchInsert('{{%device_specifications}}', ['date_created', 'date_updated', 'device_id', 'length', 'width', 'depth', 'usb_type_id', 'year', 'wireless_charge', 'card_memory_id', 'type_id'], [
             ["2019-12-12 00:00:00","2019-12-12 00:00:00","1","245.2","146.4","7.9","2","2015","false","","2"],
             ["2019-12-12 00:00:00","2019-12-12 00:00:00","2","242.5","178","8.9","2","2013","false","","2"],
             ["2019-12-12 00:00:00","2019-12-12 00:00:00","3","244","174","10.1","2","2014","false","","2"],

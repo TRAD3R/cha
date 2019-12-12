@@ -21,7 +21,7 @@ class DeviceBrand extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'device_brands';
+        return 'device_brand';
     }
     
     public function behaviors()
