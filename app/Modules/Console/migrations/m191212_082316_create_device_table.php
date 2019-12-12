@@ -12,13 +12,13 @@ class m191212_082316_create_device_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('{{%device}}', [
+        $this->createTable('{{%devices}}', [
             'id' => $this->primaryKey(),
             'title' => $this->string(250)->notNull(),
             'brand_id' => $this->integer()->notNull(),
         ]);
         
-        $this->batchInsert('{{%device}}', ['id', 'brand_id', 'title'], [
+        $this->batchInsert('{{%devices}}', ['id', 'brand_id', 'title'], [
             ["1","18","OneTouch Pop 10"],
             ["2","3","3 Speed Quad HD"],
             ["3","3","Viva H10"],
