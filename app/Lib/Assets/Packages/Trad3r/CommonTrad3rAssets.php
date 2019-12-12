@@ -23,7 +23,7 @@ class CommonTrad3rAssets extends AssetBundle
 
     public $depends = [
         JuiAsset::class,
-        BootstrapAsset::class,
-        BootstrapPluginAsset::class,
+//        BootstrapAsset::class,
+//        BootstrapPluginAsset::class,
     ];
 }
