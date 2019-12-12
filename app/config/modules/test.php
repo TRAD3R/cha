@@ -9,7 +9,7 @@ $config = yii\helpers\ArrayHelper::merge(
     require dirname(__DIR__) . '/config_local_trad3r.php',
     [
         'id' => 'whocpa-tests',
-        'language' => 'en-US',
+        'language' => 'ru',
         'components' => [
             'mailer' => [
                 'useFileTransport' => true, // отключаем отправку писем

@@ -30,8 +30,7 @@ class LoginForm extends Model
             ['email', 'email'],
             ['remember_me', 'boolean'],
 //            ['recaptcha', 'validateRecaptcha'],
-//            ['password', 'checkAttempts'],
-//            ['password', 'validatePassword'],
+            ['password', 'validatePassword'],
         ];
     }
 
@@ -42,6 +41,16 @@ class LoginForm extends Model
             'password'   => Yii::t('front', 'PASSWORD'),
             'remember_me' => Yii::t('front', 'REMEMBER_ME')
         ];
+    }
+    
+    public function validatePassword()
+    {
+        if(!$this->hasErrors()) {
+            $user = $this->getUser();
+            if(!$user || !$user->validatePassword($this->password)) {
+                $this->addError('remember_me', Yii::t('exception', 'WRONG_EMAIL_OR_PASSWORD'));
+            }
+        }
     }
 
     /**

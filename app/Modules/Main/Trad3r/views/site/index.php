@@ -3,4 +3,4 @@
  * @var $this \yii\web\View 
  */
 ?>
-Привет
+<div id="tabs">Привет</div>
