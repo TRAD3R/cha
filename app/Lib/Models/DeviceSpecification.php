@@ -11,6 +11,7 @@ use yii\db\ActiveRecord;
  * @package App\Models
  * 
  * @property int        $device_id          [integer(11)]
+ * @property int        $date_created       [datetime]
  * @property int        $date_updated       [datetime]
  * @property int        $type_id            [integer(11)]       тип (телефон, планшет и т.п.)
  * @property int        $year               [integer(4)]
@@ -34,5 +35,10 @@ class DeviceSpecification extends ActiveRecord
     public static function tableName()
     {
         return 'device_specifications';
+    }
+    
+    public function getDevice()
+    {
+        return $this->hasOne(Device::class, ['id' => 'device_id']);
     }
 }
