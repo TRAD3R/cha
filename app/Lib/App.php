@@ -99,4 +99,13 @@ class App
     {
         return \Yii::$app->controller;
     }
+
+    /**
+     * @return \yii\console\Application|\yii\web\Application
+     */
+    public function getApp()
+    {
+        return \Yii::$app;
+    }
+
 }

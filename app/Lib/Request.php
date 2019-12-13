@@ -106,4 +106,12 @@ class Request extends BaseObject
     {
         return $this->request->isAjax;
     }
+
+    /**
+     * @return bool
+     */
+    public function isPost()
+    {
+        return $this->request->isPost;
+    }
 }

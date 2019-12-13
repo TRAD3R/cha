@@ -22,14 +22,16 @@
         "bower-asset/ui-contextmenu": "^1.11",
         "codeception/codeception": "^3.0",
         "codeception/specify": "*",
-        "codeception/verify": "*"
+        "codeception/verify": "*",
+        "se/selenium-server-standalone": "^3.12"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
         "yiisoft/yii2-gii": "~2.1.0",
         "yiisoft/yii2-faker": "~2.0.0",
 
-        "symfony/browser-kit": ">=2.7 <=4.2.4"
+        "symfony/browser-kit": ">=2.7 <=4.2.4",
+        "yiisoft/yii2-codeception": "^2.0"
     },
     "config": {
         "process-timeout": 1800,
@@ -60,6 +62,11 @@
             "generateCookieValidationKey": [
                 "config/web.php"
             ]
+        }
+    },
+    "autoload":{
+        "psr-4":{
+            "App\\":"app/"
         }
     },
     "repositories": [
