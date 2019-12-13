@@ -5,21 +5,21 @@ namespace Main\Trad3r\Controllers;
 
 
 use App\Controller\Main;
+use App\Forms\LoginForm;
+use App\Models\Device;
 
 class SiteController extends Main
 {
     public function actionIndex()
     {
-        $this->view->title = 'Trad3r';
-        $this->view->registerMetaTag([
-            'name' => 'description',
-            'content' => 'Trad3r - популярная настольная карточная игра'
+        $devices = Device::find()
+            ->limit(100)
+            ->orderBy('id')
+            ->all()
+            ;
+        return $this->render('index', [
+            'devices' => $devices,
         ]);
-        $this->view->registerMetaTag([
-            'name' => 'keyword',
-            'content' => 'Trad3r, карточная игра, настольная игра, Бэнг'
-        ]);
-
-        return $this->render('index');
     }
+   
 }

@@ -2,7 +2,7 @@
 $project_rules = [
     \App\App::PROJECT_ID_TRAD3R => [
         //MAIN
-
+        'login'     => 'auth/login',
     ]
 ];
 

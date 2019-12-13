@@ -1,0 +1,35 @@
+<?php
+
+
+namespace App\Models;
+
+
+use yii\db\ActiveRecord;
+
+/**
+ * Class Device
+ * @package App\Models
+ * 
+ * @property int                    $id                 [integer(11)]
+ * @property string                 $title              [varchar(250)]
+ * @property int                    $brand_id           [integer(11)]
+ * @property DeviceBrand            $brand
+ * @property DeviceSpecification    $specifications
+ */
+class Device extends ActiveRecord
+{
+    public static function tableName()
+    {
+        return 'devices';
+    }
+
+    public function getBrand()
+    {
+        return $this->hasOne(DeviceBrand::class, ['id' => 'brand_id']);
+    }
+    
+    public function getSpecifications()
+    {
+        return $this->hasOne(DeviceSpecification::class, ['device_id' => 'id']);
+    }
+}

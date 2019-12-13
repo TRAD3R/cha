@@ -14,6 +14,10 @@ $config_main = [
             'baseUrl' => '',
         ],
         'user' => [
+            'class'           => \App\AppHelper::getProjectComponentUserClass(),
+            'identityClass'   => \App\Models\User::class,
+            'enableAutoLogin' => true,
+            'loginUrl'        => '/login',
         ],
         'urlManager' => [
             'rules' => require 'url_manager_rules.php'

@@ -14,16 +14,14 @@ class CommonTrad3rAssets extends AssetBundle
     public $sourcePath = "@trad3r_resources";
 
     public $js = [
-        'js/main_common.js'
     ];
 
     public $css = [
-        'css/main_common.css'
     ];
 
     public $depends = [
         JuiAsset::class,
-        BootstrapAsset::class,
-        BootstrapPluginAsset::class,
+//        BootstrapAsset::class,
+//        BootstrapPluginAsset::class,
     ];
 }

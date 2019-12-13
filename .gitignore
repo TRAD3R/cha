@@ -20,3 +20,4 @@ composer.lock
 Devices from DB.tsv
 Devices from DB.xlsx
 
+/app/config/modules/test_local.php

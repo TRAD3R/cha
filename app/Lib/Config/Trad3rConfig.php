@@ -13,7 +13,7 @@ class Trad3rConfig extends Config
 {
     public function getNoReplyEmail()
     {
-        return 'no-reply@trad3r.ru';
+        return 'info@cha.de';
     }
 
     public function getAdminBaseUrl()
@@ -33,7 +33,7 @@ class Trad3rConfig extends Config
 
     public function getCookieKey()
     {
-        return 'trad3r_key';
+        return 'cha_key';
     }
 
     public function getClientScriptConfig()
@@ -50,6 +50,9 @@ class Trad3rConfig extends Config
                 AssetHelper::CONTROLLERS => [
                     'site' => [
                         'index' => []
+                    ],
+                    'auth' => [
+                        'login' => []
                     ]
                 ]
             ]

@@ -30,9 +30,9 @@ $config = [
         ],
         'db' => [
             'class'                 => Connection::class,
-            'dsn'                   => 'mysql:host=127.0.0.1;dbname=trad3r',
-            'username'              => '',
-            'password'              => '',
+            'dsn'                   => 'mysql:host=sql18.your-server.de;dbname=db_cha_de',
+            'username'              => 'riseys_7',
+            'password'              => 'Hhg7xLQnuMxtHACG',
             'charset'               => 'utf8',
             'tablePrefix'           => '',
         ]
