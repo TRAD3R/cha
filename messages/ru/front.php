@@ -25,8 +25,8 @@ return [
     'REMOVABLE_BATTERY' => 'съемная батарея',
     'PRICE' => 'цена',
     'IMAGE' => 'изображение',
-    '' => '',
-    '' => '',
-    '' => '',
+    'SECUENCE_NUMBER' => 'п/п',
+    'HAVE' => 'есть',
+    'DOES_NOT_HAVE' => 'нет',
     '' => '',
 ];
