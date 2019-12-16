@@ -1,6 +1,6 @@
 <?php
 
-use Page\LoginPage;
+use tests\helpers\UserHelper;
 
 class LoginTestCest
 {
@@ -21,10 +21,12 @@ class LoginTestCest
     // tests
     public function testFailedLogin(AcceptanceTester $I)
     {
+        $user = UserHelper::getWrong();
+        
         $I->amOnPage('/login');
         $I->canSeeElement('#form-login');
-        $I->fillField('LoginForm[email]', 'wrong@test.te');
-        $I->fillField('LoginForm[password]', 'wrong');
+        $I->fillField('LoginForm[email]', $user['email']);
+        $I->fillField('LoginForm[password]', $user['password']);
         $I->click('login');
         $this->wait($I, 1);
         $error = \Yii::t('exception', 'WRONG_EMAIL_OR_PASSWORD');
@@ -34,13 +36,15 @@ class LoginTestCest
     // tests
     public function testSuccessLogin(AcceptanceTester $I)
     {
+        $user = UserHelper::getCorrect();
+
         $I->amOnPage('/login');
         $I->canSeeElement('#form-login');
-        $I->fillField('LoginForm[email]', 'tatusr@gmail.com');
-        $I->fillField('LoginForm[password]', 123456);
+        $I->fillField('LoginForm[email]', $user['email']);
+        $I->fillField('LoginForm[password]', $user['password']);
         $I->click('login');
         $this->wait($I, 1);
-        $I->canSeeElement('#tabs');
+        $I->canSee(Yii::t('front', 'DATE_CREATED'));
     }
     
     private function wait(AcceptanceTester $I, int $duration)

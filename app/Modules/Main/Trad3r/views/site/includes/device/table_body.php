@@ -17,7 +17,7 @@ use yii\web\View;
             $specifications = $device->specifications; 
             $sequenceNumber = ++$key + $offset;
         ?>
-        <tr>
+        <tr data-id="<?=$device->id;?>">
             <?=$this->render('table_row', compact('device', 'specifications', 'sequenceNumber'))?>
         </tr>
     <?php endforeach; ?>

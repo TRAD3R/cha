@@ -8,3 +8,4 @@ Yii::setAlias('@packages', dirname(__DIR__) . '/../resources/packages');
 Yii::setAlias('@common_resources', dirname(__DIR__) . '/../resources/common');
 Yii::setAlias('@trad3r_resources', dirname(__DIR__) . '/../resources/trad3r');
 Yii::setAlias('@translates', dirname(__DIR__) . '/../messages');
+Yii::setAlias('@tests', dirname(__DIR__) . '/../tests');
