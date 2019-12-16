@@ -7,15 +7,16 @@ $config = yii\helpers\ArrayHelper::merge(
     require dirname(__DIR__) . '/common.php',
     require dirname(__DIR__) . '/trad3r.php',
     require dirname(__DIR__) . '/config_local_trad3r.php',
+    require dirname(__DIR__) . '/modules/main.php',
     [
-        'id' => 'whocpa-tests',
+        'id' => 'cha-tests',
         'language' => 'ru',
         'components' => [
             'mailer' => [
                 'useFileTransport' => true, // отключаем отправку писем
             ],
             'urlManager' => [
-                'showScriptName' => true, // возвращаем полные имена файлов (без ЧПУ)
+//                'showScriptName' => true, // возвращаем полные имена файлов (без ЧПУ)
             ],
             'db' => [
                 'dsn' => '',
