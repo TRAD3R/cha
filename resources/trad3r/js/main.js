@@ -91,3 +91,27 @@ $(window).on('scroll', function () {
     }
 });
 /* TRD */
+
+
+$(document).ready(function () {
+    var paginationItem = $('.pagination-item');
+    paginationItem.on('click', function () {
+        paginationItem.removeClass('active');
+        $(this).addClass('active');
+    });
+
+    var btnDublicateRow = `
+    <button type="button" class="btn btn-box primary" id="btnDublicateRow">
+      <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6.99951 5.229H11.5591V7.19434H6.99951V12.3604H4.91064V7.19434H0.351074V5.229H4.91064V0.456055H6.99951V5.229Z" fill="white"/>
+      </svg>
+    </button>
+    `;
+    $(".table-body .table-row")
+        .mouseenter(function(){
+        $(this).find('.btn-box-wrapper').html(btnDublicateRow).addClass("active");
+    })
+        .mouseleave(function () {
+            $(this).find('.btn-box-wrapper').removeClass("active").html("");
+        });
+});
