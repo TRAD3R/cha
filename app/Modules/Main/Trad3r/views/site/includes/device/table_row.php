@@ -15,6 +15,7 @@ use App\Models\DeviceSpecification; ?>
     echo $dateCreated->format('d.m.Y');
     ?>
 </div>
+
 <div class="table-cell type-<?=$specifications->type->type; ?>">
     <?=$specifications->type->type;?>
 </div>

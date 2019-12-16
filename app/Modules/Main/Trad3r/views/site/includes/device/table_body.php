@@ -20,6 +20,7 @@ use yii\web\View;
       $sequenceNumber = ++$key + $offset;
       ?>
       <div class="table-row">
+        <div class="btn-box-wrapper"></div>
         <?=$this->render('table_row', compact('device', 'specifications', 'sequenceNumber'))?>
       </div>
     <?php endforeach; ?>
