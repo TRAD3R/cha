@@ -91,3 +91,12 @@ $(window).on('scroll', function () {
     }
 });
 /* TRD */
+
+
+$(document).ready(function () {
+    var paginationItem = $('.pagination-item');
+    paginationItem.on('click', function () {
+        paginationItem.removeClass('active');
+        $(this).addClass('active');
+    })
+});
