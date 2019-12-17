@@ -10,7 +10,7 @@ class MainAsset extends AssetBundle
 {
     public $sourcePath = '@trad3r_resources';
     public $css = [
-        'css/main.css'
+        'css/style.css'
     ];
 
     public $js = [
