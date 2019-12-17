@@ -46,7 +46,7 @@ ul {
   line-height: 31px; }
 
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 15px; }
   .container-fluid {
@@ -128,14 +128,12 @@ ul {
   position: relative;
   display: flex;
   width: 100%;
-  overflow: hidden;
+  overflow: hidden auto;
   flex-direction: column; }
   .table-content {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    overflow-x: scroll;
-    overflow-y: hidden; }
+    width: 100%; }
   .table-head {
     position: relative;
     display: flex;
@@ -149,9 +147,7 @@ ul {
     position: relative;
     display: flex;
     flex-direction: column;
-    width: min-content;
-    height: 65vh;
-    overflow: hidden scroll; }
+    width: min-content; }
   .table-cell {
     position: relative;
     min-height: 35px;
@@ -161,7 +157,7 @@ ul {
     border: 1px solid #E3E7F4;
     background: #fff;
     padding: 5px 20px; }
-    .table-cell.type-laptop:before, .table-cell.type-tablet:before, .table-cell.type-handy:before {
+    .table-cell.type-laptop:before, .table-cell.type-tablet:before, .table-cell.type-handy:before, .table-cell.type-ebook:before {
       content: '';
       position: absolute;
       display: block;
@@ -182,9 +178,9 @@ ul {
       padding: 5px 25px; }
       .table-cell.type-handy:before {
         background-image: url(../images/smartphone.svg); }
-    .table-cell.type-tablet {
+    .table-cell.type-tablet, .table-cell.type-ebook {
       padding: 5px 25px; }
-      .table-cell.type-tablet:before {
+      .table-cell.type-tablet:before, .table-cell.type-ebook:before {
         background-image: url(../images/tablet.svg); }
   .table-row {
     position: relative;

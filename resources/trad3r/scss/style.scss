@@ -43,7 +43,7 @@ ul {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 15px;
   &-fluid {
@@ -144,14 +144,14 @@ ul {
   position: relative;
   display: flex;
   width: 100%;
-  overflow: hidden;
+  overflow: hidden auto;
   flex-direction: column;
   &-content {
     display: flex;
     flex-direction: column;
     width: 100%;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    //overflow-x: scroll;
+    //overflow-y: hidden;
   }
   &-head {
     position: relative;
@@ -169,8 +169,8 @@ ul {
     display: flex;
     flex-direction: column;
     width: min-content;
-    height: 65vh;
-    overflow: hidden scroll;
+    //height: 65vh;
+    //overflow: hidden scroll;
     .table-cell {
     }
   }
@@ -183,7 +183,7 @@ ul {
     border: 1px solid $gray;
     background: $light;
     padding: 5px 20px;
-    &.type-laptop, &.type-tablet, &.type-handy {
+    &.type-laptop, &.type-tablet, &.type-handy, &.type-ebook {
       &:before {
         content: '';
         position: absolute;
@@ -211,7 +211,7 @@ ul {
         background-image: url(../images/smartphone.svg);
       }
     }
-    &.type-tablet {
+    &.type-tablet, &.type-ebook {
       padding: 5px 25px;
       &:before {
         background-image: url(../images/tablet.svg);

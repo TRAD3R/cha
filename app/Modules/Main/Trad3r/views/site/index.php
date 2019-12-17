@@ -15,4 +15,3 @@ use App\Models\Device;
 </div>
 
 
-
