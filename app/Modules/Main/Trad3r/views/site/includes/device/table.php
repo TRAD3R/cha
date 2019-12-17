@@ -20,7 +20,7 @@ use App\Params;
 </div>
 
 <?=Html::renderPaginator([
-    'page' => 1,
+    'page' => $params[Params::PAGE],
     'per_page' => $params[Params::PER_PAGE],
     'total_count' => $totalCount,
 ])?>
