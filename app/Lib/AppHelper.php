@@ -50,7 +50,7 @@ class AppHelper
             ],
             App::CONFIG_MODULE_CONSOLE => [
                 App::PROJECT_ID_TRAD3R => 'Console\Trad3r\Controllers'
-            ]
+            ],
         ];
 
             $controller_namespace = ArrayHelper::getValue($namespace_map, [$module, PROJECT_ID]);
