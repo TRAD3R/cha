@@ -11,14 +11,16 @@ use App\Params;
  * @var $offset int
  */
  ?>
-<table>
-        <?php echo $this->render('table_head'); ?>
-        
-        <?php echo $this->render('table_body', compact('devices', 'offset')); ?>
-</table>
+<h2 class="page-title dr-h2">Девайсы</h2>
+<div class="table" id="horizontal-scroller">
+  <div class="table-content">
+    <?php echo $this->render('table_head'); ?>
+    <?php echo $this->render('table_body', compact('devices', 'offset')); ?>
+  </div>
+</div>
 
 <?=Html::renderPaginator([
-    'page' => 1,
+    'page' => $params[Params::PAGE],
     'per_page' => $params[Params::PER_PAGE],
     'total_count' => $totalCount,
 ])?>

@@ -5,10 +5,14 @@ use App\Lib\Tables\TableStructure;
 $ths = TableStructure::getDeviceTitles();
 ?>
 
-<thead>
-    <tr>
-        <?php foreach ($ths as $th):?>
-            <th><?=Yii::t('front', $th);?></th>
+<div class="table-head">
+  <div class="table-row">
+    <?php foreach ($ths as $key => $group):?>
+<!--      <div class="table-group gr---><?//=$key ?><!--">-->
+        <?php foreach ($group as $th):?>
+          <div class="gr-<?=$key ?> table-cell"><?=Yii::t('front', $th);?></div>
         <?php endforeach; ?>
-    </tr>
-</thead>
+<!--      </div>-->
+    <?php endforeach; ?>
+  </div>
+</div>

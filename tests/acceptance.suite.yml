@@ -8,14 +8,14 @@ actor: AcceptanceTester
 modules:
     enabled:
         - PhpBrowser:
-            url: http://cha.trd
+            url: http://test.cha.trd
         - \Helper\Acceptance
         - Yii2:
             configFile: 'tests/_config/acceptance.php'
             part: [orm, fixtures] # allow to use AR methods
             entryScript: index.php
 #        - WebDriver:
-#            url: http://cha.trd
+#            url: http://test.cha.trd
 #            browser: chrome
 #            restart: false         # true - каждый тест с перезапуском браузера; false - все тесты в 1 вкладке
 #            window_size: 1024x768
