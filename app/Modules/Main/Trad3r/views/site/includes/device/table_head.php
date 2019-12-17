@@ -10,7 +10,7 @@ $ths = TableStructure::getDeviceTitles();
     <?php foreach ($ths as $key => $group):?>
 <!--      <div class="table-group gr---><?//=$key ?><!--">-->
         <?php foreach ($group as $th):?>
-          <div class="gr-<?=$key ?> table-cell"><?=Yii::t('front', $th);?></div>
+          <div class="group-cell gr-<?=$key ?> table-cell"><?=Yii::t('front', $th);?></div>
         <?php endforeach; ?>
 <!--      </div>-->
     <?php endforeach; ?>
