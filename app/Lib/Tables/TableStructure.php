@@ -9,9 +9,9 @@ use Yii;
 class TableStructure
 {
     const DEVICE_DATE_CREATED = 1;
-    const DEVICE_DEVICE_TYPE = 2;
-    const DEVICE_DEVICE_BRAND = 3;
-    const DEVICE_DEVICE_MODEL = 4;
+    const DEVICE_TYPE = 2;
+    const DEVICE_BRAND = 3;
+    const DEVICE_MODEL = 4;
     const DEVICE_LENGTH = 5;
     const DEVICE_WIDTH = 6;
     const DEVICE_DEPTH = 7;
@@ -26,6 +26,8 @@ class TableStructure
     const DEVICE_REMOVABLE_BATTERY = 16;
     const DEVICE_PRICE = 17;
     const DEVICE_IMAGE = 18;
+    const DEVICE_YEAR = 19;
+    
     const DEVICE_GROUP_CUSTOM = 'custom';
     const DEVICE_GROUP_MAINCHARACTERISTIC = 'mainCharacteristic';
     const DEVICE_GROUP_PARAMS = 'params';
@@ -40,10 +42,11 @@ class TableStructure
             0 => Yii::t('front', 'SECUENCE_NUMBER'),
           ],
           self::DEVICE_GROUP_MAINCHARACTERISTIC => [
-            self::DEVICE_DATE_CREATED => Yii::t('front', 'DATE_CREATED'),
-            self::DEVICE_DEVICE_TYPE => Yii::t('front', 'DEVICE_TYPE'),
-            self::DEVICE_DEVICE_BRAND => Yii::t('front', 'DEVICE_BRAND'),
-            self::DEVICE_DEVICE_MODEL => Yii::t('front', 'DEVICE_MODEL'),
+            self::DEVICE_DATE_CREATED   => Yii::t('front', 'DATE_CREATED'),
+            self::DEVICE_TYPE    => Yii::t('front', 'DEVICE_TYPE'),
+            self::DEVICE_BRAND   => Yii::t('front', 'DEVICE_BRAND'),
+            self::DEVICE_MODEL   => Yii::t('front', 'DEVICE_MODEL'),
+            self::DEVICE_YEAR           => Yii::t('front', 'RELEASE_YEAR'),
           ],
           self::DEVICE_GROUP_PARAMS => [
             self::DEVICE_LENGTH => Yii::t('front', 'LENGTH'),
