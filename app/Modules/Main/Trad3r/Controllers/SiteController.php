@@ -10,6 +10,7 @@ use App\Helpers\DeviceHelper;
 use App\Models\Device;
 use App\Params;
 use App\Request;
+use App\Response;
 use yii\data\Pagination;
 
 class SiteController extends Main
@@ -34,6 +35,25 @@ class SiteController extends Main
             'params' => $params,
             'offset' => $offset
         ]);
+    }
+    
+    public function actionDeviceUpdate($id)
+    {
+        /** @var Request $request */
+        $request = $this->getRequest();
+        
+        if(!$request->isAjax() || !$request->isPost()) {
+            $this->getResponse()->set404();
+        }
+        
+        return [
+            'status' => Response::STATUS_SUCCESS
+        ];
+    }
+    
+    public function actionDeviceAdd()
+    {
+        
     }
    
 }

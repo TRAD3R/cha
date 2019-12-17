@@ -9,7 +9,7 @@ use App\Lib\Tables\TableStructure;
 use App\Models\Device;
 use App\Models\DeviceSpecification; ?>
 
-<div class="table-row">
+<div class="table-row" data-id="<?=$device->id?>">
     <div class="btn-box-wrapper"></div>
     <div class="table-cell">
         <?=$sequenceNumber?>
