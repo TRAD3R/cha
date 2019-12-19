@@ -15,11 +15,12 @@ use yii\web\View;
   <div class="table-body">
     <?php foreach ($devices as $key => $device):?>
           <?php
-              /** @var DeviceSpecification $specifications */
-              $specifications = $device->specifications;
               $sequenceNumber = ++$key + $offset;
           ?>
-        <?=$this->render('table_row', compact('device', 'specifications', 'sequenceNumber'))?>
+    
+          <div class="table-row" data-id="<?=$device->id?>">
+            <?=$this->render('table_row', compact('device', 'sequenceNumber'))?>
+          </div>
     <?php endforeach; ?>
   </div>
 </div>

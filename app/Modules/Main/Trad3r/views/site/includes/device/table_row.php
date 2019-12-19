@@ -5,13 +5,18 @@
  * @var $sequenceNumber int
  */
 
-use App\Lib\Tables\TableStructure;
+use App\Helpers\PriceHelper;
 use App\Models\Device;
-use App\Models\DeviceSpecification; ?>
+use App\Models\DeviceSpecification;
+use App\Tables\DeviceTableStructure;
 
-<div class="table-row">
+/** @var DeviceSpecification $specifications */
+$specifications = $device->specifications;
+?>
+
+
     <div class="btn-box-wrapper"></div>
-    <div class="table-cell">
+    <div class="table-cell sequence-number">
         <?=$sequenceNumber?>
     </div>
     <div class="table-cell">
@@ -24,36 +29,36 @@ use App\Models\DeviceSpecification; ?>
         ?>
     </div>
     
-    <div class="table-cell type-<?=$specifications->type->type; ?>" data-id="<?=TableStructure::DEVICE_TYPE?>">
+    <div class="table-cell type-<?=$specifications->type->type; ?> editable select" data-id="<?=DeviceTableStructure::DEVICE_TYPE?>">
         <?=$specifications->type->type;?>
     </div>
-    <div class="table-cell" data-id="<?=TableStructure::DEVICE_BRAND?>">
+    <div class="table-cell editable select" data-id="<?=DeviceTableStructure::DEVICE_BRAND?>">
         <?=$device->brand->name?>
     </div>
-    <div class="table-cell" data-id="<?=TableStructure::DEVICE_MODEL?>">
+    <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_MODEL?>">
         <?=$device->title?>
     </div>
-    <div class="table-cell" data-id="<?=TableStructure::DEVICE_YEAR?>">
+    <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_YEAR?>">
         <?=$specifications->year;?>
     </div>
-    <div class="table-cell" data-id="<?=TableStructure::DEVICE_LENGTH?>">
+    <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_LENGTH?>">
         <?=$specifications->length;?>
     </div>
-    <div class="table-cell" data-id="<?=TableStructure::DEVICE_WIDTH?>">
+    <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_WIDTH?>">
         <?=$specifications->width;?>
     </div>
-    <div class="table-cell" data-id="<?=TableStructure::DEVICE_DEPTH?>">
+    <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_DEPTH?>">
         <?=$specifications->depth;?>
     </div>
-    <div class="table-cell" data-id="<?=TableStructure::DEVICE_SCREEN_SIZE?>">
+    <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_SCREEN_SIZE?>">
         <?=$specifications->screensize;?>
     </div>
-    <div class="table-cell" data-id="<?=TableStructure::DEVICE_CARD_MEMORY?>">
+    <div class="table-cell editable select" data-id="<?=DeviceTableStructure::DEVICE_CARD_MEMORY?>">
         <?php
         echo $specifications->cardMemory ? $specifications->cardMemory->size : "-";
         ?>
     </div>
-    <div class="table-cell text-center" data-id="<?=TableStructure::DEVICE_35_JACK?>">
+    <div class="table-cell text-center editable checkbox" data-id="<?=DeviceTableStructure::DEVICE_35_JACK?>">
       <label class="checkbox">
         <input type="checkbox" <?php echo ($specifications->jack_35)?"checked":""; ?> disabled/>
         <span class="checkbox-box">
@@ -64,7 +69,7 @@ use App\Models\DeviceSpecification; ?>
         <span class="checkbox-text"></span>
       </label>
     </div>
-    <div class="table-cell text-center" data-id="<?=TableStructure::DEVICE_BLUETOOTH?>">
+    <div class="table-cell text-center editable checkbox" data-id="<?=DeviceTableStructure::DEVICE_BLUETOOTH?>">
       <label class="checkbox">
         <input type="checkbox" <?php echo ($specifications->bluetooth)?"checked":""; ?> disabled/>
         <span class="checkbox-box">
@@ -75,17 +80,17 @@ use App\Models\DeviceSpecification; ?>
         <span class="checkbox-text"></span>
       </label>
     </div>
-    <div class="table-cell" data-id="<?=TableStructure::DEVICE_USB_TYPE?>">
+    <div class="table-cell editable select" data-id="<?=DeviceTableStructure::DEVICE_USB_TYPE?>">
         <?php
         echo $specifications->usbType ? $specifications->usbType->type : "-";
         ?>
     </div>
-    <div class="table-cell" data-id="<?=TableStructure::DEVICE_USB_STANDARD?>">
+    <div class="table-cell editable selectable" data-id="<?=DeviceTableStructure::DEVICE_USB_STANDARD?>">
         <?php
         echo $specifications->usbStandard ? $specifications->usbStandard->standard : "-";
         ?>
     </div>
-    <div class="table-cell text-center" data-id="<?=TableStructure::DEVICE_WIRELESS_CHARGE?>">
+    <div class="table-cell text-center editable checkbox" data-id="<?=DeviceTableStructure::DEVICE_WIRELESS_CHARGE?>">
         <label class="checkbox">
             <input type="checkbox" <?php echo ($specifications->wireless_charge)?"checked":""; ?> disabled/>
             <span class="checkbox-box">
@@ -96,7 +101,7 @@ use App\Models\DeviceSpecification; ?>
             <span class="checkbox-text"></span>
         </label>
     </div>
-    <div class="table-cell text-center" data-id="<?=TableStructure::DEVICE_FAST_CHARGE?>">
+    <div class="table-cell text-center editable checkbox" data-id="<?=DeviceTableStructure::DEVICE_FAST_CHARGE?>">
         <label class="checkbox">
             <input type="checkbox" <?php echo ($specifications->fast_charge)?"checked":""; ?> disabled/>
             <span class="checkbox-box">
@@ -107,7 +112,7 @@ use App\Models\DeviceSpecification; ?>
             <span class="checkbox-text"></span>
         </label>
     </div>
-    <div class="table-cell text-center" data-id="<?=TableStructure::DEVICE_REMOVABLE_BATTERY?>">
+    <div class="table-cell text-center editable checkbox" data-id="<?=DeviceTableStructure::DEVICE_REMOVABLE_BATTERY?>">
         <label class="checkbox">
             <input type="checkbox" <?php echo ($specifications->removable_battery)?"checked":""; ?> disabled/>
             <span class="checkbox-box">
@@ -118,10 +123,9 @@ use App\Models\DeviceSpecification; ?>
             <span class="checkbox-text"></span>
         </label>
     </div>
-    <div class="table-cell" data-id="<?=TableStructure::DEVICE_PRICE?>">
-        <?=$specifications->price;?>
+    <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_PRICE?>">
+        <?=PriceHelper::toFloat($specifications->price);?>
     </div>
-    <div class="table-cell" data-id="<?=TableStructure::DEVICE_IMAGE?>">
+    <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_IMAGE?>">
         <?=$specifications->image;?>
     </div>
-</div>

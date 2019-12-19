@@ -93,6 +93,19 @@ class App
     }
 
     /**
+     * @return Response
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
+    public function getResponse()
+    {
+        /** @var Response $response */
+        $response = \Yii::$container->get(Response::class, [], ['response' => \Yii::$app->response]);
+
+        return $response;
+    }
+
+    /**
      * @return \yii\console\Controller|\yii\web\Controller
      */
     public function getController()

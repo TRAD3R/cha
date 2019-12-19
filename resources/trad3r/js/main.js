@@ -134,5 +134,97 @@ $(document).ready(function () {
         });
     }
 
+    /**
+     * Временно на плюсе. Потом перенести на кнопку
+     */
+    $('.btn-box-wrapper').on('click', '#btnDublicateRow', function () {
+        Device.el = $(this).closest('.table-row');
+        Device.updateRow();
+    });
+    
+    $('.table-body').on('dblclick', '.editable', function () {
+        $(this).addClass('edited');
+        $(this).closest('.table-row').addClass('edited-row');
+        Device.el = $(this);
+        Device.changeInput();
+    })
 });
+
+var Device = {
+    el: null,
+    changeInput: function() {
+        console.log(this.el.classList);
+        if(this.el.hasClass('select')) {
+            this.getSelectInput();
+        }else if(this.el.hasClass('text')) {
+            this.getTextInput();
+        }else if(this.el.hasClass('checkbox')) {
+            this.getCheckboxInput();
+        }
+    },
+    getCheckboxInput: function () {
+        let input = this.el.find('input').eq(0);
+        input.removeAttr('disabled');
+    },
+    getTextInput: function () {
+        let text = this.el.text();
+        let input = document.createElement('input');
+        input.type = 'text';
+        input.value = text;
+        this.el.html(input);
+    },
+    getSelectInput: function () {
+        $.ajax({
+            url: '/device/specification/list/' + this.el.data('id'),
+            method: 'GET',
+            success: function (res) {
+                if(res.status === 'success'){
+                    let select = Device.createSelect(res.list);
+                    Device.el.html(select);
+                }
+            }
+        })
+    },
+    createSelect: function (list) {
+        let select = document.createElement('select');
+
+        for (let el of list) {
+            let option = document.createElement('option');
+            option.value = el.id;
+            option.innerText = el.title;
+            select.append(option);
+        }
+
+        return select;
+    },
+    updateRow: function() {
+        let deviceId = this.el.data('id');
+        let sequenceNumber = this.el.find('.sequence-number').eq(0).text();
+
+        let data = this.getEditedCells();
+        $.ajax({
+            url: '/device/' + deviceId,
+            method: 'POST',
+            data: {
+                19: 2018
+            },
+            success: function (res) {
+                if(res.status === 'success'){
+                    Device.el.html(res.row);
+                    Device.el.find('.sequence-number').eq(0).text(sequenceNumber);
+                }
+            }
+        })
+    },
+    getEditedCells: function () {
+        let data = {};
+        let cells = this.el.find('.edited');
+        
+        cells.each(function () {
+            let id = $(this).data('id');
+            let value = $(this).data('id');
+            data.add()
+        })
+    }
+};
 

@@ -1,12 +1,13 @@
 <?php
 
 
-namespace App\Lib\Tables;
+namespace App\Tables;
 
 
+use App\Tables\AbstractTS;
 use Yii;
 
-class TableStructure
+class DeviceTableStructure extends AbstractTS
 {
     const DEVICE_DATE_CREATED = 1;
     const DEVICE_TYPE = 2;
@@ -34,8 +35,8 @@ class TableStructure
     const DEVICE_GROUP_INTERFACES = 'interfaces';
     const DEVICE_GROUP_PRICE = 'price';
     const DEVICE_GROUP_CONTENT = 'content';
-
-    public static function getDeviceTitles()
+    
+    public static function getTitles()
     {
         return [
           self::DEVICE_GROUP_CUSTOM => [
@@ -46,7 +47,7 @@ class TableStructure
             self::DEVICE_TYPE    => Yii::t('front', 'DEVICE_TYPE'),
             self::DEVICE_BRAND   => Yii::t('front', 'DEVICE_BRAND'),
             self::DEVICE_MODEL   => Yii::t('front', 'DEVICE_MODEL'),
-            self::DEVICE_YEAR           => Yii::t('front', 'RELEASE_YEAR'),
+            self::DEVICE_YEAR    => Yii::t('front', 'RELEASE_YEAR'),
           ],
           self::DEVICE_GROUP_PARAMS => [
             self::DEVICE_LENGTH => Yii::t('front', 'LENGTH'),

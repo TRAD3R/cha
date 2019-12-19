@@ -114,4 +114,12 @@ class Request extends BaseObject
     {
         return $this->request->isPost;
     }
+
+    /**
+     * @return bool
+     */
+    public function isGet()
+    {
+        return $this->request->isGet;
+    }
 }
