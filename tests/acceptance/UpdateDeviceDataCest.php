@@ -16,14 +16,21 @@ class UpdateDeviceDataCest
     public function _before(AcceptanceTester $I)
     {
     }
+    
+    public function wrongRequestGet(AcceptanceTester $I)
+    {
+        $this->login($I);
+        $I->see(Yii::t('front', 'DATE_CREATED'));
+        $I->sendAjaxGetRequest(['/device/10']);
+        $I->seeResponseCodeIsClientError();
+    }
 
     // tests
     public function updateDataTest(AcceptanceTester $I)
     {
         $this->login($I);
         $I->see(Yii::t('front', 'DATE_CREATED'));
-        $I->sendAjaxGetRequest('/device-update', [
-            'id' => 587,
+        $I->sendAjaxPostRequest(['/device-update/587'], [
             
         ]);
     }

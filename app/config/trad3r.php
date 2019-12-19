@@ -6,6 +6,13 @@ use yii\log\EmailTarget;
 use yii\log\FileTarget;
 use yii\swiftmailer\Mailer;
 
+$params = is_file(dirname(__DIR__ ) . '/config/trad3r_params_local.php') ?
+    \yii\helpers\ArrayHelper::merge(
+        require dirname(__DIR__) . '/config/trad3r_params.php',
+        require dirname(__DIR__) . '/config/trad3r_params_local.php'
+    ) :
+    require dirname(__DIR__) . '/config/trad3r_params.php';
+
 $config = [
     'components' => [
         'mailer'      => [
@@ -23,7 +30,7 @@ $config = [
                     'levels' => ['error', 'warning'],
                     'message' => [
                         'from' => ['log@trad3r'],
-                        'to'   => ['tatusr@gmail.com']
+                        'to'   => [$params['emails']['manager']]
                     ]
                 ],
             ]
@@ -37,12 +44,7 @@ $config = [
             'tablePrefix'           => '',
         ]
     ],
-    'params' => is_file(dirname(__DIR__ ) . '/config/trad3r_params_local.php') ?
-        \yii\helpers\ArrayHelper::merge(
-            require dirname(__DIR__) . '/config/trad3r_params.php',
-            require dirname(__DIR__) . '/config/trad3r_params_local.php'
-            ) :
-        require dirname(__DIR__) . '/config/trad3r_params.php'
+    'params' => $params
 ];
 
 return $config;

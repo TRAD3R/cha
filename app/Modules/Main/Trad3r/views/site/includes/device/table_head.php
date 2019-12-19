@@ -1,8 +1,9 @@
 <?php
 
-use App\Lib\Tables\TableStructure;
 
-$ths = TableStructure::getDeviceTitles();
+use App\Tables\DeviceTableStructure;
+
+$ths = DeviceTableStructure::getTitles();
 ?>
 
 <div class="table-head">
