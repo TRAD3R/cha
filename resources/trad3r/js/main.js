@@ -152,13 +152,16 @@ $(document).ready(function () {
 
 var Device = {
     el: null,
+    CLASS_SELECT: 'select',
+    CLASS_TEXT: 'text',
+    CLASS_CHECKBOX: 'checkbox',
     changeInput: function() {
         console.log(this.el.classList);
-        if(this.el.hasClass('select')) {
+        if(this.el.hasClass(this.CLASS_SELECT)) {
             this.getSelectInput();
-        }else if(this.el.hasClass('text')) {
+        }else if(this.el.hasClass(this.CLASS_TEXT)) {
             this.getTextInput();
-        }else if(this.el.hasClass('checkbox')) {
+        }else if(this.el.hasClass(this.CLASS_CHECKBOX)) {
             this.getCheckboxInput();
         }
     },
@@ -205,9 +208,7 @@ var Device = {
         $.ajax({
             url: '/device/' + deviceId,
             method: 'POST',
-            data: {
-                19: 2018
-            },
+            data: data,
             success: function (res) {
                 if(res.status === 'success'){
                     Device.el.html(res.row);
@@ -222,9 +223,19 @@ var Device = {
         
         cells.each(function () {
             let id = $(this).data('id');
-            let value = $(this).data('id');
-            data.add()
-        })
+            
+            let value = null;
+            if($(this).hasClass(Device.CLASS_SELECT)) {
+                value = $(this).find('select').eq(0).find('option:selected').val();
+            }else if($(this).hasClass(Device.CLASS_TEXT)) {
+                value = $(this).find('input').eq(0).val();
+            }else if($(this).hasClass(Device.CLASS_CHECKBOX)) {
+                value = $(this).find('input:checked') ? 1 : 0;
+            }
+            data[$(this).data('id')] = value;
+        });
+        
+        return data;
     }
 };
 
