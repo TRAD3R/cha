@@ -3,8 +3,9 @@ $project_rules = [
     \App\App::PROJECT_ID_TRAD3R => [
         //MAIN
         'login'     => 'auth/login',
-        'device/<id:\d{1,}>'     => 'site/device-update',
-        'device/add'     => 'site/device-add',
+        'device/<id:\d{1,}>'                            => 'site/device-update',
+        '/device/specification/list/<id:\d{1,}>'        => 'site/device-spec-list',
+        'device/add'                                    => 'site/device-add',
     ]
 ];
 

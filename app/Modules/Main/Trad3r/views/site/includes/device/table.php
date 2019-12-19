@@ -3,12 +3,14 @@
 use App\Html;
 use App\Models\Device;
 use App\Params;
+use yii\web\View;
 
 /**
- * @var $devices Device[]
- * @var $totalCount int
- * @var $params array
- * @var $offset int
+ * @var View $this
+ * @var Device[] $devices 
+ * @var int $totalCount
+ * @var array $params
+ * @var int $offset
  */
  ?>
 <div class="container">
@@ -29,8 +31,8 @@ use App\Params;
 </div>
 
 
-<?//=Html::renderPaginator([
-//  'page' => $params[Params::PAGE],
-//  'per_page' => $params[Params::PER_PAGE],
-//  'total_count' => $totalCount,
-//])?>
+<?=Html::renderPaginator([
+  'page' => $params[Params::PAGE],
+  'per_page' => $params[Params::PER_PAGE],
+  'total_count' => $totalCount,
+])?>
