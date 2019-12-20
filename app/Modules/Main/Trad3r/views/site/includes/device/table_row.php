@@ -16,6 +16,11 @@ $specifications = $device->specifications;
 
 
     <div class="btn-box-wrapper"></div>
+    <div class="btn-operations">
+      <div class="btn-operations-edit">
+
+      </div>
+    </div>
     <div class="table-cell sequence-number">
         <?=$sequenceNumber?>
     </div>
@@ -30,28 +35,52 @@ $specifications = $device->specifications;
     </div>
     
     <div class="table-cell type-<?=$specifications->type->type; ?> editable select" data-id="<?=DeviceTableStructure::DEVICE_TYPE?>">
-        <?=$specifications->type->type;?>
+      <div class="simple-select">
+        <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
+          <input hidden type="text" name="sort-view" value="<?=$specifications->type->id;?>" data-default-value="1">
+          <p class="simple-select-selected" data-placeholder="<?=$specifications->type->type;?>"><?=$specifications->type->type;?></p>
+          <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
+          </svg>
+        </div>
+        <div class="simple-select-drop">
+          <div class="simple-select-drop-inner">
+          </div>
+        </div>
+      </div>
     </div>
     <div class="table-cell editable select" data-id="<?=DeviceTableStructure::DEVICE_BRAND?>">
-        <?=$device->brand->name?>
+      <div class="simple-select">
+        <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
+          <input hidden type="text" name="sort-view" value="<?=$device->brand->id?>" data-default-value="1">
+          <p class="simple-select-selected" data-placeholder="<?=$device->brand->name?>"><?=$device->brand->name?></p>
+          <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
+          </svg>
+        </div>
+        <div class="simple-select-drop">
+          <div class="simple-select-drop-inner">
+          </div>
+        </div>
+      </div>
     </div>
     <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_MODEL?>">
-        <?=$device->title?>
+      <input class="input-text" type="text" value="<?=$device->title?>">
     </div>
     <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_YEAR?>">
-        <?=$specifications->year;?>
+      <input class="input-text" type="text" value="<?=$specifications->year;?>">
     </div>
     <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_LENGTH?>">
-        <?=$specifications->length;?>
+        <input class="input-text" type="text" value="<?=$specifications->length;?>">
     </div>
     <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_WIDTH?>">
-        <?=$specifications->width;?>
+        <input class="input-text" type="text" value="<?=$specifications->width;?>">
     </div>
     <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_DEPTH?>">
-        <?=$specifications->depth;?>
+        <input class="input-text" type="text" value="<?=$specifications->depth;?>">
     </div>
     <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_SCREEN_SIZE?>">
-        <?=$specifications->screensize;?>
+        <input class="input-text" type="text" value="<?=$specifications->screensize;?>">
     </div>
     <div class="table-cell editable select" data-id="<?=DeviceTableStructure::DEVICE_CARD_MEMORY?>">
         <?php
