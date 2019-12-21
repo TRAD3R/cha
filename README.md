@@ -3,6 +3,8 @@
 а все в папке web с правами 777
 ~~~
 
+<h5>Для добавления нового пользователя выполнить команду: <br> <i>php yii user/add {EMAIL} {PASSWORD}</i></h5>
+
 <p align="center">
     <a href="https://github.com/yiisoft" target="_blank">
         <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
