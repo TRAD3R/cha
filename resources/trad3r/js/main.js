@@ -20,25 +20,6 @@ $(document).ready(function () {
             $(this).find('.btn-box-wrapper').removeClass("active").html("");
         });
 
-    var horizontalScroller = document.getElementById("horizontal-scroller");
-    if (horizontalScroller) {
-        horizontalScroller.addEventListener('wheel', function(event) {
-            if (event.deltaMode == event.DOM_DELTA_PIXEL) {
-                var modifier = 1;
-                // иные режимы возможны в Firefox
-            } else if (event.deltaMode == event.DOM_DELTA_LINE) {
-                var modifier = parseInt(getComputedStyle(this).lineHeight);
-            } else if (event.deltaMode == event.DOM_DELTA_PAGE) {
-                var modifier = this.clientHeight;
-            }
-            if (event.deltaY != 0) {
-                // замена вертикальной прокрутки горизонтальной
-                this.scrollLeft += modifier * event.deltaY;
-                event.preventDefault();
-            }
-        });
-    }
-
     /**
      * Клонирование строки
      */
@@ -325,3 +306,47 @@ $(function () {
     });
 });
 /* кастомный select */
+
+/*фильтрация и сортировка столбцов*/
+$(document).ready(function() {
+    var btnFilterHead = $('.btn-filter-column');
+    var dropdownToolAll = $('.column-tool-dropdown');
+    var btnfilterCancel = $('.btn-filter-cancel');
+    var btnfilterApply = $('.btn-filter-apply');
+    var itemTool = $('.column-tool-item');
+
+    // открытие модального окна фильтрации и сортировки
+    btnFilterHead.on('click', function(){
+        btnFilterHead.removeClass('is-active');
+        dropdownToolAll.removeClass('is-active');
+
+        let tableCell = $(this).closest('.table-cell');
+
+        tableCell.find('.column-tool-dropdown').addClass('is-active');
+    });
+
+    //кнопка Отмена
+    btnfilterCancel.on('click', function() {
+        dropdownToolAll.removeClass('is-active');
+    });
+
+    // выбор сортировки
+    itemTool.on('click', function() {
+        itemTool.removeClass('is-active');
+        $(this).addClass('is-active');
+    });
+
+    // выбираем и убираем состояние checked у checkbox
+    $('.column-tool-total > button').on('click', function(){
+        var checkboxes = $(this)
+            .closest('.column-tool-total')
+            .next('.column-tool-list')
+            .find("input[type='checkbox']");
+
+        if ($(this).hasClass('btn-select-all')) {
+            checkboxes.prop('checked', true);
+        } else {
+            checkboxes.prop('checked', false);
+        }
+    });
+});

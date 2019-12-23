@@ -12,7 +12,7 @@ body {
 }
 
 body, html {
-  overflow: hidden auto;
+  overflow: hidden;
 }
 
 img {
@@ -59,6 +59,8 @@ ul {
 
 /*стилизация чекбоксов*/
 .checkbox {
+  display: flex;
+  align-items: center;
   input[type="checkbox"] {
     opacity: 0;
     -webkit-appearance: none;
@@ -116,7 +118,7 @@ ul {
     }
   }
   &-box {
-    margin: 0 5px;
+    margin: 0 5px 0 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -146,16 +148,37 @@ ul {
 }
 /*стилизация чекбоксов*/
 
-// TODO: изменить горизонтальный скролл в таблице, чтобы не перебивал скролл в всплывающих окнах
 .table {
   position: relative;
   display: flex;
   width: 100%;
-  overflow: hidden auto;
+  overflow: hidden;
   flex-direction: column;
   &-content {
     display: grid;
     width: 100%;
+    overflow: auto hidden;
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: none;
+      //background-color: $gray;
+    }
+    &::-webkit-scrollbar {
+      height: 8px;
+      background-color: $gray;
+      margin-left: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      transition: all .2s ease;
+      -webkit-transition: all .2s ease;
+      -moz-transition: all .2s ease;
+      -o-transition: all .2s ease;
+      background-color: transparentize($primary, 0.7);
+      border-radius: 0;
+      border: none;
+      &:hover {
+        background-color: $primary;
+      }
+    }
   }
   &-head {
     position: relative;
@@ -165,14 +188,47 @@ ul {
     z-index: 1;
     box-shadow: 0 10px 20px transparentize($gray, 0.6);
     .table-cell {
+      font-size: 13px;
       font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      &:last-child, &:nth-last-child(2) {
+        .column-tool-dropdown {
+          left: auto;
+          right: 0;
+        }
+      }
     }
   }
   &-body {
     position: relative;
     display: flex;
     flex-direction: column;
-    width: min-content;
+    &-wrapper {
+      max-height: 70vh;
+      overflow: hidden auto;
+      &::-webkit-scrollbar-track {
+        -webkit-box-shadow: none;
+        //background-color: $gray;
+      }
+      &::-webkit-scrollbar {
+        width: 8px;
+        background-color: $gray;
+        margin-left: 10px;
+      }
+      &::-webkit-scrollbar-thumb {
+        transition: all .2s ease;
+        -webkit-transition: all .2s ease;
+        -moz-transition: all .2s ease;
+        -o-transition: all .2s ease;
+        background-color: transparentize($primary, 0.7);
+        border-radius: 0;
+        border: none;
+        &:hover {
+          background-color: $primary;
+        }
+      }
+    }
     &.edited-body .table-row:not(.edited-row) {
       opacity: .2;
       pointer-events: none;
@@ -181,12 +237,29 @@ ul {
   &-cell {
     position: relative;
     min-height: 35px;
-    min-width: 125px;
+    min-width: 140px;
     display: flex;
     align-items: center;
     border: 1px solid $gray;
     background: $light;
     padding: 5px;
+    .simple-select {
+      width: 100%;
+      position: relative;
+      border: 1px solid $gray;
+      &-main {
+        height: auto;
+        width: 100%;
+        background: transparent;
+        padding: 0;
+        &-item {
+          padding: 10px;
+        }
+      }
+      &-drop {
+        top: 30px;
+      }
+    }
     &.editable {
       cursor: default;
       > * {
@@ -244,9 +317,6 @@ ul {
           opacity: 0;
         }
       }
-      &-item {
-        padding: 10px;
-      }
     }
     input[type="text"] {
       width: 100%;
@@ -275,8 +345,8 @@ ul {
     position: relative;
     padding-left: 40px;
     display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(150px, 1fr));
-    grid-column: 1 end;
+    //grid-template-columns: repeat(auto-fill,minmax(150px, 1fr));
+    //grid-column: 1 end;
     grid-auto-flow: column;
     width: 100%;
     transition: all .2s ease;
@@ -294,6 +364,13 @@ ul {
             opacity: 1;
           }
         }
+      }
+    }
+    &:last-child, &:nth-last-child(2), &:nth-last-child(3), &:nth-last-child(4),
+    &:nth-last-child(5), &:nth-last-child(6), &:nth-last-child(7) {
+      .simple-select-drop {
+        top: auto;
+        bottom: 30px;
       }
     }
   }
@@ -323,16 +400,22 @@ ul {
   }
 }
 
+.page-devices .page-title {
+  padding-left: 40px;
+}
 .page-title {
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 .pagination {
   display: flex;
-  justify-content: center;
-  margin: 30px 0;
-  ul {
+  align-items: center;
+  justify-content: flex-end;
+  margin: 15px 0;
+  flex: 1;
+  > ul {
     display: flex;
+    margin-right: 10px;
     li {
       a {
         display: flex;
@@ -342,9 +425,10 @@ ul {
         height: 40px;
         text-decoration: none;
         color: $dark;
+        background: $gray;
         margin-right: 10px;
         border-radius: 4px;
-        font-size: 16px;
+        font-size: 14px;
         &.active {
           font-weight: bold;
           color: $primary;
@@ -355,6 +439,10 @@ ul {
         }
       }
     }
+  }
+  .simple-select-drop {
+    top: auto;
+    bottom: 50px;
   }
 }
 
@@ -372,20 +460,44 @@ ul {
   -moz-appearance: none;
   -ms-progress-appearance: unset;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   transition: all .2s ease;
   -webkit-transition: all .2s ease;
   -moz-transition: all .2s ease;
   -o-transition: all .2s ease;
+
   &-box {
     width: 28px;
     height: 28px;
+    min-width: 28px;
+    min-height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
+    &-min {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      min-height: 20px;
+      .icon {
+        svg {
+          width: 12px;
+        }
+      }
+    }
   }
-
+  &-filter-column {
+    margin-left: 15px;
+    &.is-active {
+      background: $light;
+      .icon {
+        svg {
+          fill: $primary;
+        }
+      }
+    }
+  }
   &.primary {
     background: $primary;
   }
@@ -409,14 +521,21 @@ ul {
 
 
 .simple-select {
-  width: 100%;
+  width: auto;
   position: relative;
-  border: 1px solid $gray;
+  border: none;
+  display: flex;
+  align-items: center;
   &-main {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 50px;
+    background: $light;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
     svg {
       fill: $dark;
       margin-left: 5px;
@@ -429,13 +548,18 @@ ul {
   &-selected {
     margin: 0;
   }
+  &-label {
+    margin-right: 10px;
+  }
   &-drop {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     left: 0;
-    top: 30px;
+    top: 50px;
     background: $light;
-    z-index: 1;
-    border-radius: 4px;
+    z-index: 2;
+    border-radius: 0;
     visibility: hidden;
     opacity: 0;
     position: absolute;
@@ -444,22 +568,26 @@ ul {
     -webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
     -o-transition: all .3s ease;
-    box-shadow: 0px 10px 20px rgba(161, 172, 188, 0.4);
+    box-shadow: 0 10px 20px rgba(161, 172, 188, 0.4);
     max-height: 300px;
     overflow: hidden auto;
-    &::-webkit-scrollbar-track {
-      -webkit-box-shadow: none;
-      //background-color: $gray;
-    }
-    &::-webkit-scrollbar {
-      width: 4px;
-      background-color: $gray;
-      margin-left: 10px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: $primary;
-      border-radius: 0;
-      border: none;
+    &-inner {
+      height: 80%;
+      overflow: hidden auto;
+      &::-webkit-scrollbar-track {
+        -webkit-box-shadow: none;
+        //background-color: $gray;
+      }
+      &::-webkit-scrollbar {
+        width: 6px;
+        background-color: $gray;
+        margin-left: 10px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: $primary;
+        border-radius: 0;
+        border: none;
+      }
     }
   }
   &-item {
@@ -467,6 +595,8 @@ ul {
     -webkit-transition: all .2s ease;
     -moz-transition: all .2s ease;
     -o-transition: all .2s ease;
+    padding: 10px 20px;
+    cursor: pointer;
     &:hover {
       color: $secondary;
       background: $lightGray;
@@ -495,38 +625,66 @@ ul {
     cursor: default;
     background: $lightGray;
   }
+  &-add {
+    padding: 7px;
+    height: 20%;
+    .btn {
+      height: auto;
+      font-size: 13px;
+      padding: 10px;
+      width: 100%;
+    }
+  }
 }
 
 
 
 .btn-primary {
-  background: $primary;
-  color: $light;
+  background: $primary!important;
+  color: $light!important;
   &:hover {
-    background: lighten($primary, 10%);
+    background: lighten($primary, 10%)!important;
   }
 }
 .btn-muted {
-  background: $gray;
-  color: $secondary;
+  background: $gray!important;
+  color: $secondary!important;
   &:hover {
-    background: lighten($gray, 10%);
+    background: lighten($gray, 5%)!important;
+  }
+}
+.btn-gray-transparency {
+  background: transparentize($light, 0.5)!important;
+  color: $dark!important;
+  .icon {
+    svg {
+      transition: all .2s ease;
+      -webkit-transition: all .2s ease;
+      -moz-transition: all .2s ease;
+      -o-transition: all .2s ease;
+      fill: $dark;
+    }
   }
 }
 .btn-red {
-  background: $red;
-  color: $light;
+  background: $red!important;
+  color: $light!important;
   &:hover {
     background: lighten($red, 10%);
   }
 }
 .btn-dark-blue {
-  background: $darkBlue;
-  color: $light;
+  background: $darkBlue!important;
+  color: $light!important;
   &:hover {
     background: lighten($darkBlue, 10%);
   }
 }
+
+.c-secondary {
+  color: $secondary;
+}
+
 
 .btn-operations {
   opacity: 0;
@@ -534,21 +692,156 @@ ul {
   position: fixed;
   display: flex;
   justify-content: center;
-  width: 100%;
-  bottom: 15%;
-  left: 0;
+  top: 5px;
+  right: 15px;
   z-index: 1;
   transition: all .2s ease;
   -webkit-transition: all .2s ease;
   -moz-transition: all .2s ease;
   -o-transition: all .2s ease;
   &-edit {
-    width: 100%;
-    max-width: 1200px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
   }
   .btn {
     box-shadow: 0 10px 20px rgba(15, 52, 116, 0.21);
+    &:not(:last-child) {
+      margin-right: 20px;
+    }
   }
+}
+
+.column-tool {
+  &-dropdown {
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    z-index: 1;
+    background: $light;
+    box-shadow: 0 10px 20px rgba(161, 172, 188, 0.4);
+    min-width: 260px;
+    transform: translateY(20px);
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    button {
+      justify-content: flex-start;
+      text-align: left;
+      border: none;
+      background: transparent;
+    }
+    &.is-active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+  }
+  &-header {
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 11px;
+    margin: 0 0 12px 20px;
+    color: $secondary;
+    .icon {
+      margin-right: 10px;
+      svg {
+        fill: $secondary;
+      }
+    }
+  }
+  &-group {
+    margin-top: 25px;
+    &:last-child {
+      margin-bottom: 15px;
+    }
+  }
+  &-list {
+    max-height: 120px;
+    overflow: hidden auto;
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: none;
+      //background-color: $gray;
+    }
+    &::-webkit-scrollbar {
+      width: 4px;
+      background-color: $gray;
+      margin-left: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $primary;
+      border-radius: 0;
+      border: none;
+    }
+    > li {
+      > .column-tool-item {
+        &:not(.checkbox).is-active {
+          color: $primary;
+          background: $lightGray;
+        }
+      }
+      > * {
+        width: 100%;
+        font-size: 14px;
+        padding: 10px 10px 10px 35px;
+        cursor: pointer;
+        font-weight: normal;
+        &:hover {
+          background: $lightGray;
+        }
+      }
+    }
+  }
+  &-total {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    margin-left: 35px;
+    > * {
+      padding: 8px 0;
+      color: $primary;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      &:not(:last-child) {
+        margin-right: 15px;
+      }
+    }
+  }
+  &-btns {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 15px 0;
+    > * {
+      margin-right: 15px;
+    }
+  }
+}
+
+.table-btn-tool {
+  padding-left: 40px;
+  display: flex;
+  align-items: center;
+  .btn {
+    .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+    }
+  }
+}
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
 }
