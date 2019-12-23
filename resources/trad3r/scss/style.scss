@@ -243,6 +243,23 @@ ul {
     border: 1px solid $gray;
     background: $light;
     padding: 5px;
+    .simple-select {
+      width: 100%;
+      position: relative;
+      border: 1px solid $gray;
+      &-main {
+        height: auto;
+        width: 100%;
+        background: transparent;
+        padding: 0;
+        &-item {
+          padding: 10px;
+        }
+      }
+      &-drop {
+        top: 30px;
+      }
+    }
     &.editable {
       cursor: default;
       > * {
@@ -300,9 +317,6 @@ ul {
           opacity: 0;
         }
       }
-      &-item {
-        padding: 10px;
-      }
     }
     input[type="text"] {
       width: 100%;
@@ -352,6 +366,13 @@ ul {
         }
       }
     }
+    &:last-child, &:nth-last-child(2), &:nth-last-child(3), &:nth-last-child(4),
+    &:nth-last-child(5), &:nth-last-child(6), &:nth-last-child(7) {
+      .simple-select-drop {
+        top: auto;
+        bottom: 30px;
+      }
+    }
   }
   &-group {
     display: flex;
@@ -379,16 +400,22 @@ ul {
   }
 }
 
+.page-devices .page-title {
+  padding-left: 40px;
+}
 .page-title {
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 .pagination {
   display: flex;
-  justify-content: flex-start;
-  margin: 20px 0 0 0;
-  ul {
+  align-items: center;
+  justify-content: flex-end;
+  margin: 15px 0;
+  flex: 1;
+  > ul {
     display: flex;
+    margin-right: 10px;
     li {
       a {
         display: flex;
@@ -398,9 +425,10 @@ ul {
         height: 40px;
         text-decoration: none;
         color: $dark;
+        background: $gray;
         margin-right: 10px;
         border-radius: 4px;
-        font-size: 16px;
+        font-size: 14px;
         &.active {
           font-weight: bold;
           color: $primary;
@@ -411,6 +439,10 @@ ul {
         }
       }
     }
+  }
+  .simple-select-drop {
+    top: auto;
+    bottom: 50px;
   }
 }
 
@@ -433,6 +465,7 @@ ul {
   -webkit-transition: all .2s ease;
   -moz-transition: all .2s ease;
   -o-transition: all .2s ease;
+
   &-box {
     width: 28px;
     height: 28px;
@@ -488,14 +521,21 @@ ul {
 
 
 .simple-select {
-  width: 100%;
+  width: auto;
   position: relative;
-  border: 1px solid $gray;
+  border: none;
+  display: flex;
+  align-items: center;
   &-main {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 50px;
+    background: $light;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
     svg {
       fill: $dark;
       margin-left: 5px;
@@ -508,13 +548,18 @@ ul {
   &-selected {
     margin: 0;
   }
+  &-label {
+    margin-right: 10px;
+  }
   &-drop {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     left: 0;
-    top: 30px;
+    top: 50px;
     background: $light;
-    z-index: 1;
-    border-radius: 4px;
+    z-index: 2;
+    border-radius: 0;
     visibility: hidden;
     opacity: 0;
     position: absolute;
@@ -526,19 +571,23 @@ ul {
     box-shadow: 0 10px 20px rgba(161, 172, 188, 0.4);
     max-height: 300px;
     overflow: hidden auto;
-    &::-webkit-scrollbar-track {
-      -webkit-box-shadow: none;
-      //background-color: $gray;
-    }
-    &::-webkit-scrollbar {
-      width: 4px;
-      background-color: $gray;
-      margin-left: 10px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: $primary;
-      border-radius: 0;
-      border: none;
+    &-inner {
+      height: 80%;
+      overflow: hidden auto;
+      &::-webkit-scrollbar-track {
+        -webkit-box-shadow: none;
+        //background-color: $gray;
+      }
+      &::-webkit-scrollbar {
+        width: 6px;
+        background-color: $gray;
+        margin-left: 10px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: $primary;
+        border-radius: 0;
+        border: none;
+      }
     }
   }
   &-item {
@@ -546,6 +595,8 @@ ul {
     -webkit-transition: all .2s ease;
     -moz-transition: all .2s ease;
     -o-transition: all .2s ease;
+    padding: 10px 20px;
+    cursor: pointer;
     &:hover {
       color: $secondary;
       background: $lightGray;
@@ -573,6 +624,16 @@ ul {
     pointer-events: none;
     cursor: default;
     background: $lightGray;
+  }
+  &-add {
+    padding: 7px;
+    height: 20%;
+    .btn {
+      height: auto;
+      font-size: 13px;
+      padding: 10px;
+      width: 100%;
+    }
   }
 }
 
@@ -620,13 +681,18 @@ ul {
   }
 }
 
+.c-secondary {
+  color: $secondary;
+}
+
+
 .btn-operations {
   opacity: 0;
   visibility: hidden;
   position: fixed;
   display: flex;
   justify-content: center;
-  bottom: 15px;
+  top: 5px;
   right: 15px;
   z-index: 1;
   transition: all .2s ease;
@@ -758,3 +824,24 @@ ul {
   }
 }
 
+.table-btn-tool {
+  padding-left: 40px;
+  display: flex;
+  align-items: center;
+  .btn {
+    .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+    }
+  }
+}
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
