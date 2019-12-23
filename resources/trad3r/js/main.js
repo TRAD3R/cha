@@ -1,98 +1,3 @@
-/** TRD
- * Автоподргузка товаров
- *
- */
-var Products = {
-    autoload:       false,        // выбран метод автоподгрузка
-    loading:        false,      // в процессе загрузки товаров
-    page:           1,
-    issetNextPage:  true,
-    spinner:        $("#trd-spinner"),
-    init: function(){
-        var inputLimit = document.querySelector("#input-limit");
-        if(inputLimit){
-            var selectedOption = inputLimit.options.selectedIndex;
-            if(inputLimit.options[selectedOption].value === 'авто') {
-                this.autoload = true;
-            }
-        }
-    },
-    loadNextPage: function () {
-        var type = '';
-        var alias = '';
-        var tableType = $('.products-category.list').hasClass('active') ? 'list' : 'grid';
-        var pageType = this.getPageType();
-
-        this.spinner.css('display', 'block');
-        this.loading = true;
-        this.page++;
-
-
-        var searchParams = location.search.length > 2 ? location.search : "?";
-        type = '{{ path("opt.ajax.product.next_page") }}';
-
-        alias = location.pathname.split('/').pop();
-
-        searchParams += '&page_type=' + pageType + '&alias=' + alias + '&alpage=' + this.page + "&table_type=" + tableType;
-
-        var url = type + searchParams;
-        $.ajax({
-            url: url,
-            method: 'GET',
-            success: function (data) {
-                if(tableType === 'grid') {
-                    $(".products-category.grid.active").eq(0).append(data.html);
-                }else{
-                    $(".products-category.list.active").find('table.product-table-list tbody').eq(0).append(data.html);
-                }
-
-                Products.spinner.css('display', 'none');
-                Products.loading = false;
-                Products.issetNextPage = data.issetNextPage;
-                setLoopForImages();
-            }
-        });
-    },
-    getPageType: function()
-    {
-        var pageType = 'catalog';
-
-        if(location.pathname.indexOf('/brands') === 0){
-            pageType = 'brands';
-        }else if(location.pathname.indexOf('/hit') === 0){
-            pageType = 'hit';
-        }else if(location.pathname.indexOf('/new') === 0){
-            pageType = 'new';
-        }else if(location.pathname.indexOf('/waiting') === 0){
-            pageType = 'waiting';
-        }
-
-        return pageType;
-    }
-};
-
-Products.init();
-
-$(window).on('scroll', function () {
-    var win = $(window);
-    var content = $("#content");
-    if(content) {
-        var screenBottom = win.scrollTop() + win.height();
-        var contentOffset = content.offset();
-        if(contentOffset) {
-            var contentBottom = content.offset().top + content.height();
-            //Складываем значение прокрутки страницы и высоту окна, этим мы получаем положение страницы относительно нижней границы окна
-            if (screenBottom - (win.height() / 7) >= contentBottom) {
-                if (Products.issetNextPage && Products.autoload && !Products.loading) {
-                    Products.loadNextPage();
-                }
-            }
-        }
-    }
-});
-/* TRD */
-
-
 $(document).ready(function () {
     var paginationItem = $('.pagination-item');
     paginationItem.on('click', function () {
@@ -135,36 +40,57 @@ $(document).ready(function () {
     }
 
     /**
-     * Временно на плюсе. Потом перенести на кнопку
+     * Клонирование строки
      */
     $('.btn-box-wrapper').on('click', '#btnDublicateRow', function () {
-        Device.el = $(this).closest('.table-row');
-        Device.updateRow();
+        Device.row = $(this).closest('.table-row');
+        Device.body = $(this).closest('.table-body');
+        Device.body
+            .append("<div class='table-row' data-id='0'>" + Device.row.html() + "</div>")
+            ;
+        Device.body.find('.table-row').last().find('.editable').first().dblclick();
     });
 
-    var btnOperationsEdit = `
-      <button type="button" class="btn btn-dark-blue btn-cancel-change">Отменить</button>
-      <button type="button" class="btn btn-primary btn-save-change">Сохранить</button>
-    `;
 
     $('.table-body').on('dblclick', '.editable', function () {
-        $(this).addClass('edited');
-        let currentRow = $(this).closest('.table-row');
-        currentRow.addClass('edited-row');
-        $(this).closest('.table-body').addClass('edited-body');
-        currentRow.find('.btn-operations .btn-operations-edit').html(btnOperationsEdit);
+        Device.row = $(this).closest('.table-row');
+        if(!Device.row.hasClass('edited-row')) {
+            Device.rowHtml = Device.row.html();
+            Device.row.addClass('edited-row');
+            Device.body = $(this).closest('.table-body');
+            Device.body.addClass('edited-body');
+            // currentRow.find('.btn-operations .btn-operations-edit').html(btnOperationsEdit);
+            Device.btnSave = createBtnSave(Device);
+            Device.btnCancel = createBtnCancel(Device);
+            
+            Device.row
+                .find('.btn-operations .btn-operations-edit')
+                .html('')
+                .append(Device.btnCancel)
+                .append(Device.btnSave)
+            ;
+        }
         Device.el = $(this);
         Device.changeInput();
     })
+    
+    
 });
 
 var Device = {
     el: null,
+    row: null,
+    deviceId: 0,
+    rowHtml: '',
+    body: null,
+    btnSave: null,
+    btnCancel: null,
     CLASS_SELECT: 'select',
     CLASS_TEXT: 'text',
     CLASS_CHECKBOX: 'checkbox',
     changeInput: function() {
-        console.log(this.el.classList);
+        this.el.addClass('edited');
+        
         if(this.el.hasClass(this.CLASS_SELECT)) {
             this.getSelectInput();
         }else if(this.el.hasClass(this.CLASS_TEXT)) {
@@ -216,41 +142,101 @@ var Device = {
         return ul;
     },
     updateRow: function() {
-        let deviceId = this.el.data('id');
-        let sequenceNumber = this.el.find('.sequence-number').eq(0).text();
+        this.deviceId = +this.row.data('id');
 
         let data = this.getEditedCells();
         $.ajax({
-            url: '/device/' + deviceId,
+            url: '/device/' + this.deviceId,
             method: 'POST',
             data: data,
             success: function (res) {
                 if(res.status === 'success'){
-                    Device.el.html(res.row);
-                    Device.el.find('.sequence-number').eq(0).text(sequenceNumber);
+                    Device.row.html(res.row);
+                    Device.row.removeClass('edited-row');
+                    Device.body.removeClass('edited-body');
                 }
             }
         })
     },
+    // addDevice: function() {
+    //     this.deviceId = +this.row.data('id');
+    //
+    //     let data = this.getEditedCells();
+    //     $.ajax({
+    //         url: '/device/' + this.deviceId,
+    //         method: 'POST',
+    //         data: data,
+    //         success: function (res) {
+    //             if(res.status === 'success'){
+    //                 Device.row.html(res.row);
+    //                 Device.row.removeClass('edited-row');
+    //                 Device.body.removeClass('edited-body');
+    //             }
+    //         }
+    //     })
+    // },
+    cancelChanges: function () {
+        this.row.html(this.rowHtml);
+        Device.row.removeClass('edited-row');
+        Device.body.removeClass('edited-body');
+    },
     getEditedCells: function () {
         let data = {};
-        let cells = this.el.find('.edited');
-        
-        cells.each(function () {
+        let cells = this.deviceId > 0 ? '.edited'  : '.editable';
+        console.log(this.deviceId, cells);
+        this.row.find(cells).each(function () {
             let id = $(this).data('id');
-            
             let value = null;
             if($(this).hasClass(Device.CLASS_SELECT) || $(this).hasClass(Device.CLASS_TEXT)) {
                 value = $(this).find('input').eq(0).val();
             }else if($(this).hasClass(Device.CLASS_CHECKBOX)) {
-                value = $(this).find('input:checked') ? 1 : 0;
+                value = $(this).find('input').prop('checked') ? 1 : 0;
             }
             data[$(this).data('id')] = value;
         });
         
+        data['sequenceNumber'] = this.row.find('.sequence-number').eq(0).text();
+        
         return data;
     }
 };
+
+function createBtnSave(device)
+{
+    let btn = createBtn("Сохранить", 'change-save', ['btn-primary','btn-save-change']);
+    console.log(btn);
+    btn.addEventListener('click', () => {
+        device.updateRow();
+    });
+    
+    return btn;
+}
+
+function createBtnCancel(device)
+{
+    let btn = createBtn("Отменить", 'change-cancel', ['btn-dark-blue','btn-cancel-change']);
+
+    btn.addEventListener('click', () => {
+        device.cancelChanges();
+    });
+
+    return btn;
+}
+
+function createBtn(text, id, classes)
+{
+    let btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = id;
+    btn.classList.add('btn');
+    for (let cl of classes) {
+        btn.classList.add(cl);
+    }
+    
+    btn.innerText = text;
+    
+    return btn;
+}
 
 /* кастомный select */
 $(function () {
