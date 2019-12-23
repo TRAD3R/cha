@@ -4,20 +4,13 @@ $(document).ready(function () {
         paginationItem.removeClass('active');
         $(this).addClass('active');
     });
-
-    var btnDublicateRow = `
-    <button type="button" class="btn btn-box primary" id="btnDublicateRow">
-      <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6.99951 5.229H11.5591V7.19434H6.99951V12.3604H4.91064V7.19434H0.351074V5.229H4.91064V0.456055H6.99951V5.229Z" fill="white"/>
-      </svg>
-    </button>
-    `;
+    
     $(".table-body .table-row")
         .mouseenter(function(){
-        $(this).find('.btn-box-wrapper').html(btnDublicateRow).addClass("active");
+            showDoubleBtn($(this));
     })
         .mouseleave(function () {
-            $(this).find('.btn-box-wrapper').removeClass("active").html("");
+            hideDoubleBtn($(this));
         });
 
     /**
@@ -29,7 +22,10 @@ $(document).ready(function () {
         Device.body
             .append("<div class='table-row' data-id='0'>" + Device.row.html() + "</div>")
             ;
-        Device.body.find('.table-row').last().find('.editable').first().dblclick();
+        let lastRow = Device.body.find('.table-row').last();
+        hideDoubleBtn(lastRow);
+        $('.table-body-wrapper').animate({scrollTop: lastRow.offset().top}, 500);
+        lastRow.find('.editable').first().dblclick();
     });
 
 
@@ -57,6 +53,22 @@ $(document).ready(function () {
     
     
 });
+
+function showDoubleBtn(el) {
+    var btnDublicateRow = `
+    <button type="button" class="btn btn-box primary" id="btnDublicateRow">
+      <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6.99951 5.229H11.5591V7.19434H6.99951V12.3604H4.91064V7.19434H0.351074V5.229H4.91064V0.456055H6.99951V5.229Z" fill="white"/>
+      </svg>
+    </button>
+    `;
+    
+    el.find('.btn-box-wrapper').html(btnDublicateRow).addClass("active");
+}
+
+function hideDoubleBtn(el) {
+    el.find('.btn-box-wrapper').removeClass("active").html("");
+}
 
 var Device = {
     el: null,
