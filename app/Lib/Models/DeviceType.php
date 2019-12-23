@@ -20,7 +20,7 @@ class DeviceType extends ActiveRecord
     {
         return 'device_type';
     }
-    
+
     public function getDevices()
     {
         return $this
