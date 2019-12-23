@@ -7,6 +7,7 @@ namespace Main\Trad3r\Controllers;
 use App\Controller\Main;
 use App\Helpers\DeviceHelper;
 use App\Models\Device;
+use App\Models\DeviceSpecification;
 use App\Params;
 use App\Request;
 use App\Response;
@@ -79,7 +80,7 @@ class SiteController extends Main
 
         $row = $this->renderPartial('includes/device/table_row', [
                 'device' => $device, 
-                'sequenceNumber' => 0
+                'sequenceNumber' => $request->post('sequenceNumber') ?: 0
             ]
         );
         
@@ -91,7 +92,40 @@ class SiteController extends Main
     
     public function actionDeviceAdd()
     {
-        
+        /** @var Request $request */
+        $request = $this->getRequest();
+
+        if(!$request->isAjax() || !$request->isPost()) {
+            $this->getResponse()->set404();
+        }
+
+        $data = $request->post();
+
+        if(count($data) == 0) {
+            return [
+                'status' => Response::STATUS_FAIL,
+                'error' => Yii::t('exception', 'NO_DATA_TO_UPDATE'),
+            ];
+        }
+
+        $device = new Device();
+        if(!DeviceHelper::modifyData($device, $data)) {
+            return [
+                'status' => Response::STATUS_FAIL,
+                'error' => Yii::t('exception', 'ERROR_DATA_UPDATE'),
+            ];
+        }
+
+        $row = $this->renderPartial('includes/device/table_row', [
+                'device' => $device,
+                'sequenceNumber' => $request->post('sequenceNumber') ?: 0
+            ]
+        );
+
+        return [
+            'status' => Response::STATUS_SUCCESS,
+            'row' => $row,
+        ];
     }
     
     public function actionDeviceSpecList($id)

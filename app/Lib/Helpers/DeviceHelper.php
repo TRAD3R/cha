@@ -50,17 +50,31 @@ class DeviceHelper
     public static function modifyData(Device $device, array $data)
     {
         /** @var DeviceSpecification $specifications */
-        $specifications = $device->specifications;
+        $specifications = $device->id ? $device->specifications : new DeviceSpecification();
         
         foreach ($data as $key => $value) {
             switch ($key) {
                 case DeviceTableStructure::DEVICE_TYPE:
-                    $specifications->type_id = $value;
+                    $deviceType = DeviceType::findOne($value);
+
+                    if(!$deviceType){
+                        $deviceType = new DeviceType();
+                        $deviceType->type = $value;
+                        $deviceType->save();
+                    }
+
+                    $specifications->type_id = $deviceType->id;
                     break;
                 case DeviceTableStructure::DEVICE_BRAND:
-                    if($brand = DeviceBrand::findOne($value)){
-                        $device->brand = $brand;
+                    $brand = DeviceBrand::findOne($value);
+                    
+                    if(!$brand){
+                        $brand = new DeviceBrand();
+                        $brand->name = $value;
+                        $brand->save();
                     }
+
+                    $device->brand_id = $brand->id;
                     break;
                 case DeviceTableStructure::DEVICE_MODEL:
                     $device->title = $value;
@@ -81,9 +95,15 @@ class DeviceHelper
                     $specifications->screensize = $value;
                     break;
                 case DeviceTableStructure::DEVICE_CARD_MEMORY:
-                    if($cardMemory = CardMemory::findOne($value)) {
-                        $specifications->cardMemory = $cardMemory;
+                    $cardMemory = CardMemory::findOne($value);
+                    
+                    if(!$cardMemory) {
+                        $cardMemory = new CardMemory();
+                        $cardMemory->size = $value;
+                        $cardMemory->save();
                     }
+                    
+                    $specifications->card_memory_id = $cardMemory->id;
                     break;
                 case DeviceTableStructure::DEVICE_35_JACK:
                     $specifications->jack_35 = $value;
@@ -92,14 +112,26 @@ class DeviceHelper
                     $specifications->bluetooth = $value;
                     break;
                 case DeviceTableStructure::DEVICE_USB_TYPE:
-                    if($usbType = UsbType::findOne($value)) {
-                        $specifications->usbType = $usbType;
+                    $usbType = UsbType::findOne($value);
+                        
+                    if(!$usbType) {
+                        $usbType = new UsbType();
+                        $usbType->type = $value;
+                        $usbType->save();
                     }
+
+                    $specifications->usb_type_id = $usbType->id;
                     break;
                 case DeviceTableStructure::DEVICE_USB_STANDARD:
-                    if($usbStardard = UsbStandard::findOne($value)) {
-                        $specifications->usbStandard = $usbStardard;
+                    $usbStardard = UsbStandard::findOne($value);
+                    
+                    if(!$usbStardard) {
+                        $usbStardard = new UsbStandard();
+                        $usbStardard->standard = $value;
+                        $usbStardard->save();
                     }
+
+                    $specifications->usb_standard_id = $usbStardard->id;
                     break;
                 case DeviceTableStructure::DEVICE_WIRELESS_CHARGE:
                     $specifications->wireless_charge = $value;
@@ -119,7 +151,18 @@ class DeviceHelper
             }
         }
         
-        return ($device->save() && $specifications->save());
+        if($device->id) {
+            return ($device->save() && $specifications->save());
+        }else{
+            if($device->save()) {
+                $specifications->device_id = $device->id;
+                return $specifications->save();
+            }else{
+                \Yii::error($device->getErrors());
+                return false;
+            }
+        }
+        
     }
     
     public static function getSpecificationList($id)
