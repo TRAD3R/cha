@@ -83,9 +83,20 @@ $specifications = $device->specifications;
         <input class="input-text" type="text" value="<?=$specifications->screensize;?>">
     </div>
     <div class="table-cell editable select" data-id="<?=DeviceTableStructure::DEVICE_CARD_MEMORY?>">
-        <?php
-        echo $specifications->cardMemory ? $specifications->cardMemory->size : "-";
-        ?>
+      <div class="simple-select">
+        <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
+          <input hidden type="text" name="sort-view" value="<?=$specifications->usbType->id?>" data-default-value="1">
+          <p class="simple-select-selected" data-placeholder="<?php echo $specifications->cardMemory ? $specifications->cardMemory->size : "-";?>">
+            <?php echo $specifications->cardMemory ? $specifications->cardMemory->size : "-"; ?></p>
+          <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
+          </svg>
+        </div>
+        <div class="simple-select-drop">
+          <div class="simple-select-drop-inner">
+          </div>
+        </div>
+      </div>
     </div>
     <div class="table-cell text-center editable checkbox" data-id="<?=DeviceTableStructure::DEVICE_35_JACK?>">
       <label class="checkbox">
@@ -110,9 +121,20 @@ $specifications = $device->specifications;
       </label>
     </div>
     <div class="table-cell editable select" data-id="<?=DeviceTableStructure::DEVICE_USB_TYPE?>">
-        <?php
-        echo $specifications->usbType ? $specifications->usbType->type : "-";
-        ?>
+      <div class="simple-select">
+        <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
+          <input hidden type="text" name="sort-view" value="<?=$specifications->usbType->id?>" data-default-value="1">
+          <p class="simple-select-selected" data-placeholder="<?php echo $specifications->usbType ? $specifications->usbType->type : "-";?>">
+            <?php echo $specifications->usbType ? $specifications->usbType->type : "-"; ?></p>
+          <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
+          </svg>
+        </div>
+        <div class="simple-select-drop">
+          <div class="simple-select-drop-inner">
+          </div>
+        </div>
+      </div>
     </div>
     <div class="table-cell editable selectable" data-id="<?=DeviceTableStructure::DEVICE_USB_STANDARD?>">
         <?php
@@ -153,8 +175,8 @@ $specifications = $device->specifications;
         </label>
     </div>
     <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_PRICE?>">
-        <?=PriceHelper::toFloat($specifications->price);?>
+      <input class="input-text" type="text" value="<?=PriceHelper::toFloat($specifications->price);?>">
     </div>
     <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_IMAGE?>">
-        <?=$specifications->image;?>
+      <input class="input-text" type="text" value="<?=$specifications->image;?>">
     </div>

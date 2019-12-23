@@ -13,14 +13,14 @@ use yii\web\View;
  * @var int $offset
  */
  ?>
-<div class="container">
+<div class="page page-devices">
   <h2 class="page-title dr-h2">Девайсы</h2>
 
-  <?=Html::renderPaginator([
-    'page' => $params[Params::PAGE],
-    'per_page' => $params[Params::PER_PAGE],
-    'total_count' => $totalCount,
-  ])?>
+<!--  --><?//=Html::renderPaginator([
+//    'page' => $params[Params::PAGE],
+//    'per_page' => $params[Params::PER_PAGE],
+//    'total_count' => $totalCount,
+//  ])?>
 
   <div class="table" id="horizontal-scroller">
     <div class="table-content">
