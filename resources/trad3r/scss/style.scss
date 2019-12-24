@@ -961,6 +961,17 @@ ul {
     width: 100%;
     max-width: 970px;
   }
+  &-content-tools{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin-top: 20px;
+    > * {
+      &:not(:last-child) {
+        margin-right: 15px;
+      }
+    }
+  }
   .btn-box.btn-close-modal, .btn-box.btn-close-modal:hover {
     background: transparent;
     position: absolute;
@@ -981,4 +992,7 @@ textarea {
   max-height: 400px;
   min-height: 70px;
   padding: 10px;
+}
+.jc-end {
+  justify-content: flex-end;
 }

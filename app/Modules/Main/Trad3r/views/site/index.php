@@ -20,6 +20,10 @@ use App\Models\Device;
     <div class="modal-content-wrapper">
       <label for="id-edited-textarea">Введите текст: </label>
       <textarea name="edited-textarea" id="id-edited-textarea"></textarea>
+      <div class="modal-content-tools jc-end">
+        <button type="button" class="btn btn-primary">Сохранить</button>
+        <button type="button" class="btn btn-muted">Отменить</button>
+      </div>
     </div>
     <div class="btn btn-box btn-close-modal">
       <svg width="13" height="13" viewBox="0 0 13 13" xmlns="http://www.w3.org/2000/svg">
