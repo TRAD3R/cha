@@ -12,6 +12,12 @@ use yii\web\View;
 
 ?>
 <div class="table-body-wrapper">
+    <div id="empty-row" class="table-row hidden-el" data-id="0">
+        <?=$this->render('table_row', [
+            'device' => new Device(), 
+            'sequenceNumber' => 0
+        ])?>
+    </div>
   <div class="table-body">
     <?php foreach ($devices as $key => $device):?>
           <?php

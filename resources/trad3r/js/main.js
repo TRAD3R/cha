@@ -23,36 +23,58 @@ $(document).ready(function () {
             .append("<div class='table-row' data-id='0'>" + Device.row.html() + "</div>")
             ;
         let lastRow = Device.body.find('.table-row').last();
-        hideDoubleBtn(lastRow);
-        $('.table-body-wrapper').animate({scrollTop: lastRow.offset().top}, 500);
-        lastRow.find('.editable').first().dblclick();
+        scrollToEditedRow(lastRow);
     });
 
 
     $('.table-body').on('dblclick', '.editable', function () {
-        Device.row = $(this).closest('.table-row');
-        if(!Device.row.hasClass('edited-row')) {
-            Device.rowHtml = Device.row.html();
-            Device.row.addClass('edited-row');
-            Device.body = $(this).closest('.table-body');
-            Device.body.addClass('edited-body');
-            // currentRow.find('.btn-operations .btn-operations-edit').html(btnOperationsEdit);
-            Device.btnSave = createBtnSave(Device);
-            Device.btnCancel = createBtnCancel(Device);
-            
-            Device.row
-                .find('.btn-operations .btn-operations-edit')
-                .html('')
-                .append(Device.btnCancel)
-                .append(Device.btnSave)
-            ;
-        }
         Device.el = $(this);
+        Device.row = Device.el.closest('.table-row');
+        
+        if(!Device.row.hasClass('edited-row')) {
+            editRow(Device);
+        }
+        
         Device.changeInput();
+    });
+    
+    $('#new-device').on('click', function () {
+        $(this).addClass(hiddenEl);
+
+        let newRow = $('#empty-row');
+        let tableBody = $('.table-body');
+        tableBody.append("<div class='table-row' data-id='0'>" + newRow.html() + "</div>");
+        scrollToEditedRow(tableBody.find('.table-row').last());
     })
-    
-    
 });
+
+/**
+ * Подготовка стоки к редактированию
+ * @param device
+ */
+function editRow(device) {
+    device.rowHtml = device.row.html();
+    device.row.addClass('edited-row');
+    device.body = device.el.closest('.table-body');
+    device.body.addClass('edited-body');
+    device.btnSave = createBtnSave(device);
+    device.btnCancel = createBtnCancel(device);
+
+    device.row
+        .find('.btn-operations .btn-operations-edit')
+        .html('')
+        .append(device.btnCancel)
+        .append(device.btnSave)
+    ;
+    
+    $('#new-device').addClass(hiddenEl);
+}
+
+function scrollToEditedRow(row) {
+    hideDoubleBtn(row);
+    $('.table-body-wrapper').animate({scrollTop: row.offset().top + 50}, 500);
+    row.find('.editable').first().dblclick();
+}
 
 function showDoubleBtn(el) {
     var btnDublicateRow = `
@@ -69,130 +91,6 @@ function showDoubleBtn(el) {
 function hideDoubleBtn(el) {
     el.find('.btn-box-wrapper').removeClass("active").html("");
 }
-
-var Device = {
-    el: null,
-    row: null,
-    deviceId: 0,
-    rowHtml: '',
-    body: null,
-    btnSave: null,
-    btnCancel: null,
-    CLASS_SELECT: 'select',
-    CLASS_TEXT: 'text',
-    CLASS_CHECKBOX: 'checkbox',
-    changeInput: function() {
-        this.el.addClass('edited');
-        
-        if(this.el.hasClass(this.CLASS_SELECT)) {
-            this.getSelectInput();
-        }else if(this.el.hasClass(this.CLASS_TEXT)) {
-            this.getTextInput();
-        }else if(this.el.hasClass(this.CLASS_CHECKBOX)) {
-            this.getCheckboxInput();
-        }
-    },
-    getCheckboxInput: function () {
-        let input = this.el.find('input').eq(0);
-        input.removeAttr('disabled');
-    },
-    getTextInput: function () {
-        let text = this.el.text();
-        let input = this.el.find('.input-text');
-        input.value = text;
-    },
-    getSelectInput: function () {
-        $.ajax({
-            url: '/device/specification/list/' + this.el.data('id'),
-            method: 'GET',
-            success: function (res) {
-                if(res.status === 'success'){
-                    let selected = Device.el.find('input').val();
-                    let select = Device.createSelect(res.list, selected);
-                    Device.el.find('.simple-select-drop-inner').html(select);
-                }
-            }
-        })
-    },
-    createSelect: function (list, selected) {
-
-        let ul = document.createElement('ul');
-        ul.classList.add("simple-select-list");
-        ul.setAttribute("role", "listbox");
-
-        for (let el of list) {
-            let li = document.createElement('li');
-            li.classList.add('simple-select-item');
-            li.setAttribute("role", "option");
-            li.setAttribute("data-value", el.id);
-            li.innerText = el.title;
-            if (el.id === selected) {
-                li.classList.add("is-active");
-            }
-            ul.append(li);
-        }
-
-        return ul;
-    },
-    updateRow: function() {
-        this.deviceId = +this.row.data('id');
-
-        let data = this.getEditedCells();
-        $.ajax({
-            url: '/device/' + this.deviceId,
-            method: 'POST',
-            data: data,
-            success: function (res) {
-                if(res.status === 'success'){
-                    Device.row.html(res.row);
-                    Device.row.removeClass('edited-row');
-                    Device.body.removeClass('edited-body');
-                }
-            }
-        })
-    },
-    // addDevice: function() {
-    //     this.deviceId = +this.row.data('id');
-    //
-    //     let data = this.getEditedCells();
-    //     $.ajax({
-    //         url: '/device/' + this.deviceId,
-    //         method: 'POST',
-    //         data: data,
-    //         success: function (res) {
-    //             if(res.status === 'success'){
-    //                 Device.row.html(res.row);
-    //                 Device.row.removeClass('edited-row');
-    //                 Device.body.removeClass('edited-body');
-    //             }
-    //         }
-    //     })
-    // },
-    cancelChanges: function () {
-        this.row.html(this.rowHtml);
-        Device.row.removeClass('edited-row');
-        Device.body.removeClass('edited-body');
-    },
-    getEditedCells: function () {
-        let data = {};
-        let cells = this.deviceId > 0 ? '.edited'  : '.editable';
-        console.log(this.deviceId, cells);
-        this.row.find(cells).each(function () {
-            let id = $(this).data('id');
-            let value = null;
-            if($(this).hasClass(Device.CLASS_SELECT) || $(this).hasClass(Device.CLASS_TEXT)) {
-                value = $(this).find('input').eq(0).val();
-            }else if($(this).hasClass(Device.CLASS_CHECKBOX)) {
-                value = $(this).find('input').prop('checked') ? 1 : 0;
-            }
-            data[$(this).data('id')] = value;
-        });
-        
-        data['sequenceNumber'] = this.row.find('.sequence-number').eq(0).text();
-        
-        return data;
-    }
-};
 
 function createBtnSave(device)
 {

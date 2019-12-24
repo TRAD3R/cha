@@ -4,6 +4,7 @@
 namespace App\Assets\Packages\Trad3r;
 
 
+use App\Assets\Packages\DeviceAsset;
 use yii\web\AssetBundle;
 
 class MainAsset extends AssetBundle
@@ -14,10 +15,11 @@ class MainAsset extends AssetBundle
     ];
 
     public $js = [
-        'js/main.js'
+        'js/main.js',
     ];
     
     public $depends = [
-        CommonTrad3rAssets::class
+        CommonTrad3rAssets::class,
+        DeviceAsset::class
     ];
 }
