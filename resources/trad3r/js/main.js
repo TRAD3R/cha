@@ -350,21 +350,20 @@ $(document).ready(function() {
         }
     });
 
-
-    //модальное окно
-    var modalOverlay = $('.modal-overlay');
-    var modal = $('.modal');
-    var site = $('.site');
-    var modalContent = $('.modal-content-wrapper');
-
-    $('.btn-close-modal').on('click', function(){
-        modalOverlay.removeClass('active');
-        modal.removeClass('active');
-        site.removeClass('modal-open');
-        $("body, html").css("overflow", "hidden auto");
-        setTimeout(function () {
-            modalContent.html("");
-        }, 200);
-    });
-
 });
+
+
+
+function showModal(){
+    $('.modal-overlay').addClass('active');
+    $('.modal').addClass('active');
+    $('.site').addClass('modal-open');
+    $("body, html").css("overflow", "hidden");
+}
+
+function hideModal(){
+    $('.modal-overlay').removeClass('active');
+    $('.modal').removeClass('active');
+    $('.site').removeClass('modal-open');
+    $("body, html").css("overflow", "hidden auto");
+}
