@@ -39,7 +39,7 @@ $(document).ready(function () {
     });
     
     $('#new-device').on('click', function () {
-        $(this).addClass(hiddenEl);
+        $(this).addClass(CLASS_HIDDEN_ELEMENT);
 
         let newRow = $('#empty-row');
         let tableBody = $('.table-body');
@@ -67,7 +67,7 @@ function editRow(device) {
         .append(device.btnSave)
     ;
     
-    $('#new-device').addClass(hiddenEl);
+    $('#new-device').addClass(CLASS_HIDDEN_ELEMENT);
 }
 
 function scrollToEditedRow(row) {
@@ -126,6 +126,28 @@ function createBtn(text, id, classes)
     btn.innerText = text;
     
     return btn;
+}
+
+function showModal(el){
+    $('.modal-overlay').addClass('active');
+    $('.modal').addClass('active');
+    $('.site').addClass('modal-open');
+    $("body, html").css("overflow", "hidden");
+    $(el).closest('.simple-select-drop').find('.simple-select-drop-inner').attr('id', ID_EDITED_SELECT);
+}
+
+function hideModal(status){
+    let editedSelect = $("#" . ID_EDITED_SELECT);
+    if(isChange) {
+        let newValue = $('#id-edited-textarea').text();
+        editedSelect.append('<li class="simple-select-item" role="option" data-value="' + newValue + '">' + newValue + '</li>');
+    }
+    
+    editedSelect.removeAttr('id');
+    $('.modal-overlay').removeClass('active');
+    $('.modal').removeClass('active');
+    $('.site').removeClass('modal-open');
+    $("body, html").css("overflow", "hidden auto");
 }
 
 /* кастомный select */
@@ -260,19 +282,3 @@ $(document).ready(function() {
     });
 
 });
-
-
-
-function showModal(){
-    $('.modal-overlay').addClass('active');
-    $('.modal').addClass('active');
-    $('.site').addClass('modal-open');
-    $("body, html").css("overflow", "hidden");
-}
-
-function hideModal(){
-    $('.modal-overlay').removeClass('active');
-    $('.modal').removeClass('active');
-    $('.site').removeClass('modal-open');
-    $("body, html").css("overflow", "hidden auto");
-}

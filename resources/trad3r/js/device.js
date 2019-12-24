@@ -1,5 +1,6 @@
 /** Класс для скрытия элемента */
-const hiddenEl = 'hidden-el';
+const CLASS_HIDDEN_ELEMENT = 'hidden-el';
+const ID_EDITED_SELECT = 'edited-select';
 
 var Device = {
     el: null,
@@ -80,7 +81,7 @@ var Device = {
                     Device.body.removeClass('edited-body');
                 }
 
-                $("#new-device").removeClass(hiddenEl);
+                $("#new-device").removeClass(CLASS_HIDDEN_ELEMENT);
             }
         })
     },
@@ -106,7 +107,7 @@ var Device = {
         Device.row.removeClass('edited-row');
         Device.body.removeClass('edited-body');
         
-        $("#new-device").removeClass(hiddenEl);
+        $("#new-device").removeClass(CLASS_HIDDEN_ELEMENT);
     },
     getEditedCells: function () {
         let data = {};
