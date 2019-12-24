@@ -259,4 +259,22 @@ $(document).ready(function() {
             checkboxes.prop('checked', false);
         }
     });
+
+
+    //модальное окно
+    var modalOverlay = $('.modal-overlay');
+    var modal = $('.modal');
+    var site = $('.site');
+    var modalContent = $('.modal-content-wrapper');
+
+    $('.btn-close-modal').on('click', function(){
+        modalOverlay.removeClass('active');
+        modal.removeClass('active');
+        site.removeClass('modal-open');
+        $("body, html").css("overflow", "hidden auto");
+        setTimeout(function () {
+            modalContent.html("");
+        }, 200);
+    });
+
 });
