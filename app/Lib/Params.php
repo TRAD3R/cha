@@ -13,7 +13,6 @@ class Params
 {
     const PAGE = 'page';
     const PER_PAGE = 'per_page';
-    
-    const SORT_TYPE = 'sort';
-    const SORT_TYPE_TITLE = 'title';
+    const SORT_ASC = 'sort_asc';
+    const SORT_DESC = 'sort_desc';
 }

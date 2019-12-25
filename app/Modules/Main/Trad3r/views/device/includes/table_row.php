@@ -46,6 +46,9 @@ $specifications = $device->specifications;
         <div class="simple-select-drop">
           <div class="simple-select-drop-inner">
           </div>
+          <div class="simple-select-add">
+            <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
+          </div>
         </div>
       </div>
     </div>
@@ -60,6 +63,9 @@ $specifications = $device->specifications;
         </div>
         <div class="simple-select-drop">
           <div class="simple-select-drop-inner">
+          </div>
+          <div class="simple-select-add">
+            <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
           </div>
         </div>
       </div>
@@ -94,6 +100,9 @@ $specifications = $device->specifications;
         </div>
         <div class="simple-select-drop">
           <div class="simple-select-drop-inner">
+          </div>
+          <div class="simple-select-add">
+            <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
           </div>
         </div>
       </div>
@@ -132,6 +141,9 @@ $specifications = $device->specifications;
         </div>
         <div class="simple-select-drop">
           <div class="simple-select-drop-inner">
+          </div>
+          <div class="simple-select-add">
+            <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
           </div>
         </div>
       </div>

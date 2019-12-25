@@ -4,6 +4,14 @@ namespace App\Helpers;
 
 class Paginator
 {
+    public $perPageArray = [
+        10 => 10,
+        50 => 50,
+        100 => 100,
+        250 => 250,
+        500 => 500,
+        1000 => 1000,
+    ];
 
     /**
      * Текущая страница
@@ -36,10 +44,10 @@ class Paginator
     protected $page_range;
 
     /**
-     * @param int $current_page
-     * @param int $per_page
-     * @param int $total_count
-     * @param int $page_range
+     * @param int $current_page     - номер текущей страницы
+     * @param int $per_page         - количество элементов на странице
+     * @param int $total_count      - общее количество элементов
+     * @param int $page_range       - количество видимых "элементов" в пагинации
      */
     public function __construct($current_page, $per_page, $total_count, $page_range = 7)
     {
