@@ -51,8 +51,8 @@ if (count($paginator->getPages()) < 2) {
       <span class="txt c-secondary">Записей на странице:</span>
     </div>
     <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
-      <input hidden type="text" name="sort-view" value="1" data-default-value="1">
-      <p class="simple-select-selected" data-placeholder="1">100</p>
+      <input id="per_page" hidden type="text" name="sort-view" value="<?=$per_page?>" data-default-value="50">
+      <p class="simple-select-selected" data-placeholder="<?=$per_page?>"><?=$per_page?></p>
       <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
         <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
       </svg>
@@ -60,12 +60,13 @@ if (count($paginator->getPages()) < 2) {
     <div class="simple-select-drop">
       <div class="simple-select-drop-inner">
         <ul class="simple-select-list" role="listbox">
-          <li class="simple-select-item is-active" data-value="1" role="option">100</li>
-          <li class="simple-select-item " data-value="2" role="option">200</li>
-          <li class="simple-select-item " data-value="3" role="option">300</li>
+            <?php foreach ($paginator->perPageArray as $perPage): ?>
+                <li class="simple-select-item 
+                    <?php echo $perPage == $per_page ? 'is-active' : '' ?>
+                    " data-value="<?=$perPage?>" role="option"><?=$perPage?></li>
+            <?php endforeach;?>
         </ul>
       </div>
     </div>
   </div>
-
 </div>

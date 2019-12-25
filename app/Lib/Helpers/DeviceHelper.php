@@ -18,33 +18,36 @@ use App\Repositories\DeviceTypeRepository;
 use App\Repositories\UsbStandardRepository;
 use App\Repositories\UsbTypeRepository;
 use App\Tables\DeviceTableStructure;
+use yii\db\Query;
+use yii\db\QueryBuilder;
 
 class DeviceHelper
 {
     const PER_PAGE = 100;
     
-    public static function getDevices($limit, $offset, $sort = Params::SORT_TYPE_TITLE)
+    /** @var Query|null $query */
+    private $query = null;
+    
+    public function getDevices($params, $offset)
     {
-        $query = Device::find()
+        $this->query = Device::find()
             ->alias('d')
+            ->innerJoin('device_specifications s', 'd.id = s.device_id')
         ;
         
-        switch ($sort) {
-            case Params::SORT_TYPE_TITLE:
-                $query
-                    ->innerJoin('device_brand b', 'd.brand_id = b.id')
-                    ->orderBy([
-                        'b.name' => 'ASC', 
-                        'd.title' => 'ASC'
-                    ])
-                ;
+        if($params[Params::SORT_ASC]) {
+            self::addSort($params[Params::SORT_ASC], 'ASC');
+        }
+
+        if($params[Params::SORT_DESC]) {
+            self::addSort($params[Params::SORT_DESC], 'DESC');
         }
         
-        $query->limit($limit)
+        $this->query->limit($params[Params::PER_PAGE])
             ->offset($offset)
             ;
         
-        return $query->all();
+        return $this->query->all();
     }
     
     public static function modifyData(Device $device, array $data)
@@ -187,5 +190,88 @@ class DeviceHelper
         }
         
         return $list;
+    }
+    
+    private function addSort($params, $type)
+    {
+        $uniqParam = $type == 'ASC' ? 1 : 2;
+        
+        foreach ($params as $param) {
+            switch ($param) {
+                case DeviceTableStructure::DEVICE_TYPE:
+                    $this->query
+                        ->innerJoin('device_type dt' . $uniqParam, "dt{$uniqParam}.id = s.type_id")
+                        ->addOrderBy("dt{$uniqParam}.type $type");
+                    break;
+                case DeviceTableStructure::DEVICE_BRAND:
+                    $this->query
+                        ->innerJoin('device_brand db' . $uniqParam, "db{$uniqParam}.id = d.brand_id")
+                        ->addOrderBy("db{$uniqParam}.name $type");
+                    break;
+                case DeviceTableStructure::DEVICE_MODEL:
+                    $this->query
+                        ->addOrderBy("d.title $type");
+                    break;
+                case DeviceTableStructure::DEVICE_YEAR:
+                    $this->query
+                        ->addOrderBy("s.year $type");
+                    break;
+                case DeviceTableStructure::DEVICE_LENGTH:
+                    $this->query
+                        ->addOrderBy("s.length $type");
+                    break;
+                case DeviceTableStructure::DEVICE_WIDTH:
+                    $this->query
+                        ->addOrderBy("s.width $type");
+                    break;
+                case DeviceTableStructure::DEVICE_DEPTH:
+                    $this->query
+                        ->addOrderBy("s.depth $type");
+                    break;
+                case DeviceTableStructure::DEVICE_SCREEN_SIZE:
+                    $this->query
+                        ->addOrderBy("s.screensize $type");
+                    break;
+                case DeviceTableStructure::DEVICE_CARD_MEMORY:
+                    $this->query
+                        ->innerJoin('card_memory cm' . $uniqParam, "cm{$uniqParam}.id = s.card_memory_id")
+                        ->addOrderBy("cm{$uniqParam}.size $type");
+                    break;
+                case DeviceTableStructure::DEVICE_35_JACK:
+                    $this->query
+                        ->addOrderBy("s.jack_35 $type");
+                    break;
+                case DeviceTableStructure::DEVICE_BLUETOOTH:
+                    $this->query
+                        ->addOrderBy("s.bluetooth $type");
+                    break;
+                case DeviceTableStructure::DEVICE_USB_TYPE:
+                    $this->query
+                        ->innerJoin('usb_type ut' . $uniqParam, "ut{$uniqParam}.id = s.usb_type_id")
+                        ->addOrderBy("ut{$uniqParam}.type $type");
+                    break;
+                case DeviceTableStructure::DEVICE_USB_STANDARD:
+                    $this->query
+                        ->innerJoin('usb_standard us' . $uniqParam, "us{$uniqParam}.id = s.usb_standard_id")
+                        ->addOrderBy("us{$uniqParam}.standard $type");
+                    break;
+                case DeviceTableStructure::DEVICE_WIRELESS_CHARGE:
+                    $this->query
+                        ->addOrderBy("s.wireless_charge $type");
+                    break;
+                case DeviceTableStructure::DEVICE_FAST_CHARGE:
+                    $this->query
+                        ->addOrderBy("s.fasst_charge $type");
+                    break;
+                case DeviceTableStructure::DEVICE_REMOVABLE_BATTERY:
+                    $this->query
+                        ->addOrderBy("s.removable_battery $type");
+                    break;
+                case DeviceTableStructure::DEVICE_PRICE:
+                    $this->query
+                        ->addOrderBy("s.price $type");
+                    break;
+            }
+        }
     }
 }
