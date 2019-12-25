@@ -173,6 +173,11 @@ ul {
       .table-head .table-cell:last-child .column-tool-dropdown, .table-head .table-cell:nth-last-child(2) .column-tool-dropdown {
         left: auto;
         right: 0; }
+      .table-head .table-cell > span {
+        flex: 1;
+        display: inline-flex;
+        text-align: center;
+        justify-content: center; }
   .table-body {
     position: relative;
     display: flex;
@@ -208,6 +213,11 @@ ul {
     border: 1px solid #E3E7F4;
     background: #fff;
     padding: 5px; }
+    .table-cell img {
+      display: block;
+      width: 100%;
+      max-width: 70px;
+      margin: 0 auto; }
     .table-cell .simple-select {
       width: 100%;
       position: relative;
@@ -488,10 +498,6 @@ ul {
       visibility: visible;
       opacity: 1;
       transform: translateY(0); }
-  .simple-select.disabled {
-    pointer-events: none;
-    cursor: default;
-    background: #F6F7FB; }
   .simple-select-add {
     padding: 7px;
     height: 20%; }
@@ -500,6 +506,11 @@ ul {
       font-size: 13px;
       padding: 10px;
       width: 100%; }
+
+.disabled {
+  pointer-events: none !important;
+  cursor: default !important;
+  opacity: 0.5 !important; }
 
 .btn-primary {
   background: #005AF5 !important;
@@ -613,6 +624,7 @@ ul {
     border-radius: 0;
     border: none; }
   .column-tool-list > li > .column-tool-item:not(.checkbox).is-active {
+    pointer-events: none;
     color: #005AF5;
     background: #F6F7FB; }
   .column-tool-list > li > * {
@@ -695,8 +707,7 @@ ul {
       background: #2978ff; }
 
 .hidden-el {
-  opacity: 0;
-  visibility: hidden; }
+  display: none; }
 
 .form-group {
   display: flex;

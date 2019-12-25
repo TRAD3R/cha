@@ -198,6 +198,12 @@ ul {
           right: 0;
         }
       }
+      > span {
+        flex: 1;
+        display: inline-flex;
+        text-align: center;
+        justify-content: center;
+      }
     }
   }
   &-body {
@@ -243,6 +249,12 @@ ul {
     border: 1px solid $gray;
     background: $light;
     padding: 5px;
+    img {
+      display: block;
+      width: 100%;
+      max-width: 70px;
+      margin: 0 auto;
+    }
     .simple-select {
       width: 100%;
       position: relative;
@@ -259,6 +271,7 @@ ul {
       &-drop {
         top: 30px;
       }
+
     }
     &.editable {
       cursor: default;
@@ -620,11 +633,6 @@ ul {
       transform: translateY(0);
     }
   }
-  &.disabled {
-    pointer-events: none;
-    cursor: default;
-    background: $lightGray;
-  }
   &-add {
     padding: 7px;
     height: 20%;
@@ -637,6 +645,11 @@ ul {
   }
 }
 
+.disabled {
+  pointer-events: none!important;
+  cursor: default!important;
+  opacity: .5!important;
+}
 
 
 .btn-primary {
@@ -780,6 +793,7 @@ ul {
     > li {
       > .column-tool-item {
         &:not(.checkbox).is-active {
+          pointer-events: none;
           color: $primary;
           background: $lightGray;
         }
@@ -882,8 +896,7 @@ ul {
   }
 }
 .hidden-el {
-  opacity: 0;
-  visibility: hidden;
+  display: none;
 }
 
 .form-group {

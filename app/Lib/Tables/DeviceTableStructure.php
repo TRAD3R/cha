@@ -74,4 +74,32 @@ class DeviceTableStructure extends AbstractTS
         ];
     }
 
+    /**
+     * Столбцы, по которым можно сортировать
+     * @return array
+     */
+    public static function getSortedColumns()
+    {
+        return [
+            self::DEVICE_DATE_CREATED,
+            self::DEVICE_TYPE,
+            self::DEVICE_BRAND,
+            self::DEVICE_MODEL,
+            self::DEVICE_YEAR,
+            self::DEVICE_LENGTH,
+            self::DEVICE_WIDTH,
+            self::DEVICE_DEPTH,
+            self::DEVICE_SCREEN_SIZE,
+            self::DEVICE_CARD_MEMORY,
+            self::DEVICE_35_JACK,
+            self::DEVICE_BLUETOOTH,
+            self::DEVICE_USB_TYPE,
+            self::DEVICE_USB_STANDARD,
+            self::DEVICE_WIRELESS_CHARGE,
+            self::DEVICE_FAST_CHARGE,
+            self::DEVICE_REMOVABLE_BATTERY,
+            self::DEVICE_PRICE,
+        ];
+    }
+
 }
