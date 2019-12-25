@@ -131,6 +131,28 @@ class DeviceController extends Main
             'row' => $row,
         ];
     }
+
+    public function actionRemove($id)
+    {
+        /** @var Request $request */
+        $request = $this->getRequest();
+
+        if(!$request->isAjax() || !$request->isGet()) {
+            $this->getResponse()->set404();
+        }
+
+        $device = Device::findOne($id);
+        if(!$device || !$device->delete()) {
+            return [
+                'status' => Response::STATUS_FAIL,
+                'error' => Yii::t('exception', 'ERROR_DATA_UPDATE'),
+            ];
+        }
+        
+        return [
+            'status' => Response::STATUS_SUCCESS,
+        ];
+    }
     
     public function actionSpecList($id)
     {

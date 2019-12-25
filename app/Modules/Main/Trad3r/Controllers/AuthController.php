@@ -13,6 +13,7 @@ class AuthController extends Main
 {
     public function actionLogin()
     {
+        $this->layout = "@layouts/auth/layout.php";
         $form = new LoginForm();
         $db = Yii::$app->getDb()->dsn;
         if($this->getRequest()->isPost()) {

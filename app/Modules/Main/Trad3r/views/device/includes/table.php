@@ -18,7 +18,10 @@ use yii\web\View;
 
   <div class="table" id="horizontal-scroller">
     <div class="table-content">
-      <?php echo $this->render('table_head'); ?>
+      <?php echo $this->render('table_head', [
+              'sortedColumnsAsc' => $params[Params::SORT_ASC], 
+              'sortedColumnsDesc' =>$params[Params::SORT_DESC]
+      ]); ?>
       <?php echo $this->render('table_body', compact('devices', 'offset')); ?>
     </div>
   </div>
@@ -81,7 +84,7 @@ use yii\web\View;
         },
         getSelectInput: function () {
             $.ajax({
-                url: '/device/specification/list/' + this.el.data('id'),
+                url: '/devices/specification/list/' + this.el.data('id'),
                 method: 'GET',
                 success: function (res) {
                     if(res.status === 'success'){
@@ -117,7 +120,7 @@ use yii\web\View;
 
             let data = this.getEditedCells();
             $.ajax({
-                url: '/device/' + this.deviceId,
+                url: '/devices/' + this.deviceId,
                 method: 'POST',
                 data: data,
                 success: function (res) {
@@ -128,6 +131,19 @@ use yii\web\View;
                     }
 
                     $("#new-device").removeClass(CLASS_HIDDEN_ELEMENT);
+                }
+            })
+        },
+        deleteRow: function() {
+            let id = this.row.data('id');
+            $.ajax({
+                url: '/devices/remove/' + id,
+                method: 'GET',
+                success: function (res) {
+                    if(res.status === 'success'){
+                        Device.row.remove();
+                        Device.body.removeClass('edited-body');
+                    }
                 }
             })
         },
@@ -178,6 +194,12 @@ use yii\web\View;
             
             this.update();
         },
+        removeSort: function(param) {
+            this.sortAsc = this.removeSortParam(this.toArray(this.sortAsc), param);
+            this.sortDesc = this.removeSortParam(this.toArray(this.sortDesc), param);
+            
+            this.update();
+        },
         update: function () {
             let query = "?<?=Params::PAGE?>=" + this.page + "&<?=Params::PER_PAGE?>=" + this.perPage;
             if(this.sortAsc) {
@@ -202,6 +224,13 @@ use yii\web\View;
                 sortIn: sortIn,
                 sortOut: sortOut
             };
+        },
+        removeSortParam: function (sort, param) {
+            if(sort.includes(param)) {
+                sort.splice(sort.indexOf(param), 1);
+            }
+
+            return sort.length > 0 ? sort.join(',') : '';
         },
         toArray: function (string) {
             let res = [];

@@ -5,13 +5,14 @@ $(document).ready(function () {
         $(this).addClass('active');
     });
     
-    $(".table-body .table-row")
-        .mouseenter(function(){
-            addDoubleBtn($(this));
+    $(".table-body")
+        .on("mouseenter", ".table-row:not(.edited-row)", function(){
+        addDoubleBtn($(this));
     })
-        .mouseleave(function () {
-            removeDoubleBtn($(this));
-        });
+        .on("mouseleave", ".table-row:not(.edited-row)", function(){
+        removeDoubleBtn($(this));
+    });
+
 
     /**
      * Клонирование строки
@@ -24,6 +25,15 @@ $(document).ready(function () {
             ;
         let lastRow = Device.body.find('.table-row').last();
         scrollToEditedRow(lastRow);
+    });
+
+    /**
+     * Удаление строки
+     */
+    $('.btn-box-wrapper').on('click', '#btnDeleteRow', function () {
+        Device.row = $(this).closest('.table-row');
+        Device.body = $(this).closest('.table-body');
+        Device.deleteRow();
     });
 
 
@@ -48,11 +58,21 @@ $(document).ready(function () {
     })
 });
 
+
+
 /**
  * Подготовка стоки к редактированию
  * @param device
  */
 function editRow(device) {
+    var btnDeleteRow = `
+    <button type="button" class="btn btn-box btn-red" id="btnDeleteRow">
+        <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 16C1 17.1 1.9 18 3 18H11C12.1 18 13 17.1 13 16V4H1V16ZM3 6H11V16H3V6ZM10.5 1L9.5 0H4.5L3.5 1H0V3H14V1H10.5Z" fill="white"/>
+        </svg>
+    </button>
+    `;
+
     device.rowHtml = device.row.html();
     device.row.addClass('edited-row');
     device.body = device.el.closest('.table-body');
@@ -66,7 +86,11 @@ function editRow(device) {
         .append(device.btnCancel)
         .append(device.btnSave)
     ;
-    
+
+    device.row
+        .find(".btn-box-wrapper")
+        .html(btnDeleteRow);
+
     $('#new-device').addClass(CLASS_HIDDEN_ELEMENT);
 }
 
@@ -211,12 +235,7 @@ $(function () {
         if (!$(e.target).closest('.simple-select').length) {
             $('.simple-select').removeClass('is-active');
         }
-        if (!$(e.target).closest('.selectmenu').length) {
-            $('.selectmenu').removeClass('is-active');
-        }
-        if (!$(e.target).closest('.dropdown').length) {
-            $('.dropdown').removeClass('active');
-        }
+
     });
     $(document).on('keydown.simple-select', '.simple-select', function(event) {
         let $dropdown = $(this);
@@ -274,24 +293,24 @@ $(document).ready(function() {
     var itemTool = $('.column-tool-item');
 
     // открытие модального окна фильтрации и сортировки
-    btnFilterHead.on('click', function(){
-        btnFilterHead.removeClass('is-active');
+    btnFilterHead.on('click', function(e){
+        e.stopPropagation();
         dropdownToolAll.removeClass('is-active');
-
         let tableCell = $(this).closest('.table-cell');
-
         tableCell.find('.column-tool-dropdown').addClass('is-active');
     });
 
     //кнопка Отмена
+    //закрытие модального окна сортировки
     btnfilterCancel.on('click', function() {
         dropdownToolAll.removeClass('is-active');
     });
 
-    // выбор сортировки
-    itemTool.on('click', function() {
-        itemTool.removeClass('is-active');
-        $(this).addClass('is-active');
+    $('body').on('click', 'div', function (e) {
+        if ($(".dropdown.is-active").length && !$(e.target).closest('.is-active').length) {
+            e.stopPropagation();
+            $('.dropdown').removeClass('is-active');
+        }
     });
 
     // выбираем и убираем состояние checked у checkbox
@@ -312,6 +331,10 @@ $(document).ready(function() {
         let perPage = $(this).val();
         Device.changePerPage(perPage);
     });
+    
+    $('.btn-remove-sort').on('click', function () {
+        Device.removeSort($(this).data('key'));
+    })
 });
 function sort(type, param) {
     Device.addSort(type, param);

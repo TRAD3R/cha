@@ -5,6 +5,7 @@
  * @var $sequenceNumber int
  */
 
+use App\App;
 use App\Helpers\PriceHelper;
 use App\Models\Device;
 use App\Models\DeviceSpecification;
@@ -190,5 +191,11 @@ $specifications = $device->specifications;
       <input class="input-text" type="text" value="<?=PriceHelper::toFloat($specifications->price);?>">
     </div>
     <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_IMAGE?>">
-      <input class="input-text" type="text" value="<?=$specifications->image;?>">
+        <?php
+            $image = $specifications->image ?: 'no-image.png';
+            $src =  App::i()->getFile()->mdUrl("/images/{$image}");
+        ?>
+      <img src="<?= $src?>"
+           data-src="<?=$src ?>"
+           alt="">
     </div>
