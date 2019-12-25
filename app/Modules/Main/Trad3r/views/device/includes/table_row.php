@@ -190,5 +190,9 @@ $specifications = $device->specifications;
       <input class="input-text" type="text" value="<?=PriceHelper::toFloat($specifications->price);?>">
     </div>
     <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_IMAGE?>">
-      <input class="input-text" type="text" value="<?=$specifications->image;?>">
+      <!--TODO:не найдена картинка -->
+<!--      <input class="input-text" type="text" value="--><?//=$specifications->image;?><!--">-->
+      <img src="<?=\Yii::getAlias('@trad3r_resources')."/images/no-image.png" ?>"
+           data-src="<?=\Yii::getAlias('@trad3r_resources')."/images/no-image.png" ?>"
+           alt="">
     </div>

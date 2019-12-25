@@ -9,8 +9,3 @@
 use App\Models\Device;
 
 ?>
-<main class="page">
-  <div class="container-fluid">
-    
-  </div>
-</main>
