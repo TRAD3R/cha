@@ -6,12 +6,13 @@ $(document).ready(function () {
     });
 
     var btnDublicateRow = `
-    <button type="button" class="btn btn-box primary" id="btnDublicateRow">
+    <button type="button" class="btn btn-box btn-primary" id="btnDublicateRow">
       <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M6.99951 5.229H11.5591V7.19434H6.99951V12.3604H4.91064V7.19434H0.351074V5.229H4.91064V0.456055H6.99951V5.229Z" fill="white"/>
       </svg>
     </button>
     `;
+
     $(".table-body .table-row")
         .mouseenter(function(){
         $(this).find('.btn-box-wrapper').html(btnDublicateRow).addClass("active");
@@ -19,6 +20,8 @@ $(document).ready(function () {
         .mouseleave(function () {
             $(this).find('.btn-box-wrapper').removeClass("active").html("");
         });
+
+
 
     /**
      * Клонирование строки
@@ -57,6 +60,26 @@ $(document).ready(function () {
     
     
 });
+
+var btnRemoveRow = `
+    <button type="button" class="btn btn-box btn-red" id="btnRemoveRow">
+        <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 16C1 17.1 1.9 18 3 18H11C12.1 18 13 17.1 13 16V4H1V16ZM3 6H11V16H3V6ZM10.5 1L9.5 0H4.5L3.5 1H0V3H14V1H10.5Z" fill="white"/>
+        </svg>
+    </button>
+    `;
+
+$('.table-body').on('mouseenter mouseleave', '.edited-row', function(){
+    console.log($(this));
+    $(this)
+        .mouseenter(function(){
+        $(this).find('.btn-box-wrapper').html(btnRemoveRow).addClass("active");
+    })
+        .mouseleave(function () {
+            $(this).find('.btn-box-wrapper').removeClass("active").html("");
+        });
+});
+
 
 var Device = {
     el: null,
