@@ -4,6 +4,10 @@
 use App\Params;
 use App\Tables\DeviceTableStructure;
 
+/**
+ * @var array $sortedColumnsAsc
+ * @var array $sortedColumnsDesc
+ */
 $ths = DeviceTableStructure::getTitles();
 $sortedColumns = DeviceTableStructure::getSortedColumns();
 ?>
@@ -13,10 +17,12 @@ $sortedColumns = DeviceTableStructure::getSortedColumns();
     <?php foreach ($ths as $groupKey => $group):?>
 <!--      <div class="table-group gr---><?//=$key ?><!--">-->
         <?php foreach ($group as $key => $th):?>
+        <?php $isSortedColumn = in_array($key, array_merge($sortedColumnsAsc, $sortedColumnsDesc)); ?>
+        
           <div class="group-cell gr-<?=$groupKey?> table-cell">
             <span><?=Yii::t('front', $th);?></span>
             <?php if (in_array($key, $sortedColumns)): ?>
-                <button type="button" class="btn btn-box btn-box-min btn-filter-column btn-gray-transparency">
+                <button type="button" class="btn btn-box btn-box-min btn-filter-column btn-gray-transparency <?= $isSortedColumn ? 'is-active' : ''?>">
                   <span class="icon">
                     <svg width="16" height="10" viewBox="0 0 16 10" xmlns="http://www.w3.org/2000/svg">
                     <path d="M6.33333 10H9.66667V8.33333H6.33333V10ZM0.5 0V1.66667H15.5V0H0.5ZM3 5.83333H13V4.16667H3V5.83333Z" fill="inherit"/>
@@ -36,11 +42,19 @@ $sortedColumns = DeviceTableStructure::getSortedColumns();
                       </div>
                       <div class="column-tool-body">
                         <div class="column-tool-total">
-                          <button type="button" class="btn-remove-sort disabled">Убрать сортировку</button>
+                          <button type="button" class="btn-remove-sort <?= $isSortedColumn ? '' : 'disabled'?>" data-key="<?=$key?>">Убрать сортировку</button>
                         </div>
                         <ul class="column-tool-list">
-                          <li><button type="button" class="column-tool-item sort tool-sort-asc" onclick="sort('<?=Params::SORT_ASC?>', <?=$key?>)">Сортировать от А - Я</button></li>
-                          <li><button type="button" class="column-tool-item sort tool-sort-desc" onclick="sort('<?=Params::SORT_DESC?>', <?=$key?>)">Сортировать от Я - А</button></li>
+                          <li><button type="button" class="column-tool-item sort tool-sort-asc <?=in_array($key, $sortedColumnsAsc) ? 'is-active' : ''?>" 
+                                      onclick="sort('<?=Params::SORT_ASC?>', <?=$key?>)">
+                                  Сортировать от А - Я
+                              </button>
+                          </li>
+                          <li><button type="button" class="column-tool-item sort tool-sort-desc <?=in_array($key, $sortedColumnsDesc) ? 'is-active' : ''?>" 
+                                      onclick="sort('<?=Params::SORT_DESC?>', <?=$key?>)">
+                                  Сортировать от Я - А
+                              </button>
+                          </li>
                         </ul>
                       </div>
                     </div>
