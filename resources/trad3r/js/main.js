@@ -7,10 +7,10 @@ $(document).ready(function () {
     
     $(".table-body .table-row")
         .mouseenter(function(){
-            showDoubleBtn($(this));
+            addDoubleBtn($(this));
     })
         .mouseleave(function () {
-            hideDoubleBtn($(this));
+            removeDoubleBtn($(this));
         });
 
     /**
@@ -70,13 +70,21 @@ function editRow(device) {
     $('#new-device').addClass(CLASS_HIDDEN_ELEMENT);
 }
 
+/**
+ * Прокрутка экрана к редактируемой строке
+ * @param row
+ */
 function scrollToEditedRow(row) {
-    hideDoubleBtn(row);
+    removeDoubleBtn(row);
     $('.table-body-wrapper').animate({scrollTop: row.offset().top + 50}, 500);
     row.find('.editable').first().dblclick();
 }
 
-function showDoubleBtn(el) {
+/**
+ * Добавление кнопки дублирования строки
+ * @param el
+ */
+function addDoubleBtn(el) {
     var btnDublicateRow = `
     <button type="button" class="btn btn-box primary" id="btnDublicateRow">
       <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -88,10 +96,19 @@ function showDoubleBtn(el) {
     el.find('.btn-box-wrapper').html(btnDublicateRow).addClass("active");
 }
 
-function hideDoubleBtn(el) {
+/**
+ * Удаление кнопки дублирования строки
+ * @param el
+ */
+function removeDoubleBtn(el) {
     el.find('.btn-box-wrapper').removeClass("active").html("");
 }
 
+/**
+ * Работа с кнопками сохранения и отмены
+ * @param device
+ * @returns {HTMLButtonElement}
+ */
 function createBtnSave(device)
 {
     let btn = createBtn("Сохранить", 'change-save', ['btn-primary','btn-save-change']);
@@ -127,20 +144,29 @@ function createBtn(text, id, classes)
     
     return btn;
 }
+/** Работа с кнопками сохранения и отмены */
 
+/**
+ * Работа с модальным окном
+ * для добавления новых элементов в select
+ * @param el
+ */
 function showModal(el){
     $('.modal-overlay').addClass('active');
     $('.modal').addClass('active');
     $('.site').addClass('modal-open');
     $("body, html").css("overflow", "hidden");
-    $(el).closest('.simple-select-drop').find('.simple-select-drop-inner').attr('id', ID_EDITED_SELECT);
+    $(el).closest('.simple-select-drop').find('ul.simple-select-list').attr('id', ID_EDITED_SELECT);
 }
 
-function hideModal(status){
-    let editedSelect = $("#" . ID_EDITED_SELECT);
+function hideModal(isChange){
+    let editedSelect = $("#" + ID_EDITED_SELECT);
     if(isChange) {
-        let newValue = $('#id-edited-textarea').text();
-        editedSelect.append('<li class="simple-select-item" role="option" data-value="' + newValue + '">' + newValue + '</li>');
+        let newValue = $('#id-edited-textarea').val();
+        if(newValue.length > 0) {
+            let li = '<li class="simple-select-item" role="option" data-value="' + newValue + '">' + newValue + '</li>';
+            editedSelect.append(li);
+        }
     }
     
     editedSelect.removeAttr('id');
@@ -149,6 +175,7 @@ function hideModal(status){
     $('.site').removeClass('modal-open');
     $("body, html").css("overflow", "hidden auto");
 }
+/** Работа с модальным окном для добавления новых элементов в select */
 
 /* кастомный select */
 $(function () {
@@ -280,5 +307,12 @@ $(document).ready(function() {
             checkboxes.prop('checked', false);
         }
     });
-
+    
+    $("#per_page").on('change', function () {
+        let perPage = $(this).val();
+        Device.changePerPage(perPage);
+    });
 });
+function sort(type, param) {
+    Device.addSort(type, param);
+}
