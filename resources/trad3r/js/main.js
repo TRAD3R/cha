@@ -27,6 +27,15 @@ $(document).ready(function () {
         scrollToEditedRow(lastRow);
     });
 
+    /**
+     * Удаление строки
+     */
+    $('.btn-box-wrapper').on('click', '#btnDeleteRow', function () {
+        Device.row = $(this).closest('.table-row');
+        Device.body = $(this).closest('.table-body');
+        Device.deleteRow();
+    });
+
 
     $('.table-body').on('dblclick', '.editable', function () {
         Device.el = $(this);
@@ -322,6 +331,10 @@ $(document).ready(function() {
         let perPage = $(this).val();
         Device.changePerPage(perPage);
     });
+    
+    $('.btn-remove-sort').on('click', function () {
+        Device.removeSort($(this).data('key'));
+    })
 });
 function sort(type, param) {
     Device.addSort(type, param);
