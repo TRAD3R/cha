@@ -143,6 +143,7 @@ use yii\web\View;
                     if(res.status === 'success'){
                         Device.row.remove();
                         Device.body.removeClass('edited-body');
+                        $("#new-device").removeClass(CLASS_HIDDEN_ELEMENT);
                     }
                 }
             })
