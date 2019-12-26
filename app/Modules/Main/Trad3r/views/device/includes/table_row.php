@@ -7,6 +7,7 @@
 
 use App\App;
 use App\Helpers\PriceHelper;
+use App\Helpers\UrlHelper;
 use App\Models\Device;
 use App\Models\DeviceSpecification;
 use App\Tables\DeviceTableStructure;
@@ -206,8 +207,10 @@ $specifications = $device->specifications;
     </div>
     <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_IMAGE?>">
         <?php
-            $image = $specifications->image ?: 'no-image.png';
-            $src =  App::i()->getFile()->mdUrl("/images/{$image}");
+            $imageName = UrlHelper::createImageAlias('png', $device->brand->name, $device->title);
+            $image = "/images/models/" . $imageName;
+            $image = is_file(Yii::getAlias('@Web') . $image) ? $image : '/images/no-image.png';
+            $src =  App::i()->getFile()->mdUrl($image);
         ?>
       <img src="<?= $src?>"
            data-src="<?=$src ?>"
