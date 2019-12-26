@@ -18,7 +18,15 @@ abstract class Config
      */
     public function getFaceDomain()
     {
-        return App::i()->getApp()->params['domains']['face'];
+        return App::i()->getApp()->params['domains']['main'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getStaticDomainTemplate()
+    {
+        return App::i()->getApp()->params['domains']['static'];
     }
 
     /**

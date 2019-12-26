@@ -43,7 +43,9 @@ class DeviceHelper
             self::addSort($params[Params::SORT_DESC], 'DESC');
         }
         
-        $this->query->limit($params[Params::PER_PAGE])
+        $this->query
+            ->addOrderBy('d.id ASC')
+            ->limit($params[Params::PER_PAGE])
             ->offset($offset)
             ;
         

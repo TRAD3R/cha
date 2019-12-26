@@ -22,6 +22,17 @@ class Device extends ActiveRecord
     {
         return 'devices';
     }
+    
+    public function beforeDelete()
+    {
+        if(!parent::beforeDelete()) {
+            return false;
+        }
+        
+        $specifications = $this->specifications;
+        
+        return $specifications->delete();
+    }
 
     public function getBrand()
     {
