@@ -121,4 +121,17 @@ class App
         return \Yii::$app;
     }
 
+    /**
+     * @return File
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
+    public function getFile()
+    {
+        /** @var File $file */
+        $file = \Yii::$container->get(File::class);
+
+        return $file;
+    }
+
 }

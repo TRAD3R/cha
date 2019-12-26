@@ -9,9 +9,3 @@
 use App\Models\Device;
 
 ?>
-
-<div class="container-fluid">
-  <?php echo $this->render('includes/device/table', compact('devices', 'totalCount', 'params', 'offset')); ?>
-</div>
-
-

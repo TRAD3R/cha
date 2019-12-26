@@ -4,40 +4,15 @@ $(document).ready(function () {
         paginationItem.removeClass('active');
         $(this).addClass('active');
     });
-
-    var btnDublicateRow = `
-    <button type="button" class="btn btn-box primary" id="btnDublicateRow">
-      <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6.99951 5.229H11.5591V7.19434H6.99951V12.3604H4.91064V7.19434H0.351074V5.229H4.91064V0.456055H6.99951V5.229Z" fill="white"/>
-      </svg>
-    </button>
-    `;
-    $(".table-body .table-row")
-        .mouseenter(function(){
-        $(this).find('.btn-box-wrapper').html(btnDublicateRow).addClass("active");
+    
+    $(".table-body")
+        .on("mouseenter", ".table-row:not(.edited-row)", function(){
+        addDoubleBtn($(this));
     })
-        .mouseleave(function () {
-            $(this).find('.btn-box-wrapper').removeClass("active").html("");
-        });
+        .on("mouseleave", ".table-row:not(.edited-row)", function(){
+        removeDoubleBtn($(this));
+    });
 
-    var horizontalScroller = document.getElementById("horizontal-scroller");
-    if (horizontalScroller) {
-        horizontalScroller.addEventListener('wheel', function(event) {
-            if (event.deltaMode == event.DOM_DELTA_PIXEL) {
-                var modifier = 1;
-                // иные режимы возможны в Firefox
-            } else if (event.deltaMode == event.DOM_DELTA_LINE) {
-                var modifier = parseInt(getComputedStyle(this).lineHeight);
-            } else if (event.deltaMode == event.DOM_DELTA_PAGE) {
-                var modifier = this.clientHeight;
-            }
-            if (event.deltaY != 0) {
-                // замена вертикальной прокрутки горизонтальной
-                this.scrollLeft += modifier * event.deltaY;
-                event.preventDefault();
-            }
-        });
-    }
 
     /**
      * Клонирование строки
@@ -48,163 +23,119 @@ $(document).ready(function () {
         Device.body
             .append("<div class='table-row' data-id='0'>" + Device.row.html() + "</div>")
             ;
-        Device.body.find('.table-row').last().find('.editable').first().dblclick();
+        let lastRow = Device.body.find('.table-row').last();
+        scrollToEditedRow(lastRow);
+    });
+
+    /**
+     * Удаление строки
+     */
+    $('.btn-box-wrapper').on('click', '#btnDeleteRow', function () {
+        Device.row = $(this).closest('.table-row');
+        Device.body = $(this).closest('.table-body');
+        Device.deleteRow();
     });
 
 
     $('.table-body').on('dblclick', '.editable', function () {
-        Device.row = $(this).closest('.table-row');
-        if(!Device.row.hasClass('edited-row')) {
-            Device.rowHtml = Device.row.html();
-            Device.row.addClass('edited-row');
-            Device.body = $(this).closest('.table-body');
-            Device.body.addClass('edited-body');
-            // currentRow.find('.btn-operations .btn-operations-edit').html(btnOperationsEdit);
-            Device.btnSave = createBtnSave(Device);
-            Device.btnCancel = createBtnCancel(Device);
-            
-            Device.row
-                .find('.btn-operations .btn-operations-edit')
-                .html('')
-                .append(Device.btnCancel)
-                .append(Device.btnSave)
-            ;
-        }
         Device.el = $(this);
+        Device.row = Device.el.closest('.table-row');
+        
+        if(!Device.row.hasClass('edited-row')) {
+            editRow(Device);
+        }
+        
         Device.changeInput();
+    });
+    
+    $('#new-device').on('click', function () {
+        $(this).addClass(CLASS_HIDDEN_ELEMENT);
+
+        let newRow = $('#empty-row');
+        let tableBody = $('.table-body');
+        tableBody.append("<div class='table-row' data-id='0'>" + newRow.html() + "</div>");
+        scrollToEditedRow(tableBody.find('.table-row').last());
     })
-    
-    
 });
 
-var Device = {
-    el: null,
-    row: null,
-    deviceId: 0,
-    rowHtml: '',
-    body: null,
-    btnSave: null,
-    btnCancel: null,
-    CLASS_SELECT: 'select',
-    CLASS_TEXT: 'text',
-    CLASS_CHECKBOX: 'checkbox',
-    changeInput: function() {
-        this.el.addClass('edited');
-        
-        if(this.el.hasClass(this.CLASS_SELECT)) {
-            this.getSelectInput();
-        }else if(this.el.hasClass(this.CLASS_TEXT)) {
-            this.getTextInput();
-        }else if(this.el.hasClass(this.CLASS_CHECKBOX)) {
-            this.getCheckboxInput();
-        }
-    },
-    getCheckboxInput: function () {
-        let input = this.el.find('input').eq(0);
-        input.removeAttr('disabled');
-    },
-    getTextInput: function () {
-        let text = this.el.text();
-        let input = this.el.find('.input-text');
-        input.value = text;
-    },
-    getSelectInput: function () {
-        $.ajax({
-            url: '/device/specification/list/' + this.el.data('id'),
-            method: 'GET',
-            success: function (res) {
-                if(res.status === 'success'){
-                    let selected = Device.el.find('input').val();
-                    let select = Device.createSelect(res.list, selected);
-                    Device.el.find('.simple-select-drop-inner').html(select);
-                }
-            }
-        })
-    },
-    createSelect: function (list, selected) {
 
-        let ul = document.createElement('ul');
-        ul.classList.add("simple-select-list");
-        ul.setAttribute("role", "listbox");
 
-        for (let el of list) {
-            let li = document.createElement('li');
-            li.classList.add('simple-select-item');
-            li.setAttribute("role", "option");
-            li.setAttribute("data-value", el.id);
-            li.innerText = el.title;
-            if (el.id === selected) {
-                li.classList.add("is-active");
-            }
-            ul.append(li);
-        }
+/**
+ * Подготовка стоки к редактированию
+ * @param device
+ */
+function editRow(device) {
+    var btnDeleteRow = `
+    <button type="button" class="btn btn-box btn-red" id="btnDeleteRow">
+        <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 16C1 17.1 1.9 18 3 18H11C12.1 18 13 17.1 13 16V4H1V16ZM3 6H11V16H3V6ZM10.5 1L9.5 0H4.5L3.5 1H0V3H14V1H10.5Z" fill="white"/>
+        </svg>
+    </button>
+    `;
 
-        return ul;
-    },
-    updateRow: function() {
-        this.deviceId = +this.row.data('id');
+    device.rowHtml = device.row.html();
+    device.row.addClass('edited-row');
+    device.body = device.el.closest('.table-body');
+    device.body.addClass('edited-body');
+    device.btnSave = createBtnSave(device);
+    device.btnCancel = createBtnCancel(device);
 
-        let data = this.getEditedCells();
-        $.ajax({
-            url: '/device/' + this.deviceId,
-            method: 'POST',
-            data: data,
-            success: function (res) {
-                if(res.status === 'success'){
-                    Device.row.html(res.row);
-                    Device.row.removeClass('edited-row');
-                    Device.body.removeClass('edited-body');
-                }
-            }
-        })
-    },
-    // addDevice: function() {
-    //     this.deviceId = +this.row.data('id');
-    //
-    //     let data = this.getEditedCells();
-    //     $.ajax({
-    //         url: '/device/' + this.deviceId,
-    //         method: 'POST',
-    //         data: data,
-    //         success: function (res) {
-    //             if(res.status === 'success'){
-    //                 Device.row.html(res.row);
-    //                 Device.row.removeClass('edited-row');
-    //                 Device.body.removeClass('edited-body');
-    //             }
-    //         }
-    //     })
-    // },
-    cancelChanges: function () {
-        this.row.html(this.rowHtml);
-        Device.row.removeClass('edited-row');
-        Device.body.removeClass('edited-body');
-    },
-    getEditedCells: function () {
-        let data = {};
-        let cells = this.deviceId > 0 ? '.edited'  : '.editable';
-        console.log(this.deviceId, cells);
-        this.row.find(cells).each(function () {
-            let id = $(this).data('id');
-            let value = null;
-            if($(this).hasClass(Device.CLASS_SELECT) || $(this).hasClass(Device.CLASS_TEXT)) {
-                value = $(this).find('input').eq(0).val();
-            }else if($(this).hasClass(Device.CLASS_CHECKBOX)) {
-                value = $(this).find('input').prop('checked') ? 1 : 0;
-            }
-            data[$(this).data('id')] = value;
-        });
-        
-        data['sequenceNumber'] = this.row.find('.sequence-number').eq(0).text();
-        
-        return data;
-    }
-};
+    device.row
+        .find('.btn-operations .btn-operations-edit')
+        .html('')
+        .append(device.btnCancel)
+        .append(device.btnSave)
+    ;
 
+    device.row
+        .find(".btn-box-wrapper")
+        .html(btnDeleteRow);
+
+    $('#new-device').addClass(CLASS_HIDDEN_ELEMENT);
+}
+
+/**
+ * Прокрутка экрана к редактируемой строке
+ * @param row
+ */
+function scrollToEditedRow(row) {
+    removeDoubleBtn(row);
+    $('.table-body-wrapper').animate({scrollTop: row.offset().top + 50}, 500);
+    row.find('.editable').first().dblclick();
+}
+
+/**
+ * Добавление кнопки дублирования строки
+ * @param el
+ */
+function addDoubleBtn(el) {
+    var btnDublicateRow = `
+    <button type="button" class="btn btn-box primary" id="btnDublicateRow">
+      <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6.99951 5.229H11.5591V7.19434H6.99951V12.3604H4.91064V7.19434H0.351074V5.229H4.91064V0.456055H6.99951V5.229Z" fill="white"/>
+      </svg>
+    </button>
+    `;
+    
+    el.find('.btn-box-wrapper').html(btnDublicateRow).addClass("active");
+}
+
+/**
+ * Удаление кнопки дублирования строки
+ * @param el
+ */
+function removeDoubleBtn(el) {
+    el.find('.btn-box-wrapper').removeClass("active").html("");
+}
+
+/**
+ * Работа с кнопками сохранения и отмены
+ * @param device
+ * @returns {HTMLButtonElement}
+ */
 function createBtnSave(device)
 {
     let btn = createBtn("Сохранить", 'change-save', ['btn-primary','btn-save-change']);
-    console.log(btn);
     btn.addEventListener('click', () => {
         device.updateRow();
     });
@@ -237,6 +168,38 @@ function createBtn(text, id, classes)
     
     return btn;
 }
+/** Работа с кнопками сохранения и отмены */
+
+/**
+ * Работа с модальным окном
+ * для добавления новых элементов в select
+ * @param el
+ */
+function showModal(el){
+    $('.modal-overlay').addClass('active');
+    $('.modal').addClass('active');
+    $('.site').addClass('modal-open');
+    $("body, html").css("overflow", "hidden");
+    $(el).closest('.simple-select-drop').find('ul.simple-select-list').attr('id', ID_EDITED_SELECT);
+}
+
+function hideModal(isChange){
+    let editedSelect = $("#" + ID_EDITED_SELECT);
+    if(isChange) {
+        let newValue = $('#id-edited-textarea').val();
+        if(newValue.length > 0) {
+            let li = '<li class="simple-select-item" role="option" data-value="' + newValue + '">' + newValue + '</li>';
+            editedSelect.append(li);
+        }
+    }
+    
+    editedSelect.removeAttr('id');
+    $('.modal-overlay').removeClass('active');
+    $('.modal').removeClass('active');
+    $('.site').removeClass('modal-open');
+    $("body, html").css("overflow", "hidden auto");
+}
+/** Работа с модальным окном для добавления новых элементов в select */
 
 /* кастомный select */
 $(function () {
@@ -272,12 +235,7 @@ $(function () {
         if (!$(e.target).closest('.simple-select').length) {
             $('.simple-select').removeClass('is-active');
         }
-        if (!$(e.target).closest('.selectmenu').length) {
-            $('.selectmenu').removeClass('is-active');
-        }
-        if (!$(e.target).closest('.dropdown').length) {
-            $('.dropdown').removeClass('active');
-        }
+
     });
     $(document).on('keydown.simple-select', '.simple-select', function(event) {
         let $dropdown = $(this);
@@ -325,3 +283,59 @@ $(function () {
     });
 });
 /* кастомный select */
+
+/*фильтрация и сортировка столбцов*/
+$(document).ready(function() {
+    var btnFilterHead = $('.btn-filter-column');
+    var dropdownToolAll = $('.column-tool-dropdown');
+    var btnfilterCancel = $('.btn-filter-cancel');
+    var btnfilterApply = $('.btn-filter-apply');
+    var itemTool = $('.column-tool-item');
+
+    // открытие модального окна фильтрации и сортировки
+    btnFilterHead.on('click', function(e){
+        e.stopPropagation();
+        dropdownToolAll.removeClass('is-active');
+        let tableCell = $(this).closest('.table-cell');
+        tableCell.find('.column-tool-dropdown').addClass('is-active');
+    });
+
+    //кнопка Отмена
+    //закрытие модального окна сортировки
+    btnfilterCancel.on('click', function() {
+        dropdownToolAll.removeClass('is-active');
+    });
+
+    $('body').on('click', 'div', function (e) {
+        if ($(".dropdown.is-active").length && !$(e.target).closest('.is-active').length) {
+            e.stopPropagation();
+            $('.dropdown').removeClass('is-active');
+        }
+    });
+
+    // выбираем и убираем состояние checked у checkbox
+    $('.column-tool-total > button').on('click', function(){
+        var checkboxes = $(this)
+            .closest('.column-tool-total')
+            .next('.column-tool-list')
+            .find("input[type='checkbox']");
+
+        if ($(this).hasClass('btn-select-all')) {
+            checkboxes.prop('checked', true);
+        } else {
+            checkboxes.prop('checked', false);
+        }
+    });
+    
+    $("#per_page").on('change', function () {
+        let perPage = $(this).val();
+        Device.changePerPage(perPage);
+    });
+    
+    $('.btn-remove-sort').on('click', function () {
+        Device.removeSort($(this).data('key'));
+    })
+});
+function sort(type, param) {
+    Device.addSort(type, param);
+}

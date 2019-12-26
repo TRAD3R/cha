@@ -2,7 +2,8 @@
 
 return [
     'domains' => [
-        'main' => 'https://trad3r.ru',
+        'main' => 'http://db.cha.de',
+        'static' => 'http://db.cha.de',
     ],
     'emails' => [
         'manager' => 'tatusr@gmail.com'

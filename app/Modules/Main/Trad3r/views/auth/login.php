@@ -10,14 +10,19 @@ use yii\widgets\ActiveForm;
 
 $this->title = Yii::t('front', 'AUTHENTIFICATION');
 ?>
-<?php
-    $form = ActiveForm::begin([
-        'id' => 'form-login',
-    ]);
-?>
-    <?=$form->field($model, 'email', ['template' => '{input}{label}{error}{hint}'])->input('email')?>
-    <?=$form->field($model, 'password', ['template' => '{input}{label}{error}{hint}'])->passwordInput()?>
-    <?=$form->field($model, 'remember_me', ['template' => '{input}{label}{error}{hint}'])->checkbox()?>
+<div class="login-page">
+    <div class="form login-form">
+        <?php
+        $form = ActiveForm::begin([
+          'id' => 'form-login',
+        ]);
+        ?>
+        <?=$form->field($model, 'email', ['template' => '{label}{input}{error}{hint}'])->input('email')?>
+        <?=$form->field($model, 'password', ['template' => '{label}{input}{error}{hint}'])->passwordInput()?>
+        <?=$form->field($model, 'remember_me', ['template' => '{label}{input}{error}{hint}'])->checkbox()?>
 
-    <?=Html::submitButton('Войти', ['name' => 'login'])?>
-<?php ActiveForm::end()?>
+        <?=Html::submitButton('Войти', ['name' => 'login'])?>
+        <?php ActiveForm::end()?>
+    </div>
+</div>
+
