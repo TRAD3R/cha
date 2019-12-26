@@ -149,10 +149,24 @@ $specifications = $device->specifications;
         </div>
       </div>
     </div>
-    <div class="table-cell editable selectable" data-id="<?=DeviceTableStructure::DEVICE_USB_STANDARD?>">
-        <?php
-        echo $specifications->usbStandard ? $specifications->usbStandard->standard : "-";
-        ?>
+    <div class="table-cell editable selectable select" data-id="<?=DeviceTableStructure::DEVICE_USB_STANDARD?>">
+      <div class="simple-select">
+        <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
+          <input hidden type="text" name="sort-view" value="<?=$specifications->usbStandard->id?>" data-default-value="1">
+          <p class="simple-select-selected" data-placeholder="<?php echo $specifications->usbStandard ? $specifications->usbStandard->standard : "-";?>">
+            <?php echo $specifications->usbStandard ? $specifications->usbStandard->standard : "-"; ?></p>
+          <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
+          </svg>
+        </div>
+        <div class="simple-select-drop">
+          <div class="simple-select-drop-inner">
+          </div>
+          <div class="simple-select-add">
+            <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="table-cell text-center editable checkbox" data-id="<?=DeviceTableStructure::DEVICE_WIRELESS_CHARGE?>">
         <label class="checkbox">
