@@ -3,7 +3,7 @@
 namespace App\Helpers;
 
 
-class Url extends \yii\helpers\Url
+class UrlHelper extends \yii\helpers\Url
 {
     /**
      * Валиден ли урл
@@ -99,4 +99,22 @@ class Url extends \yii\helpers\Url
     public static function getUrlWithoutScheme($url) {
         return preg_replace('(^https?:)', '', $url);
     }
+    
+    public static function createImageAlias($type, $brand, $model = null, $toLower = true){
+        $alias = "{$brand}-{$model}.{$type}";
+        $alias = str_replace("ö", "oe", $alias);
+        $alias = str_replace("ü", "ue", $alias);
+        $alias = str_replace("ä", "ae", $alias);
+        $alias = str_replace("ß", "ss", $alias);
+        $alias = str_replace("+", "-plus", $alias);
+        $alias = preg_replace("/[^0-9a-z.]/i", "-", $alias);
+        while(stripos($alias,"--") > 0){
+            $alias = str_replace("--", "-", $alias);
+        }
+        $alias = str_replace("-.", ".", $alias);
+        $alias = preg_replace("/-$/", "", $alias);
+
+
+        return $toLower ? strtolower($alias) : $alias;
+    } // createAlias
 }
