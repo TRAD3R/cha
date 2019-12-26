@@ -107,7 +107,7 @@ class UrlHelper extends \yii\helpers\Url
         $alias = str_replace("ä", "ae", $alias);
         $alias = str_replace("ß", "ss", $alias);
         $alias = str_replace("+", "-plus", $alias);
-        $alias = preg_replace("/[^0-9a-z.]/i", "-", $alias);
+        $alias = preg_replace("/[^0-9a-z]/i", "-", $alias);
         while(stripos($alias,"--") > 0){
             $alias = str_replace("--", "-", $alias);
         }
