@@ -216,7 +216,7 @@ ul {
     .table-cell img {
       display: block;
       width: 100%;
-      max-width: 70px;
+      max-width: 40px;
       margin: 0 auto; }
     .table-cell .simple-select {
       width: 100%;
