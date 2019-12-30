@@ -16,6 +16,15 @@ class m191221_080211_create_manufacturers_table extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string(255),
         ]);
+        $this->batchInsert('{{%manufacturers}}', ['id', 'name'], [
+            [1,"Belkin"],
+            [2,"D-Parts"],
+            [3,"Assmann"],
+            [4,"Fontastic"],
+            [5,"Conceptronic"],
+            [6,"Kingston"],
+            [7,"Pedea"],
+        ]);
     }
 
     /**

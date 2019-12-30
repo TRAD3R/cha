@@ -30,6 +30,8 @@ use yii\db\ActiveRecord;
  * @property int                $barcode_type_id        [integer(11)]
  * @property int                $browse_node_id         [integer(11)]
  * @property int                $variation_theme_id     [integer(11)]
+ * @property int                $price                  [integer(11)]
+ * @property int                $quantity               [integer(11)]
  * @property Product            $product 
  * @property DeviceType         $deviceType 
  * @property ProductType        $productType 

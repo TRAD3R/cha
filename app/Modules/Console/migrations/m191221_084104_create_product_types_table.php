@@ -18,10 +18,10 @@ class m191221_084104_create_product_types_table extends Migration
         ]);
         
         $this->batchInsert('{{%product_types}}', ['id', 'type'], [
-            "1","ConsumerElectronics",
-            "2","PhoneAccessory",
-            "3","computercomponent",
-            "4","kindleaccessories",
+            ["1","ConsumerElectronics"],
+            ["2","PhoneAccessory"],
+            ["3","computercomponent"],
+            ["4","kindleaccessories"],
         ]);
     }
 

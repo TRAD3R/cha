@@ -33,6 +33,8 @@ class m191221_091706_create_product_specifications_table extends Migration
             'barcode_type_id' => $this->integer(),
             'browse_node_id' => $this->integer(),
             'variation_theme_id' => $this->integer(),
+            'price' => $this->integer(),
+            'quantity' => $this->integer(),
         ]);
     }
 
