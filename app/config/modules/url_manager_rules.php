@@ -8,6 +8,8 @@ $project_rules = [
         'devices/remove/<id:\d{1,}>'                    => 'device/remove',
         'devices/<id:\d{1,}>'                           => 'device/update',
         'devices/specification/list/<id:\d{1,}>'        => 'device/spec-list',
+        
+        'products'                                      => 'product/index',
     ]
 ];
 
