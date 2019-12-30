@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Helpers\Url;
+use App\Helpers\UrlHelper;
 use yii\base\BaseObject;
 use yii\base\Exception;
 use yii\web\UploadedFile;

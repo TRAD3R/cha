@@ -2,19 +2,20 @@
 
 use App\Html;
 use App\Models\Device;
+use App\Models\Product;
 use App\Params;
 use yii\web\View;
 
 /**
  * @var View $this
- * @var Device[] $devices 
+ * @var Product[] $products 
  * @var int $totalCount
  * @var array $params
  * @var int $offset
  */
  ?>
 <div class="page page-devices">
-  <h2 class="page-title dr-h2">Девайсы</h2>
+  <h2 class="page-title dr-h2">Товары</h2>
 
   <div class="table" id="horizontal-scroller">
     <div class="table-content">
@@ -22,7 +23,7 @@ use yii\web\View;
               'sortedColumnsAsc' => $params[Params::SORT_ASC], 
               'sortedColumnsDesc' =>$params[Params::SORT_DESC]
       ]); ?>
-      <?php echo $this->render('table_body', compact('devices', 'offset')); ?>
+      <?php echo $this->render('table_body', compact('products', 'offset')); ?>
     </div>
   </div>
   <div class="table-btn-tool">
@@ -47,7 +48,7 @@ use yii\web\View;
     const CLASS_HIDDEN_ELEMENT = 'hidden-el';
     const ID_EDITED_SELECT = 'edited-select';
 
-    var Device = {
+    var Product = {
         el: null,
         row: null,
         deviceId: 0,

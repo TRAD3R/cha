@@ -8,7 +8,7 @@
  * @var int           $page_range  кол-во элементов страниц, которые нужны на странице
  */
 
-use App\Helpers\Url;
+use App\Helpers\UrlHelper;
 use App\Helpers\Paginator;
 
 if ($total_count == 0) {
@@ -18,7 +18,7 @@ if ($total_count == 0) {
 $paginator = new Paginator($page, $per_page, $total_count);
 
 $create_url = function ($page) {
-    return Url::toRoute(['', 'page' => $page] + $_GET);
+    return UrlHelper::toRoute(['', 'page' => $page] + $_GET);
 };
 
 if (count($paginator->getPages()) < 2) {
