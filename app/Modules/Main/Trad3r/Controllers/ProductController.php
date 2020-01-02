@@ -33,7 +33,7 @@ class ProductController extends Main
         $offset = ($params[Params::PAGE] - 1) * $params[Params::PER_PAGE];
         
         $products = new ProductHelper();
-        $products = $products->getDevices($params, $offset);
+//        $products = $products->getDevices($params, $offset);
         
         $totalCount = Device::find()->count();
         return $this->render('index', [

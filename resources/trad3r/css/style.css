@@ -184,6 +184,7 @@ ul {
     flex-direction: column; }
     .table-body-wrapper {
       max-height: 65vh;
+      min-height: 65vh;
       overflow: hidden auto; }
       .table-body-wrapper::-webkit-scrollbar-track {
         -webkit-box-shadow: none; }
@@ -207,12 +208,20 @@ ul {
   .table-cell {
     position: relative;
     min-height: 35px;
-    min-width: 140px;
+    min-width: 155px;
     display: flex;
     align-items: center;
     border: 1px solid #E3E7F4;
     background: #fff;
     padding: 5px; }
+    .table-cell .text {
+      position: absolute;
+      white-space: nowrap;
+      width: 90%;
+      left: 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 13px; }
     .table-cell img {
       display: block;
       width: 100%;
@@ -320,6 +329,10 @@ ul {
   background: #B1FF74; }
 .gr-content {
   background: #E497FF; }
+.gr-seo {
+  background: #92D1FF; }
+.gr-amazon {
+  background: #FFF2AF; }
 
 .page-devices .page-title {
   padding-left: 40px; }
@@ -575,7 +588,7 @@ ul {
   opacity: 0;
   visibility: hidden;
   position: absolute;
-  top: 60px;
+  top: 40px;
   left: 0;
   z-index: 1;
   background: #fff;

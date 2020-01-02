@@ -212,6 +212,7 @@ ul {
     flex-direction: column;
     &-wrapper {
       max-height: 65vh;
+      min-height: 65vh;
       overflow: hidden auto;
       &::-webkit-scrollbar-track {
         -webkit-box-shadow: none;
@@ -243,12 +244,21 @@ ul {
   &-cell {
     position: relative;
     min-height: 35px;
-    min-width: 140px;
+    min-width: 155px;
     display: flex;
     align-items: center;
     border: 1px solid $gray;
     background: $light;
     padding: 5px;
+    .text {
+      position: absolute;
+      white-space: nowrap;
+      width: 90%;
+      left: 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 13px;
+    }
     img {
       display: block;
       width: 100%;
@@ -410,6 +420,12 @@ ul {
   }
   &-content {
     background: $t-content;
+  }
+  &-seo {
+    background: $t-seo;
+  }
+  &-amazon {
+    background: $t-amazon;
   }
 }
 
@@ -730,7 +746,7 @@ ul {
     opacity: 0;
     visibility: hidden;
     position: absolute;
-    top: 60px;
+    top: 40px;
     left: 0;
     z-index: 1;
     background: $light;
