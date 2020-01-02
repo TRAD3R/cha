@@ -2,14 +2,14 @@
 
 
 use App\Params;
-use App\Tables\DeviceTableStructure;
+use App\Tables\ProductTableStructure;
 
 /**
  * @var array $sortedColumnsAsc
  * @var array $sortedColumnsDesc
  */
-$ths = DeviceTableStructure::getTitles();
-$sortedColumns = DeviceTableStructure::getSortedColumns();
+$ths = ProductTableStructure::getTitles();
+$sortedColumns = ProductTableStructure::getSortedColumns();
 ?>
 
 <div class="table-head">

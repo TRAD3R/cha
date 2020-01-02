@@ -7,11 +7,11 @@
  */
 
 use App\Models\Device;
-
+$products = [];
 ?>
 <main class="page">
   <div class="container-fluid">
-    <?php echo $this->render('includes/table', compact('devices', 'totalCount', 'params', 'offset')); ?>
+    <?php echo $this->render('includes/table', compact('products', 'totalCount', 'params', 'offset')); ?>
   </div>
 </main>
 

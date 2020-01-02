@@ -48,48 +48,69 @@ class ProductTableStructure extends AbstractTS
     const PRODUCT_TYPE = 37;
     const VARIATION_THEME = 38;
     
-    const DEVICE_GROUP_CUSTOM = 'custom';
-    const DEVICE_GROUP_MAINCHARACTERISTIC = 'mainCharacteristic';
-    const DEVICE_GROUP_PARAMS = 'params';
-    const DEVICE_GROUP_INTERFACES = 'interfaces';
-    const DEVICE_GROUP_PRICE = 'price';
-    const DEVICE_GROUP_CONTENT = 'content';
-    
+    const PRODUCT_GROUP_CUSTOM = 'custom';
+    const PRODUCT_GROUP_MAINCHARACTERISTIC = 'mainCharacteristic';
+    const PRODUCT_GROUP_PARAMS = 'params';
+    const PRODUCT_GROUP_PRICE = 'price';
+    const PRODUCT_GROUP_SEO = 'seo';
+    const PRODUCT_GROUP_CONTENT = 'content';
+    const PRODUCT_GROUP_AMAZON = 'amazon';
+
     public static function getTitles()
     {
         return [
-          self::DEVICE_GROUP_CUSTOM => [
+          self::PRODUCT_GROUP_CUSTOM => [
             0 => Yii::t('front', 'SECUENCE_NUMBER'),
           ],
-          self::DEVICE_GROUP_MAINCHARACTERISTIC => [
-            self::PRODUCT_DATE_CREATED   => Yii::t('front', 'DATE_CREATED'),
-            self::DEVICE_TYPE    => Yii::t('front', 'DEVICE_TYPE'),
-            self::DEVICE_BRAND   => Yii::t('front', 'DEVICE_BRAND'),
-            self::DEVICE_MODEL   => Yii::t('front', 'DEVICE_MODEL'),
-            self::DEVICE_YEAR    => Yii::t('front', 'RELEASE_YEAR'),
+          self::PRODUCT_GROUP_MAINCHARACTERISTIC => [
+            self::DATE_CREATED  => Yii::t('front', 'DATE_CREATED'),
+            self::NODE          => Yii::t('front', 'NODE'),
+            self::DEVICE_TYPE   => Yii::t('front', 'DEVICE_TYPE'),
+            self::TYPE          => Yii::t('front', 'TYPE'),
+            self::MERCHANT      => Yii::t('front', 'MERCHANT'),
+            self::SKU           => Yii::t('front', 'SKU'),
+            self::BRAND         => Yii::t('front', 'BRAND'),
+            self::MANUFACTURER  => Yii::t('front', 'MANUFACTURER'),
           ],
-          self::DEVICE_GROUP_PARAMS => [
-            self::DEVICE_LENGTH => Yii::t('front', 'LENGTH'),
-            self::DEVICE_WIDTH => Yii::t('front', 'WIDTH'),
-            self::DEVICE_DEPTH => Yii::t('front', 'DEPTH'),
-            self::DEVICE_SCREEN_SIZE => Yii::t('front', 'SCREEN_SIZE'),
+          self::PRODUCT_GROUP_PARAMS => [
+            self::LENGTH => Yii::t('front', 'LENGTH'),
+            self::WIDTH => Yii::t('front', 'WIDTH'),
+            self::DEPTH => Yii::t('front', 'DEPTH'),
+            self::SIZE => Yii::t('front', 'SIZE'),
+            self::UNIT_MEASURE => Yii::t('front', 'UNIT_MEASURE'),
           ],
-          self::DEVICE_GROUP_INTERFACES => [
-            self::DEVICE_CARD_MEMORY => Yii::t('front', 'CARD_MEMORY'),
-            self::DEVICE_35_JACK => Yii::t('front', '35_JACK'),
-            self::DEVICE_BLUETOOTH => Yii::t('front', 'BLUETOOTH'),
-            self::DEVICE_USB_TYPE => Yii::t('front', 'USB_TYPE'),
-            self::DEVICE_USB_STANDARD => Yii::t('front', 'USB_STANDARD'),
-            self::DEVICE_WIRELESS_CHARGE => Yii::t('front', 'WIRELESS_CHARGE'),
-            self::DEVICE_FAST_CHARGE => Yii::t('front', 'FAST_CHARGE'),
-            self::DEVICE_REMOVABLE_BATTERY => Yii::t('front', 'REMOVABLE_BATTERY'),
+          self::PRODUCT_GROUP_PRICE => [
+            self::PRICE => Yii::t('front', 'PRICE'),
+            self::QUANTITY => Yii::t('front', 'QUANTITY'),
           ],
-          self::DEVICE_GROUP_PRICE => [
-            self::DEVICE_PRICE => Yii::t('front', 'PRICE'),
+          self::PRODUCT_GROUP_SEO => [
+            self::TITLE => Yii::t('front', 'TITLE'),
+            self::DESCRIPTION => Yii::t('front', 'DESCRIPTION'),
+            self::BULLETPOINT_1 => Yii::t('front', 'BULLETPOINT_1'),
+            self::BULLETPOINT_2 => Yii::t('front', 'BULLETPOINT_2'),
+            self::BULLETPOINT_3 => Yii::t('front', 'BULLETPOINT_3'),
+            self::BULLETPOINT_4 => Yii::t('front', 'BULLETPOINT_4'),
+            self::BULLETPOINT_5 => Yii::t('front', 'BULLETPOINT_5'),
           ],
-          self::DEVICE_GROUP_CONTENT => [
-            self::DEVICE_IMAGE => Yii::t('front', 'IMAGE'),
-          ]
+          self::PRODUCT_GROUP_CONTENT => [
+            self::IMAGE_1 => Yii::t('front', 'IMAGE_1'),
+            self::IMAGE_2 => Yii::t('front', 'IMAGE_2'),
+            self::IMAGE_3 => Yii::t('front', 'IMAGE_3'),
+            self::IMAGE_4 => Yii::t('front', 'IMAGE_4'),
+            self::IMAGE_5 => Yii::t('front', 'IMAGE_5'),
+            self::IMAGE_6 => Yii::t('front', 'IMAGE_6'),
+            self::IMAGE_7 => Yii::t('front', 'IMAGE_7'),
+            self::IMAGE_8 => Yii::t('front', 'IMAGE_8'),
+            self::IMAGE_9 => Yii::t('front', 'IMAGE_9'),
+            self::SWATCH_IMAGE => Yii::t('front', 'SWATCH_IMAGE'),
+          ],
+          self::PRODUCT_GROUP_AMAZON => [
+            self::BARCODE => Yii::t('front', 'BARCODE'),
+            self::BARCODE_TYPE => Yii::t('front', 'BARCODE_TYPE'),
+            self::BROWSE_NODE => Yii::t('front', 'BROWSE_NODE'),
+            self::PRODUCT_TYPE => Yii::t('front', 'PRODUCT_TYPE'),
+            self::VARIATION_THEME => Yii::t('front', 'VARIATION_THEME'),
+          ],
         ];
     }
 
@@ -100,24 +121,27 @@ class ProductTableStructure extends AbstractTS
     public static function getSortedColumns()
     {
         return [
-            self::PRODUCT_DATE_CREATED,
-            self::DEVICE_TYPE,
+            self::DATE_CREATED,
+            self::NODE,
             self::DEVICE_BRAND,
-            self::DEVICE_MODEL,
-            self::DEVICE_YEAR,
-            self::DEVICE_LENGTH,
-            self::DEVICE_WIDTH,
-            self::DEVICE_DEPTH,
-            self::DEVICE_SCREEN_SIZE,
-            self::DEVICE_CARD_MEMORY,
-            self::DEVICE_35_JACK,
-            self::DEVICE_BLUETOOTH,
-            self::DEVICE_USB_TYPE,
-            self::DEVICE_USB_STANDARD,
-            self::DEVICE_WIRELESS_CHARGE,
-            self::DEVICE_FAST_CHARGE,
-            self::DEVICE_REMOVABLE_BATTERY,
-            self::DEVICE_PRICE,
+            self::DEVICE_TYPE,
+            self::TYPE,
+            self::MERCHANT,
+            self::SKU,
+            self::BRAND,
+            self::MANUFACTURER,
+            self::LENGTH,
+            self::WIDTH,
+            self::DEPTH,
+            self::SIZE,
+            self::UNIT_MEASURE,
+            self::PRICE,
+            self::QUANTITY,
+            self::BARCODE,
+            self::BARCODE_TYPE,
+            self::BROWSE_NODE,
+            self::PRODUCT_TYPE,
+            self::VARIATION_THEME,
         ];
     }
 
