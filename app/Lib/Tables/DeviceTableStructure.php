@@ -45,7 +45,7 @@ class DeviceTableStructure extends AbstractTS
           self::DEVICE_GROUP_MAINCHARACTERISTIC => [
             self::DEVICE_DATE_CREATED   => Yii::t('front', 'DATE_CREATED'),
             self::DEVICE_TYPE    => Yii::t('front', 'DEVICE_TYPE'),
-            self::DEVICE_BRAND   => Yii::t('front', 'DEVICE_BRAND'),
+            self::DEVICE_BRAND   => Yii::t('front', 'BRAND'),
             self::DEVICE_MODEL   => Yii::t('front', 'DEVICE_MODEL'),
             self::DEVICE_YEAR    => Yii::t('front', 'RELEASE_YEAR'),
           ],
