@@ -28,6 +28,7 @@ class DeviceTableStructure extends AbstractTS
     const DEVICE_PRICE = 17;
     const DEVICE_IMAGE = 18;
     const DEVICE_YEAR = 19;
+    const DEVICE_LINE = 20;
     
     const DEVICE_GROUP_CUSTOM = 'custom';
     const DEVICE_GROUP_MAINCHARACTERISTIC = 'mainCharacteristic';
@@ -45,8 +46,9 @@ class DeviceTableStructure extends AbstractTS
           self::DEVICE_GROUP_MAINCHARACTERISTIC => [
             self::DEVICE_DATE_CREATED   => Yii::t('front', 'DATE_CREATED'),
             self::DEVICE_TYPE    => Yii::t('front', 'DEVICE_TYPE'),
-            self::DEVICE_BRAND   => Yii::t('front', 'DEVICE_BRAND'),
+            self::DEVICE_BRAND   => Yii::t('front', 'BRAND'),
             self::DEVICE_MODEL   => Yii::t('front', 'DEVICE_MODEL'),
+            self::DEVICE_LINE   => Yii::t('front', 'LINE'),
             self::DEVICE_YEAR    => Yii::t('front', 'RELEASE_YEAR'),
           ],
           self::DEVICE_GROUP_PARAMS => [
@@ -85,6 +87,7 @@ class DeviceTableStructure extends AbstractTS
             self::DEVICE_TYPE,
             self::DEVICE_BRAND,
             self::DEVICE_MODEL,
+            self::DEVICE_LINE,
             self::DEVICE_YEAR,
             self::DEVICE_LENGTH,
             self::DEVICE_WIDTH,

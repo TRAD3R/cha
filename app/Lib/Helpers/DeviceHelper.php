@@ -9,6 +9,7 @@ use App\Models\Device;
 use App\Models\DeviceBrand;
 use App\Models\DeviceSpecification;
 use App\Models\DeviceType;
+use App\Models\Line;
 use App\Models\UsbStandard;
 use App\Models\UsbType;
 use App\Params;
@@ -83,6 +84,17 @@ class DeviceHelper
                     break;
                 case DeviceTableStructure::DEVICE_MODEL:
                     $device->title = $value;
+                    break;
+                case DeviceTableStructure::DEVICE_LINE:
+                    $line = Line::findOne($value);
+
+                    if(!$line){
+                        $line = new Line();
+                        $line->title = $value;
+                        $line->save();
+                    }
+
+                    $device->line_id = $line->id;
                     break;
                 case DeviceTableStructure::DEVICE_YEAR:
                     $specifications->year = $value;

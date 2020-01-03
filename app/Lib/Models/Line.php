@@ -11,8 +11,9 @@ use yii\db\ActiveRecord;
  * @package App\Models
  * 
  * @property int                    $id                 [integer(11)]
+ * @property int                    $date_created       [datetime]
  * @property string                 $title              [varchar(250)]
- * @property int                    $brand_id           [integer(11)]
+ * @property int                    $line_id            [integer(11)]
  * @property Device[]               $devices
  */
 class Line extends ActiveRecord
