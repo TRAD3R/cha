@@ -14,7 +14,7 @@ use yii\web\View;
  * @var int $offset
  */
  ?>
-<div class="page page-devices">
+<div class="page page-product">
   <h2 class="page-title dr-h2">Товары</h2>
 
   <div class="table" id="horizontal-scroller">
@@ -48,7 +48,7 @@ use yii\web\View;
     const CLASS_HIDDEN_ELEMENT = 'hidden-el';
     const ID_EDITED_SELECT = 'edited-select';
 
-    var Product = {
+    var Device = {
         el: null,
         row: null,
         deviceId: 0,

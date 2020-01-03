@@ -4,6 +4,7 @@
 namespace App\Assets\Packages\Trad3r;
 
 
+use App\Assets\Packages\ChosenAsset;
 use App\Assets\Packages\DeviceAsset;
 use yii\web\AssetBundle;
 
@@ -20,6 +21,7 @@ class MainAsset extends AssetBundle
     
     public $depends = [
         CommonTrad3rAssets::class,
-        DeviceAsset::class
+        DeviceAsset::class,
+        ChosenAsset::class,
     ];
 }
