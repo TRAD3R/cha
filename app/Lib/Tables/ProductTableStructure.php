@@ -11,7 +11,6 @@ class ProductTableStructure extends AbstractTS
 {
     const DATE_CREATED = 1;
     const NODE = 2;
-    const DEVICE_BRAND = 3;
     const DEVICE_TYPE = 4;
     const TYPE = 5;
     const MERCHANT = 6;
@@ -122,8 +121,7 @@ class ProductTableStructure extends AbstractTS
     {
         return [
             self::DATE_CREATED,
-            self::NODE,
-            self::DEVICE_BRAND,
+            self::BRAND,
             self::DEVICE_TYPE,
             self::TYPE,
             self::MERCHANT,
