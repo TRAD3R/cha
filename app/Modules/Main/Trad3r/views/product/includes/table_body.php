@@ -59,10 +59,16 @@ use yii\web\View;
           </div>
         </div>
       </div>
-      <div class="table-cell">
-
+      <div class="table-cell editable select">
+        <div class="form-group">
+          <select class="form-control chosen-select" name="device_type[]" multiple="multiple" size="4" data-placeholder="Тип устройства" style="display: none;">
+            <option value="5980">Handy</option>
+            <option value="5985">Tablet</option>
+            <option value="5986">Laptop</option>
+          </select>
+        </div>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable select">
         <div class="simple-select">
           <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
             <input hidden type="text" name="sort-view" value="1" data-default-value="1">
@@ -80,7 +86,7 @@ use yii\web\View;
           </div>
         </div>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable select">
         <div class="simple-select">
           <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
             <input hidden type="text" name="sort-view" value="1" data-default-value="1">
@@ -99,10 +105,121 @@ use yii\web\View;
         </div>
       </div>
       <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
+        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
+      </div>
+      <div class="table-cell editable text">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell" data-id="5">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell editable text" data-id="6">
+        <input class="input-text" type="text" value="364921031">
+      </div>
+      <div class="table-cell editable select">
         <div class="simple-select">
           <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
             <input hidden type="text" name="sort-view" value="1" data-default-value="1">
-            <p class="simple-select-selected" data-placeholder="1">Dropshipping</p>
+            <p class="simple-select-selected" data-placeholder="1">PhoneAccessory</p>
+            <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
+            </svg>
+          </div>
+          <div class="simple-select-drop">
+            <div class="simple-select-drop-inner">
+            </div>
+            <div class="simple-select-add">
+              <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="table-cell editable select">
+        <div class="simple-select">
+          <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
+            <input hidden type="text" name="sort-view" value="1" data-default-value="1">
+            <p class="simple-select-selected" data-placeholder="1">SizeName</p>
+            <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
+            </svg>
+          </div>
+          <div class="simple-select-drop">
+            <div class="simple-select-drop-inner">
+            </div>
+            <div class="simple-select-add">
+              <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="table-row" data-id="2">
+      <div class="btn-box-wrapper"></div>
+      <div class="btn-operations">
+        <div class="btn-operations-edit">
+
+        </div>
+      </div>
+      <div class="table-cell sequence-number">
+        1
+      </div>
+      <div class="table-cell">12.10.2019</div>
+      <div class="table-cell editable select" data-id="1">
+        <div class="simple-select">
+          <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
+            <input hidden type="text" name="sort-view" value="1" data-default-value="1">
+            <p class="simple-select-selected" data-placeholder="1">Child</p>
             <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
               <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
             </svg>
@@ -117,10 +234,19 @@ use yii\web\View;
         </div>
       </div>
       <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell editable text">
+        <input class="input-text" type="text" value="12415253">
+      </div>
+      <div class="table-cell editable text">
         <div class="simple-select">
           <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
             <input hidden type="text" name="sort-view" value="1" data-default-value="1">
-            <p class="simple-select-selected" data-placeholder="1">Dropshipping</p>
+            <p class="simple-select-selected" data-placeholder="1">D-Parts</p>
             <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
               <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
             </svg>
@@ -134,11 +260,11 @@ use yii\web\View;
           </div>
         </div>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable select">
         <div class="simple-select">
           <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
             <input hidden type="text" name="sort-view" value="1" data-default-value="1">
-            <p class="simple-select-selected" data-placeholder="1">Dropshipping</p>
+            <p class="simple-select-selected" data-placeholder="1">D-Parts</p>
             <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
               <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
             </svg>
@@ -164,8 +290,23 @@ use yii\web\View;
       <div class="table-cell editable text" data-id="5">
         <input class="input-text" type="text" value="13">
       </div>
-      <div class="table-cell editable text" data-id="5">
-        <input class="input-text" type="text" value="1">
+      <div class="table-cell editable select" data-id="5">
+        <div class="simple-select">
+          <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
+            <input hidden type="text" name="sort-view" value="1" data-default-value="1">
+            <p class="simple-select-selected" data-placeholder="1">М</p>
+            <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
+            </svg>
+          </div>
+          <div class="simple-select-drop">
+            <div class="simple-select-drop-inner">
+            </div>
+            <div class="simple-select-add">
+              <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="table-cell editable text" data-id="5">
         <input class="input-text" type="text" value="123">
@@ -173,61 +314,79 @@ use yii\web\View;
       <div class="table-cell editable text" data-id="5">
         <input class="input-text" type="text" value="123">
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
+
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable text">
+        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
         <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
       </div>
       <div class="table-cell editable text" data-id="5">
         <input class="input-text" type="text" value="364921031">
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable select">
         <div class="simple-select">
           <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
             <input hidden type="text" name="sort-view" value="1" data-default-value="1">
@@ -248,7 +407,7 @@ use yii\web\View;
       <div class="table-cell editable text" data-id="6">
         <input class="input-text" type="text" value="364921031">
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable select">
         <div class="simple-select">
           <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
             <input hidden type="text" name="sort-view" value="1" data-default-value="1">
@@ -266,7 +425,7 @@ use yii\web\View;
           </div>
         </div>
       </div>
-      <div class="table-cell">
+      <div class="table-cell editable select">
         <div class="simple-select">
           <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
             <input hidden type="text" name="sort-view" value="1" data-default-value="1">
