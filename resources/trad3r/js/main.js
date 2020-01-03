@@ -13,6 +13,20 @@ $(document).ready(function () {
         removeDoubleBtn($(this));
     });
 
+    $('.chosen-select').chosen({
+        disable_search_threshold: 10,
+        no_results_text         : "",
+        search_contains         : true,
+        width                   : '100%'
+    });
+    $('body').on('click', '.chosen-select', function () {
+        $(this).chosen({
+            disable_search_threshold: 10,
+            no_results_text         : "",
+            search_contains         : true,
+            width                   : '100%'
+        });
+    });
 
     /**
      * Клонирование строки
@@ -339,3 +353,4 @@ $(document).ready(function() {
 function sort(type, param) {
     Device.addSort(type, param);
 }
+

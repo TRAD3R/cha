@@ -169,15 +169,4 @@ class File extends BaseObject
         $ext = mb_strtolower(pathinfo($file, PATHINFO_EXTENSION), 'UTF-8');
         return $ext != 'jpeg' ? $ext : 'jpg';
     }
-
-    /**
-     * Формирует путь к файлам с картинками моделей
-     *
-     * @return string
-     */
-    public function getModelPath($file)
-    {
-        $web = \Yii::getAlias('@Web');
-        return "{$web}/images/models/$file";
-    }
 }

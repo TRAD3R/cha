@@ -101,19 +101,20 @@ class UrlHelper extends \yii\helpers\Url
     }
     
     public static function createImageAlias($type, $brand, $model = null, $toLower = true){
-        $alias = "{$brand}-{$model}.{$type}";
+        $alias = "{$brand}-{$model}";
         $alias = str_replace("ö", "oe", $alias);
         $alias = str_replace("ü", "ue", $alias);
         $alias = str_replace("ä", "ae", $alias);
         $alias = str_replace("ß", "ss", $alias);
         $alias = str_replace("+", "-plus", $alias);
-        $alias = preg_replace("/[^0-9a-z.]/i", "-", $alias);
+        $alias = preg_replace("/[^0-9a-z]/i", "-", $alias);
         while(stripos($alias,"--") > 0){
             $alias = str_replace("--", "-", $alias);
         }
         $alias = str_replace("-.", ".", $alias);
         $alias = preg_replace("/-$/", "", $alias);
-
+        
+        $alias .= ".{$type}";
 
         return $toLower ? strtolower($alias) : $alias;
     } // createAlias
