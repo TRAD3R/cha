@@ -13,6 +13,8 @@ use yii\db\ActiveRecord;
  * @property int                    $id                 [integer(11)]
  * @property string                 $title              [varchar(250)]
  * @property int                    $brand_id           [integer(11)]
+ * @property int                    $line_id            [integer(11)]
+ * @property Line                   $line
  * @property DeviceBrand            $brand
  * @property DeviceSpecification    $specifications
  */
@@ -37,6 +39,11 @@ class Device extends ActiveRecord
     public function getBrand()
     {
         return $this->hasOne(DeviceBrand::class, ['id' => 'brand_id']);
+    }
+
+    public function getLine()
+    {
+        return $this->hasOne(Line::class, ['id' => 'line_id']);
     }
     
     public function getSpecifications()

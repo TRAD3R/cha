@@ -7,9 +7,12 @@
  */
 
 use App\Models\Device;
-
+$products = [];
 ?>
-<?php echo $this->render('includes/table', compact('devices', 'totalCount', 'params', 'offset')); ?>
+
+<?php echo $this->render('includes/table', compact('products', 'totalCount', 'params', 'offset')); ?>
+
+
 
 
 
