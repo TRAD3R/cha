@@ -46,7 +46,7 @@ $sortedColumns = ProductTableStructure::getSortedColumns();
                         </div>
                         <ul class="column-tool-list">
                           <li><button type="button" class="column-tool-item sort tool-sort-asc <?=in_array($key, $sortedColumnsAsc) ? 'is-active' : ''?>" 
-                                      onclick="sort('<?=Params::SORT_ASC?>', <?=$key?>)">
+                                      onclick="Product.addSort('<?=Params::SORT_ASC?>', <?=$key?>)">
                                   Сортировать от А - Я
                               </button>
                           </li>

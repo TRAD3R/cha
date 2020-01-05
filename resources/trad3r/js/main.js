@@ -1,3 +1,63 @@
+function getAllUrlParams(url) {
+    // извлекаем строку из URL или объекта window
+    var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+
+    // объект для хранения параметров
+    var obj = {};
+
+    // если есть строка запроса
+    if (queryString) {
+
+        // данные после знака # будут опущены
+        queryString = queryString.split('#')[0];
+
+        // разделяем параметры
+        var arr = queryString.split('&');
+
+        for (var i=0; i<arr.length; i++) {
+            // разделяем параметр на ключ => значение
+            var a = arr[i].split('=');
+
+            // обработка данных вида: list[]=thing1&list[]=thing2
+            var paramNum = undefined;
+            var paramName = a[0].replace(/\[\d*\]/, function(v) {
+                paramNum = v.slice(1,-1);
+                return '';
+            });
+
+            // передача значения параметра ('true' если значение не задано)
+            var paramValue = typeof(a[1])==='undefined' ? true : a[1];
+
+            // преобразование регистра
+            paramName = paramName.toLowerCase();
+            paramValue = paramValue.toLowerCase();
+
+            // если ключ параметра уже задан
+            if (obj[paramName]) {
+                // преобразуем текущее значение в массив
+                if (typeof obj[paramName] === 'string') {
+                    obj[paramName] = [obj[paramName]];
+                }
+                // если не задан индекс...
+                if (typeof paramNum === 'undefined') {
+                    // помещаем значение в конец массива
+                    obj[paramName].push(paramValue);
+                }
+                // если индекс задан...
+                else {
+                    // размещаем элемент по заданному индексу
+                    obj[paramName][paramNum] = paramValue;
+                }
+            }
+            // если параметр не задан, делаем это вручную
+            else {
+                obj[paramName] = paramValue;
+            }
+        }
+    }
+    return obj;
+}
+
 $(document).ready(function () {
     var paginationItem = $('.pagination-item');
     paginationItem.on('click', function () {
@@ -28,42 +88,8 @@ $(document).ready(function () {
         });
     });
 
-    /**
-     * Клонирование строки
-     */
-    $('.btn-box-wrapper').on('click', '#btnDublicateRow', function () {
-        Device.row = $(this).closest('.table-row');
-        Device.body = $(this).closest('.table-body');
-        Device.body
-            .append("<div class='table-row' data-id='0'>" + Device.row.html() + "</div>")
-            ;
-        let lastRow = Device.body.find('.table-row').last();
-        scrollToEditedRow(lastRow);
-    });
-
-    /**
-     * Удаление строки
-     */
-    $('.btn-box-wrapper').on('click', '#btnDeleteRow', function () {
-        Device.row = $(this).closest('.table-row');
-        Device.body = $(this).closest('.table-body');
-        Device.deleteRow();
-    });
-
-
-    $('.table-body').on('dblclick', '.editable', function () {
-        Device.el = $(this);
-        Device.row = Device.el.closest('.table-row');
-        
-        if(!Device.row.hasClass('edited-row')) {
-            editRow(Device);
-        }
-        
-        Device.changeInput();
-    });
-    
     $('#new-device').on('click', function () {
-        $(this).addClass(CLASS_HIDDEN_ELEMENT);
+        $(this).addClass(Gadget.getHiddenClass());
 
         let newRow = $('#empty-row');
         let tableBody = $('.table-body');
@@ -76,9 +102,9 @@ $(document).ready(function () {
 
 /**
  * Подготовка стоки к редактированию
- * @param device
+ * @param gadget
  */
-function editRow(device) {
+function editRow(gadget) {
     var btnDeleteRow = `
     <button type="button" class="btn btn-box btn-red" id="btnDeleteRow">
         <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -87,25 +113,25 @@ function editRow(device) {
     </button>
     `;
 
-    device.rowHtml = device.row.html();
-    device.row.addClass('edited-row');
-    device.body = device.el.closest('.table-body');
-    device.body.addClass('edited-body');
-    device.btnSave = createBtnSave(device);
-    device.btnCancel = createBtnCancel(device);
+    gadget.rowHtml = gadget.row.html();
+    gadget.row.addClass('edited-row');
+    gadget.body = gadget.el.closest('.table-body');
+    gadget.body.addClass('edited-body');
+    gadget.btnSave = createBtnSave(gadget);
+    gadget.btnCancel = createBtnCancel(gadget);
 
-    device.row
+    gadget.row
         .find('.btn-operations .btn-operations-edit')
         .html('')
-        .append(device.btnCancel)
-        .append(device.btnSave)
+        .append(gadget.btnCancel)
+        .append(gadget.btnSave)
     ;
 
-    device.row
+    gadget.row
         .find(".btn-box-wrapper")
         .html(btnDeleteRow);
 
-    $('#new-device').addClass(CLASS_HIDDEN_ELEMENT);
+    $('#new-device').addClass(Gadget.getHiddenClass());
 }
 
 /**
@@ -120,9 +146,9 @@ function scrollToEditedRow(row) {
 
 /**
  * Добавление кнопки дублирования строки
- * @param el
+ * @param row
  */
-function addDoubleBtn(el) {
+function addDoubleBtn(row) {
     var btnDublicateRow = `
     <button type="button" class="btn btn-box primary" id="btnDublicateRow">
       <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -130,39 +156,39 @@ function addDoubleBtn(el) {
       </svg>
     </button>
     `;
-    
-    el.find('.btn-box-wrapper').html(btnDublicateRow).addClass("active");
+
+    row.find('.btn-box-wrapper').html(btnDublicateRow).addClass("active");
 }
 
 /**
  * Удаление кнопки дублирования строки
- * @param el
+ * @param row
  */
-function removeDoubleBtn(el) {
-    el.find('.btn-box-wrapper').removeClass("active").html("");
+function removeDoubleBtn(row) {
+    row.find('.btn-box-wrapper').removeClass("active").html("");
 }
 
 /**
  * Работа с кнопками сохранения и отмены
- * @param device
+ * @param gadget
  * @returns {HTMLButtonElement}
  */
-function createBtnSave(device)
+function createBtnSave(gadget)
 {
     let btn = createBtn("Сохранить", 'change-save', ['btn-primary','btn-save-change']);
     btn.addEventListener('click', () => {
-        device.updateRow();
+        gadget.updateRow();
     });
     
     return btn;
 }
 
-function createBtnCancel(device)
+function createBtnCancel(gadget)
 {
     let btn = createBtn("Отменить", 'change-cancel', ['btn-dark-blue','btn-cancel-change']);
 
     btn.addEventListener('click', () => {
-        device.cancelChanges();
+        gadget.cancelChanges();
     });
 
     return btn;
@@ -194,11 +220,11 @@ function showModal(el){
     $('.modal').addClass('active');
     $('.site').addClass('modal-open');
     $("body, html").css("overflow", "hidden");
-    $(el).closest('.simple-select-drop').find('ul.simple-select-list').attr('id', ID_EDITED_SELECT);
+    $(el).closest('.simple-select-drop').find('ul.simple-select-list').attr('id', Gadget.getEditedSelectClass());
 }
 
 function hideModal(isChange){
-    let editedSelect = $("#" + ID_EDITED_SELECT);
+    let editedSelect = $("#" + Gadget.getEditedSelectClass());
     if(isChange) {
         let newValue = $('#id-edited-textarea').val();
         if(newValue.length > 0) {
@@ -340,16 +366,8 @@ $(document).ready(function() {
             checkboxes.prop('checked', false);
         }
     });
-    
-    $("#per_page").on('change', function () {
-        let perPage = $(this).val();
-        Device.changePerPage(perPage);
-    });
-    
-    $('.btn-remove-sort').on('click', function () {
-        Device.removeSort($(this).data('key'));
-    })
 });
+
 function sort(type, param) {
     Device.addSort(type, param);
 }
