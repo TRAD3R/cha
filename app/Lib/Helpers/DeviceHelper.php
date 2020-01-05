@@ -16,6 +16,7 @@ use App\Params;
 use App\Repositories\CardMemoryRepository;
 use App\Repositories\DeviceBrandRepository;
 use App\Repositories\DeviceTypeRepository;
+use App\Repositories\LineRepository;
 use App\Repositories\UsbStandardRepository;
 use App\Repositories\UsbTypeRepository;
 use App\Tables\DeviceTableStructure;
@@ -86,12 +87,14 @@ class DeviceHelper
                     $device->title = $value;
                     break;
                 case DeviceTableStructure::DEVICE_LINE:
-                    $line = Line::findOne($value);
+                    if($value > 0) {
+                        $line = Line::findOne($value);
 
-                    if(!$line){
-                        $line = new Line();
-                        $line->title = $value;
-                        $line->save();
+                        if (!$line) {
+                            $line = new Line();
+                            $line->title = $value;
+                            $line->save();
+                        }
                     }
 
                     $device->line_id = $line->id;
@@ -200,6 +203,9 @@ class DeviceHelper
                 break;
             case DeviceTableStructure::DEVICE_USB_STANDARD:
                 $list = UsbStandardRepository::getAllAsArray();
+                break;
+            case DeviceTableStructure::DEVICE_LINE:
+                $list = LineRepository::getAllAsArray();
                 break;
         }
         
