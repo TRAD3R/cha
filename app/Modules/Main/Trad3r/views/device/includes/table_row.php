@@ -75,6 +75,24 @@ $specifications = $device->specifications;
     <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_MODEL?>">
       <input class="input-text" type="text" value="<?=$device->title?>">
     </div>
+    <div class="table-cell editable select" data-id="<?=DeviceTableStructure::DEVICE_LINE?>">
+        <div class="simple-select">
+            <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
+                <input hidden type="text" name="sort-view" value="<?=$device->line->id?>" data-default-value="1">
+                <p class="simple-select-selected" data-placeholder="<?=$device->line->title?>"><?=$device->line->title?></p>
+                <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
+                </svg>
+            </div>
+            <div class="simple-select-drop">
+                <div class="simple-select-drop-inner">
+                </div>
+                <div class="simple-select-add">
+                    <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_YEAR?>">
       <input class="input-text" type="text" value="<?=$specifications->year;?>">
     </div>
