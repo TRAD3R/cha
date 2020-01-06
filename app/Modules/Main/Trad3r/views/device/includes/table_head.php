@@ -7,6 +7,8 @@ use App\Tables\DeviceTableStructure;
 /**
  * @var array $sortedColumnsAsc
  * @var array $sortedColumnsDesc
+ * @var array $brands
+ * @var array $models
  */
 $ths = DeviceTableStructure::getTitles();
 $sortedColumns = DeviceTableStructure::getSortedColumns();
@@ -60,10 +62,6 @@ $sortedColumns = DeviceTableStructure::getSortedColumns();
                     </div>
                     <?php if(in_array($key, [DeviceTableStructure::DEVICE_BRAND, DeviceTableStructure::DEVICE_MODEL])):
                       ?>
-
-                      <div class="column-tool-group">
-                        <?php echo $this->render("@layouts/common/search_select", ["list"=>$key==DeviceTableStructure::DEVICE_BRAND?$brands:$model]); ?>
-                      </div>
 
                       <!--                <div class="column-tool-group">-->
 <!--                  <div class="column-tool-header">-->

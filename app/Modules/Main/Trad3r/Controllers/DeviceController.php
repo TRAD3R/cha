@@ -9,6 +9,7 @@ use App\Helpers\DeviceHelper;
 use App\Models\Device;
 use App\Models\DeviceSpecification;
 use App\Params;
+use App\Repositories\DeviceRepository;
 use App\Request;
 use App\Response;
 use App\Tables\DeviceTableStructure;
@@ -34,16 +35,16 @@ class DeviceController extends Main
         
         $devices = new DeviceHelper();
         $devices = $devices->getDevices($params, $offset);
-        $brands = DeviceHelper::getSpecificationList(DeviceTableStructure::DEVICE_BRAND);
-        $model = DeviceHelper::getSpecificationList(DeviceTableStructure::DEVICE_MODEL);
+        
+        $models = DeviceRepository::getAllModelsAsArray();
+        
         $totalCount = Device::find()->count();
         return $this->render('index', [
             'devices' => $devices,
             'totalCount' => $totalCount,
             'params' => $params,
             'offset' => $offset,
-            'brands' => $brands,
-            'model' => $model,
+            'models' => $models,
         ]);
     }
 
