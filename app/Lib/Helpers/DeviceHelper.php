@@ -9,12 +9,14 @@ use App\Models\Device;
 use App\Models\DeviceBrand;
 use App\Models\DeviceSpecification;
 use App\Models\DeviceType;
+use App\Models\Line;
 use App\Models\UsbStandard;
 use App\Models\UsbType;
 use App\Params;
 use App\Repositories\CardMemoryRepository;
 use App\Repositories\DeviceBrandRepository;
 use App\Repositories\DeviceTypeRepository;
+use App\Repositories\LineRepository;
 use App\Repositories\UsbStandardRepository;
 use App\Repositories\UsbTypeRepository;
 use App\Tables\DeviceTableStructure;
@@ -83,6 +85,19 @@ class DeviceHelper
                     break;
                 case DeviceTableStructure::DEVICE_MODEL:
                     $device->title = $value;
+                    break;
+                case DeviceTableStructure::DEVICE_LINE:
+                    if($value > 0) {
+                        $line = Line::findOne($value);
+
+                        if (!$line) {
+                            $line = new Line();
+                            $line->title = $value;
+                            $line->save();
+                        }
+                    }
+
+                    $device->line_id = $line->id;
                     break;
                 case DeviceTableStructure::DEVICE_YEAR:
                     $specifications->year = $value;
@@ -188,6 +203,9 @@ class DeviceHelper
                 break;
             case DeviceTableStructure::DEVICE_USB_STANDARD:
                 $list = UsbStandardRepository::getAllAsArray();
+                break;
+            case DeviceTableStructure::DEVICE_LINE:
+                $list = LineRepository::getAllAsArray();
                 break;
         }
         
