@@ -1,6 +1,6 @@
 const BOX_WRAPPER = $('.btn-box-wrapper');
 
-class Device extends Gadget
+class Product extends Gadget
 {
     constructor() {
         let params = getAllUrlParams(location.search);
@@ -8,17 +8,17 @@ class Device extends Gadget
     }
 
     getSelectInput() {
-        let url = '/devices/specification/list/' + this.el.data('id');
+        let url = '/products/specification/list/' + this.el.data('id');
         super.getSelectInput(url);
     }
 
     deleteRow() {
-        super.deleteRow('/devices/remove/');
+        super.deleteRow('/products/remove/');
     }
 
     updateRow() {
-        super.updateRow('/devices/');
+        super.updateRow('/products/');
     }
 }
 
-var gadget = new Device();
+var gadget = new Product();

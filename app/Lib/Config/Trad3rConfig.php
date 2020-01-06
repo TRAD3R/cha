@@ -7,7 +7,9 @@ namespace App\Config;
 use App\App;
 use App\Assets\AssetHelper;
 use App\Assets\Packages\Trad3r\CommonTrad3rAssets;
+use App\Assets\Packages\Trad3r\DeviceAsset;
 use App\Assets\Packages\Trad3r\MainAsset;
+use App\Assets\Packages\Trad3r\ProductAsset;
 
 class Trad3rConfig extends Config
 {
@@ -45,7 +47,7 @@ class Trad3rConfig extends Config
             ],
             App::CONFIG_MODULE_MAIN => [
                 AssetHelper::BUNDLES => [
-                    MainAsset::class
+//                    MainAsset::class
                 ],
                 AssetHelper::CONTROLLERS => [
                     'site' => [
@@ -53,6 +55,22 @@ class Trad3rConfig extends Config
                     ],
                     'auth' => [
                         'login' => []
+                    ],
+                    'device' => [
+                        AssetHelper::CONTROLLER_ALL => [
+                            AssetHelper::BUNDLES => [
+                                DeviceAsset::class,
+                                MainAsset::class,
+                            ],
+                        ],
+                    ],
+                    'product' => [
+                        AssetHelper::CONTROLLER_ALL => [
+                            AssetHelper::BUNDLES => [
+                                ProductAsset::class,
+                                MainAsset::class,
+                            ],
+                        ],
                     ]
                 ]
             ]

@@ -1,16 +1,16 @@
 <?php
 
 
-namespace App\Assets\Packages;
+namespace App\Assets\Packages\Trad3r;
 
 
 use yii\web\AssetBundle;
 
-class DeviceAsset extends AssetBundle
+class ProductAsset extends AssetBundle
 {
     public $sourcePath = '@trad3r_resources';
 
     public $js = [
-        'js/device.js',
+        'js/product.js',
     ];
 }

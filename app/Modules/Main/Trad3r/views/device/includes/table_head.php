@@ -46,12 +46,12 @@ $sortedColumns = DeviceTableStructure::getSortedColumns();
                         </div>
                         <ul class="column-tool-list">
                           <li><button type="button" class="column-tool-item sort tool-sort-asc <?=in_array($key, $sortedColumnsAsc) ? 'is-active' : ''?>" 
-                                      onclick="sort('<?=Params::SORT_ASC?>', <?=$key?>)">
+                                      onclick="Gadget.addSort('<?=Params::SORT_ASC?>', <?=$key?>)">
                                   Сортировать от А - Я
                               </button>
                           </li>
                           <li><button type="button" class="column-tool-item sort tool-sort-desc <?=in_array($key, $sortedColumnsDesc) ? 'is-active' : ''?>" 
-                                      onclick="sort('<?=Params::SORT_DESC?>', <?=$key?>)">
+                                      onclick="Gadget.addSort('<?=Params::SORT_DESC?>', <?=$key?>)">
                                   Сортировать от Я - А
                               </button>
                           </li>

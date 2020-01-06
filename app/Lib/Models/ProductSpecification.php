@@ -41,7 +41,7 @@ use yii\db\ActiveRecord;
  * @property MeasureUnit        $measureUnit 
  * @property BarcodeType        $barcodeType 
  * @property BrowseNode         $browseNode 
- * @property VariationTheme     $VariationTheme 
+ * @property VariationTheme     $variationTheme 
  */
 class ProductSpecification extends ActiveRecord
 {
