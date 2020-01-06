@@ -3,6 +3,7 @@
 use App\Html;
 use App\Models\Device;
 use App\Params;
+use App\Tables\DeviceTableStructure;
 use yii\web\View;
 
 /**
@@ -11,18 +12,21 @@ use yii\web\View;
  * @var int $totalCount
  * @var array $params
  * @var int $offset
+ * @var array $models
  */
  ?>
 <div class="page page-devices">
   <h2 class="page-title dr-h2">Девайсы</h2>
 
+    <?php echo $this->render("@layouts/common/search_select", ["list"=> $models]); ?>
+    
   <div class="table" id="horizontal-scroller">
     <div class="table-content">
       <?php echo $this->render('table_head', [
               'sortedColumnsAsc' => $params[Params::SORT_ASC], 
               'sortedColumnsDesc' =>$params[Params::SORT_DESC],
               'brands' => $brands,
-              'model' => $model
+              'models' => $models
       ]); ?>
       <?php echo $this->render('table_body', compact('devices', 'offset')); ?>
     </div>

@@ -22,3 +22,7 @@ class Device extends Gadget
 }
 
 var gadget = new Device();
+
+document.querySelector('#device_model_chosen').addEventListener('change', ({target}) => {
+    alert("Change");
+});
