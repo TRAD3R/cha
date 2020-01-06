@@ -15,6 +15,7 @@ use App\Models\UsbType;
 use App\Params;
 use App\Repositories\CardMemoryRepository;
 use App\Repositories\DeviceBrandRepository;
+use App\Repositories\DeviceRepository;
 use App\Repositories\DeviceTypeRepository;
 use App\Repositories\LineRepository;
 use App\Repositories\UsbStandardRepository;
