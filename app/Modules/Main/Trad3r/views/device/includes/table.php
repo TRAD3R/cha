@@ -20,7 +20,9 @@ use yii\web\View;
     <div class="table-content">
       <?php echo $this->render('table_head', [
               'sortedColumnsAsc' => $params[Params::SORT_ASC], 
-              'sortedColumnsDesc' =>$params[Params::SORT_DESC]
+              'sortedColumnsDesc' =>$params[Params::SORT_DESC],
+              'brands' => $brands,
+              'model' => $model
       ]); ?>
       <?php echo $this->render('table_body', compact('devices', 'offset')); ?>
     </div>

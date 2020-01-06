@@ -11,6 +11,7 @@ use App\Models\DeviceSpecification;
 use App\Params;
 use App\Request;
 use App\Response;
+use App\Tables\DeviceTableStructure;
 use Yii;
 
 class DeviceController extends Main
@@ -33,13 +34,16 @@ class DeviceController extends Main
         
         $devices = new DeviceHelper();
         $devices = $devices->getDevices($params, $offset);
-        
+        $brands = DeviceHelper::getSpecificationList(DeviceTableStructure::DEVICE_BRAND);
+        $model = DeviceHelper::getSpecificationList(DeviceTableStructure::DEVICE_MODEL);
         $totalCount = Device::find()->count();
         return $this->render('index', [
             'devices' => $devices,
             'totalCount' => $totalCount,
             'params' => $params,
-            'offset' => $offset
+            'offset' => $offset,
+            'brands' => $brands,
+            'model' => $model,
         ]);
     }
 
