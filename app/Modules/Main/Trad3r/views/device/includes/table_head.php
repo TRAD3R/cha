@@ -58,7 +58,14 @@ $sortedColumns = DeviceTableStructure::getSortedColumns();
                         </ul>
                       </div>
                     </div>
-<!--                <div class="column-tool-group">-->
+                    <?php if(in_array($key, [DeviceTableStructure::DEVICE_BRAND, DeviceTableStructure::DEVICE_MODEL])):
+                      ?>
+
+                      <div class="column-tool-group">
+                        <?php echo $this->render("@layouts/common/search_select", ["list"=>$key==DeviceTableStructure::DEVICE_BRAND?$brands:$model]); ?>
+                      </div>
+
+                      <!--                <div class="column-tool-group">-->
 <!--                  <div class="column-tool-header">-->
 <!--                    <div class="icon">-->
 <!--                      <svg width="16" height="10" viewBox="0 0 16 10" xmlns="http://www.w3.org/2000/svg">-->
@@ -146,6 +153,7 @@ $sortedColumns = DeviceTableStructure::getSortedColumns();
 <!--                  <button class="btn btn-muted btn-filter-cancel">Отмена</button>-->
 <!--                  <button class="btn btn-primary btn-filter-apply">Применить</button>-->
 <!--                </div>-->
+              <?php endif;?>
               </div>
             </div>
             <?php endif;?>
