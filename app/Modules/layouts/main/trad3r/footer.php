@@ -1,4 +1,4 @@
-<?php ?>
+<?php use App\Params; ?>
 
 </div>
 </main>
@@ -21,3 +21,9 @@
   </div>
 </div>
 <div class="modal-overlay"></div>
+<script>
+    const PAGE = '<?=Params::PAGE?>';
+    const PER_PAGE = '<?=Params::PER_PAGE?>';
+    const SORT_ASC = '<?=Params::SORT_ASC?>';
+    const SORT_DESC = '<?=Params::SORT_DESC?>';
+</script>

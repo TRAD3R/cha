@@ -11,7 +11,6 @@ class ProductTableStructure extends AbstractTS
 {
     const DATE_CREATED = 1;
     const NODE = 2;
-    const DEVICE_BRAND = 3;
     const DEVICE_TYPE = 4;
     const TYPE = 5;
     const MERCHANT = 6;
@@ -86,22 +85,22 @@ class ProductTableStructure extends AbstractTS
           self::PRODUCT_GROUP_SEO => [
             self::TITLE => Yii::t('front', 'TITLE'),
             self::DESCRIPTION => Yii::t('front', 'DESCRIPTION'),
-            self::BULLETPOINT_1 => Yii::t('front', 'BULLETPOINT_1'),
-            self::BULLETPOINT_2 => Yii::t('front', 'BULLETPOINT_2'),
-            self::BULLETPOINT_3 => Yii::t('front', 'BULLETPOINT_3'),
-            self::BULLETPOINT_4 => Yii::t('front', 'BULLETPOINT_4'),
-            self::BULLETPOINT_5 => Yii::t('front', 'BULLETPOINT_5'),
+            self::BULLETPOINT_1 => Yii::t('front', 'BULLETPOINT', ['number' => 1]),
+            self::BULLETPOINT_2 => Yii::t('front', 'BULLETPOINT', ['number' => 2]),
+            self::BULLETPOINT_3 => Yii::t('front', 'BULLETPOINT', ['number' => 3]),
+            self::BULLETPOINT_4 => Yii::t('front', 'BULLETPOINT', ['number' => 4]),
+            self::BULLETPOINT_5 => Yii::t('front', 'BULLETPOINT', ['number' => 5]),
           ],
           self::PRODUCT_GROUP_CONTENT => [
-            self::IMAGE_1 => Yii::t('front', 'IMAGE_1'),
-            self::IMAGE_2 => Yii::t('front', 'IMAGE_2'),
-            self::IMAGE_3 => Yii::t('front', 'IMAGE_3'),
-            self::IMAGE_4 => Yii::t('front', 'IMAGE_4'),
-            self::IMAGE_5 => Yii::t('front', 'IMAGE_5'),
-            self::IMAGE_6 => Yii::t('front', 'IMAGE_6'),
-            self::IMAGE_7 => Yii::t('front', 'IMAGE_7'),
-            self::IMAGE_8 => Yii::t('front', 'IMAGE_8'),
-            self::IMAGE_9 => Yii::t('front', 'IMAGE_9'),
+            self::IMAGE_1 => Yii::t('front', 'IMAGE_NUM', ['number' => 1]),
+            self::IMAGE_2 => Yii::t('front', 'IMAGE_NUM', ['number' => 2]),
+            self::IMAGE_3 => Yii::t('front', 'IMAGE_NUM', ['number' => 3]),
+            self::IMAGE_4 => Yii::t('front', 'IMAGE_NUM', ['number' => 4]),
+            self::IMAGE_5 => Yii::t('front', 'IMAGE_NUM', ['number' => 5]),
+            self::IMAGE_6 => Yii::t('front', 'IMAGE_NUM', ['number' => 6]),
+            self::IMAGE_7 => Yii::t('front', 'IMAGE_NUM', ['number' => 7]),
+            self::IMAGE_8 => Yii::t('front', 'IMAGE_NUM', ['number' => 8]),
+            self::IMAGE_9 => Yii::t('front', 'IMAGE_NUM', ['number' => 9]),
             self::SWATCH_IMAGE => Yii::t('front', 'SWATCH_IMAGE'),
           ],
           self::PRODUCT_GROUP_AMAZON => [
@@ -122,8 +121,7 @@ class ProductTableStructure extends AbstractTS
     {
         return [
             self::DATE_CREATED,
-            self::NODE,
-            self::DEVICE_BRAND,
+            self::BRAND,
             self::DEVICE_TYPE,
             self::TYPE,
             self::MERCHANT,
