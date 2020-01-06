@@ -9,6 +9,7 @@ use App\Models\Device;
 use App\Models\DeviceBrand;
 use App\Models\DeviceSpecification;
 use App\Models\DeviceType;
+use App\Models\Product;
 use App\Models\UsbStandard;
 use App\Models\UsbType;
 use App\Params;
@@ -30,9 +31,9 @@ class ProductHelper
     
     public function getProducts($params, $offset)
     {
-        $this->query = Device::find()
-            ->alias('d')
-            ->innerJoin('device_specifications s', 'd.id = s.device_id')
+        $this->query = Product::find()
+            ->alias('p')
+            ->innerJoin('product_specifications s', 'p.id = s.product_id')
         ;
         
         if($params[Params::SORT_ASC]) {
@@ -44,7 +45,7 @@ class ProductHelper
         }
         
         $this->query
-            ->addOrderBy('d.id ASC')
+            ->addOrderBy('p.id ASC')
             ->limit($params[Params::PER_PAGE])
             ->offset($offset)
             ;

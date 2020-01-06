@@ -42,14 +42,3 @@ use yii\web\View;
     ])?>
   </div>
 </div>
-
-<script>
-    /** Класс для скрытия элемента */
-    const CLASS_HIDDEN_ELEMENT = 'hidden-el';
-    const ID_EDITED_SELECT = 'edited-select';
-
-    class Product extends Gadget
-    {
-        
-    }
-</script>

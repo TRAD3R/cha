@@ -123,7 +123,7 @@ class Gadget
     getEditedCells() {
         let data = {};
         let cells = this.deviceId > 0 ? '.edited'  : '.editable';
-        console.log(this.deviceId, cells);
+
         this.row.find(cells).each(function () {
             let id = $(this).data('id');
             let value = null;

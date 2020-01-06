@@ -1,16 +1,19 @@
 <?php
 /**
- * @var $device Device
- * @var $specifications DeviceSpecification
- * @var $sequenceNumber int
+ * @var View $this
+ * @var Device $device
+ * @var DeviceSpecification $specifications
+ * @var int $sequenceNumber
  */
 
 use App\App;
 use App\Helpers\PriceHelper;
+use App\Helpers\TextHelper;
 use App\Helpers\UrlHelper;
 use App\Models\Device;
 use App\Models\DeviceSpecification;
 use App\Tables\DeviceTableStructure;
+use yii\web\View;
 
 /** @var DeviceSpecification $specifications */
 $specifications = $device->specifications;
@@ -37,61 +40,31 @@ $specifications = $device->specifications;
     </div>
     
     <div class="table-cell type-<?=$specifications->type->type; ?> editable select" data-id="<?=DeviceTableStructure::DEVICE_TYPE?>">
-      <div class="simple-select">
-        <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
-          <input hidden type="text" name="sort-view" value="<?=$specifications->type->id;?>" data-default-value="1">
-          <p class="simple-select-selected" data-placeholder="<?=$specifications->type->type;?>"><?=$specifications->type->type;?></p>
-          <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
-          </svg>
-        </div>
-        <div class="simple-select-drop">
-          <div class="simple-select-drop-inner">
-          </div>
-          <div class="simple-select-add">
-            <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
-          </div>
-        </div>
-      </div>
+        <?php
+            echo $this->render('@layouts/common/simple_select', [
+                'title' => $specifications->type->type,  
+                'value' => $specifications->type_id,  
+            ])
+        ?>
     </div>
     <div class="table-cell editable select" data-id="<?=DeviceTableStructure::DEVICE_BRAND?>">
-      <div class="simple-select">
-        <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
-          <input hidden type="text" name="sort-view" value="<?=$device->brand->id?>" data-default-value="1">
-          <p class="simple-select-selected" data-placeholder="<?=$device->brand->name?>"><?=$device->brand->name?></p>
-          <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
-          </svg>
-        </div>
-        <div class="simple-select-drop">
-          <div class="simple-select-drop-inner">
-          </div>
-          <div class="simple-select-add">
-            <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
-          </div>
-        </div>
-      </div>
+        <?php
+            echo $this->render('@layouts/common/simple_select', [
+                'title' => $device->brand->name,
+                'value' => $device->brand->id,
+            ])
+        ?>
     </div>
     <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_MODEL?>">
       <input class="input-text" type="text" value="<?=$device->title?>">
     </div>
     <div class="table-cell editable select" data-id="<?=DeviceTableStructure::DEVICE_LINE?>">
-        <div class="simple-select">
-            <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
-                <input hidden type="text" name="sort-view" value="<?=$device->line->id?>" data-default-value="1">
-                <p class="simple-select-selected" data-placeholder="<?=$device->line->title?>"><?=$device->line->title?></p>
-                <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
-                </svg>
-            </div>
-            <div class="simple-select-drop">
-                <div class="simple-select-drop-inner">
-                </div>
-                <div class="simple-select-add">
-                    <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
-                </div>
-            </div>
-        </div>
+        <?php
+            echo $this->render('@layouts/common/simple_select', [
+                'title' => $device->line->title,
+                'value' => $device->line->id,
+            ])
+        ?>
     </div>
     <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_YEAR?>">
       <input class="input-text" type="text" value="<?=$specifications->year;?>">
@@ -109,23 +82,12 @@ $specifications = $device->specifications;
         <input class="input-text" type="text" value="<?=$specifications->screensize;?>">
     </div>
     <div class="table-cell editable select" data-id="<?=DeviceTableStructure::DEVICE_CARD_MEMORY?>">
-      <div class="simple-select">
-        <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
-          <input hidden type="text" name="sort-view" value="<?=$specifications->usbType->id?>" data-default-value="1">
-          <p class="simple-select-selected" data-placeholder="<?php echo $specifications->cardMemory ? $specifications->cardMemory->size : "-";?>">
-            <?php echo $specifications->cardMemory ? $specifications->cardMemory->size : "-"; ?></p>
-          <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
-          </svg>
-        </div>
-        <div class="simple-select-drop">
-          <div class="simple-select-drop-inner">
-          </div>
-          <div class="simple-select-add">
-            <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
-          </div>
-        </div>
-      </div>
+        <?php
+            echo $this->render('@layouts/common/simple_select', [
+                'title' => $specifications->cardMemory ? $specifications->cardMemory->size : "-",
+                'value' => $specifications->usbType->id,
+            ])
+        ?>
     </div>
     <div class="table-cell text-center editable checkbox" data-id="<?=DeviceTableStructure::DEVICE_35_JACK?>">
       <label class="checkbox">
@@ -150,42 +112,20 @@ $specifications = $device->specifications;
       </label>
     </div>
     <div class="table-cell editable select" data-id="<?=DeviceTableStructure::DEVICE_USB_TYPE?>">
-      <div class="simple-select">
-        <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
-          <input hidden type="text" name="sort-view" value="<?=$specifications->usbType->id?>" data-default-value="1">
-          <p class="simple-select-selected" data-placeholder="<?php echo $specifications->usbType ? $specifications->usbType->type : "-";?>">
-            <?php echo $specifications->usbType ? $specifications->usbType->type : "-"; ?></p>
-          <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
-          </svg>
-        </div>
-        <div class="simple-select-drop">
-          <div class="simple-select-drop-inner">
-          </div>
-          <div class="simple-select-add">
-            <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
-          </div>
-        </div>
-      </div>
+        <?php
+            echo $this->render('@layouts/common/simple_select', [
+                'title' => $specifications->usbType ? $specifications->usbType->type : "-",
+                'value' => $specifications->usbType->id,
+            ])
+        ?>
     </div>
     <div class="table-cell editable selectable select" data-id="<?=DeviceTableStructure::DEVICE_USB_STANDARD?>">
-      <div class="simple-select">
-        <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
-          <input hidden type="text" name="sort-view" value="<?=$specifications->usbStandard->id?>" data-default-value="1">
-          <p class="simple-select-selected" data-placeholder="<?php echo $specifications->usbStandard ? $specifications->usbStandard->standard : "-";?>">
-            <?php echo $specifications->usbStandard ? $specifications->usbStandard->standard : "-"; ?></p>
-          <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
-          </svg>
-        </div>
-        <div class="simple-select-drop">
-          <div class="simple-select-drop-inner">
-          </div>
-          <div class="simple-select-add">
-            <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
-          </div>
-        </div>
-      </div>
+        <?php
+            echo $this->render('@layouts/common/simple_select', [
+                'title' => $specifications->usbStandard ? $specifications->usbStandard->standard : "-",
+                'value' => $specifications->usbStandard->id,
+            ])
+        ?>
     </div>
     <div class="table-cell text-center editable checkbox" data-id="<?=DeviceTableStructure::DEVICE_WIRELESS_CHARGE?>">
         <label class="checkbox">
