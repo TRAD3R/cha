@@ -6,7 +6,9 @@
  */
 
 use App\Helpers\TextHelper;
+use App\Models\Buletpoint;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\ProductSpecification;
 use App\Tables\ProductTableStructure;
 
@@ -21,7 +23,7 @@ $specifications = $product->specifications;
         </div>
     </div>
     <div class="table-cell sequence-number">
-        <?=$sequenceNumber?>
+        <?=$product->id?>
     </div>
     <div class="table-cell" data-id="<?=ProductTableStructure::DATE_CREATED?>">
         <?php
@@ -29,6 +31,7 @@ $specifications = $product->specifications;
             $dateCreated = new DateTime($specifications->date_created);
             echo $dateCreated->format('d.m.Y');
         } catch (Exception $e) {
+            $e->getMessage();
         }
         ?>
     </div>
@@ -74,22 +77,12 @@ $specifications = $product->specifications;
         ?>
     </div>
     <div class="table-cell editable select" data-id="<?=ProductTableStructure::MANUFACTURER?>">
-        <div class="simple-select">
-            <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
-                <input hidden type="text" name="sort-view" value="1" data-default-value="1">
-                <p class="simple-select-selected" data-placeholder="1">D-Parts</p>
-                <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
-                </svg>
-            </div>
-            <div class="simple-select-drop">
-                <div class="simple-select-drop-inner">
-                </div>
-                <div class="simple-select-add">
-                    <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
-                </div>
-            </div>
-        </div>
+        <?php
+            echo $this->render('@layouts/common/simple_select', [
+                'title' => $specifications->manufacturer->name,
+                'value' => $specifications->manufacturer->id,
+            ])
+        ?>
     </div>
     <div class="table-cell editable text"  data-id="<?=ProductTableStructure::LENGTH?>">
         <input class="input-text" type="text" value="13">
@@ -103,156 +96,99 @@ $specifications = $product->specifications;
     <div class="table-cell editable text"  data-id="<?=ProductTableStructure::SIZE?>">
         <input class="input-text" type="text" value="13">
     </div>
-    <div class="table-cell editable select" data-id="5">
-        <div class="simple-select">
-            <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
-                <input hidden type="text" name="sort-view" value="1" data-default-value="1">
-                <p class="simple-select-selected" data-placeholder="1">М</p>
-                <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
-                </svg>
-            </div>
-            <div class="simple-select-drop">
-                <div class="simple-select-drop-inner">
-                </div>
-                <div class="simple-select-add">
-                    <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
-                </div>
-            </div>
-        </div>
+    <div class="table-cell editable select" data-id="<?=ProductTableStructure::UNIT_MEASURE?>">
+        <?php
+            echo $this->render('@layouts/common/simple_select', [
+                'title' => $specifications->measureUnit->type,
+                'value' => $specifications->measure_unit_id,
+            ])
+        ?>
     </div>
-    <div class="table-cell editable text" data-id="5">
+    <div class="table-cell editable text" data-id="<?=ProductTableStructure::PRICE?>">
         <input class="input-text" type="text" value="123">
     </div>
-    <div class="table-cell editable text" data-id="5">
+    <div class="table-cell editable text" data-id="<?=ProductTableStructure::QUANTITY?>">
         <input class="input-text" type="text" value="123">
     </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
+    <div class="table-cell editable text" data-id="<?=ProductTableStructure::TITLE?>">
+        <textarea class="input-text" hidden><?=$product->name?></textarea>
+        <span class="text"><?=$product->name?></span>
     </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
+    <div class="table-cell editable text" data-id="<?=ProductTableStructure::DESCRIPTION?>">
+        <textarea class="input-text" hidden><?=$specifications->description?></textarea>
+        <span class="text"><?=$specifications->description?></span>
     </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-    
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
-    </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
-    </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
-    </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
-    </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
-    </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
-    </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
-    </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
-    </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
-    </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
-    </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
-    </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
-    </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
-    </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
-    </div>
-    <div class="table-cell editable text">
-        <textarea class="input-text" hidden>Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</textarea>
-        <span class="text">Ladekabel/Datenkabel für (Brand Model)chwarz - 1M</span>
-    </div>
-    <div class="table-cell editable text" data-id="5">
-        <input class="input-text" type="text" value="364921031">
-    </div>
-    <div class="table-cell editable select">
-        <div class="simple-select">
-            <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
-                <input hidden type="text" name="sort-view" value="1" data-default-value="1">
-                <p class="simple-select-selected" data-placeholder="1">EAN</p>
-                <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
-                </svg>
-            </div>
-            <div class="simple-select-drop">
-                <div class="simple-select-drop-inner">
-                </div>
-                <div class="simple-select-add">
-                    <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
-                </div>
-            </div>
+    <?php /** @var Buletpoint $buletpoint */?>
+    <?php foreach ($product->buletpoints as $buletpoint): ?>
+        <div class="table-cell editable text" data-id="<?=ProductTableStructure::BULLETPOINT?>">
+            <textarea class="input-text" data-id="<?=$buletpoint->id?>" hidden><?=$buletpoint->buletpoint?></textarea>
+            <span class="text"><?=$buletpoint->buletpoint?></span>
         </div>
-    </div>
-    <div class="table-cell editable text" data-id="6">
-        <input class="input-text" type="text" value="364921031">
-    </div>
-    <div class="table-cell editable select">
-        <div class="simple-select">
-            <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
-                <input hidden type="text" name="sort-view" value="1" data-default-value="1">
-                <p class="simple-select-selected" data-placeholder="1">PhoneAccessory</p>
-                <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
-                </svg>
-            </div>
-            <div class="simple-select-drop">
-                <div class="simple-select-drop-inner">
+    <?php endforeach; ?>
+    <?php 
+        $lastBP = count($product->buletpoints) - ProductTableStructure::BULLETPOINT_COUNT;
+        if($lastBP > 0):
+            for ($i = ProductTableStructure::BULLETPOINT_COUNT - $lastBP + 1; $i <= ProductTableStructure::BULLETPOINT_COUNT; $i++):
+    ?>
+                <div class="table-cell editable text" data-id="<?=ProductTableStructure::BULLETPOINT?>">
+                    <textarea class="input-text" data-id="<?=(0-$i)?>" hidden></textarea>
+                    <span class="text"></span>
                 </div>
-                <div class="simple-select-add">
-                    <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
-                </div>
-            </div>
+    <?php
+            endfor;
+        endif;
+    ?>
+    <?php /** @var ProductImage $image */?>
+    <?php foreach ($product->images as $image): ?>
+        <div class="table-cell editable text" data-id="<?=ProductTableStructure::IMAGE?>">
+            <textarea class="input-text" data-id="<?=$image->id?>" hidden><?=$image->image?></textarea>
+            <span class="text"><?=$image->image?></span>
         </div>
+    <?php endforeach; ?>
+    <?php
+        $lastIM = count($product->images) - ProductTableStructure::IMAGE_COUNT;
+        if($lastIM > 0):
+            for ($i = ProductTableStructure::IMAGE_COUNT - $lastIM + 1; $i <= ProductTableStructure::IMAGE_COUNT; $i++):
+    ?>
+                <div class="table-cell editable text" data-id="<?=ProductTableStructure::IMAGE?>">
+                    <textarea class="input-text" data-id="<?=(0-$i)?>" hidden></textarea>
+                    <span class="text"></span>
+                </div>
+    <?php
+            endfor;
+        endif;
+    ?>
+    <div class="table-cell editable text" data-id="<?=ProductTableStructure::SWATCH_IMAGE?>">
+        <textarea class="input-text" hidden><?=$specifications->swatch_image?></textarea>
+        <span class="text"><?=$specifications->swatch_image?></span>
     </div>
-    <div class="table-cell editable select">
-        <div class="simple-select">
-            <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
-                <input hidden type="text" name="sort-view" value="1" data-default-value="1">
-                <p class="simple-select-selected" data-placeholder="1">SizeName</p>
-                <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
-                </svg>
-            </div>
-            <div class="simple-select-drop">
-                <div class="simple-select-drop-inner">
-                </div>
-                <div class="simple-select-add">
-                    <button type="button" class="btn btn-primary" onclick="showModal(this)">Добавить</button>
-                </div>
-            </div>
-        </div>
+    <div class="table-cell editable text" data-id="<?=ProductTableStructure::BARCODE?>">
+        <input class="input-text" type="text" value="<?=$specifications->barcode?>">
+    </div>
+    <div class="table-cell editable select" data-id="<?=ProductTableStructure::BARCODE_TYPE?>">
+        <?php
+            echo $this->render('@layouts/common/simple_select', [
+                'title' => $specifications->barcodeType->type,
+                'value' => $specifications->barcode_type_id,
+            ])
+        ?>
+    </div>
+    <div class="table-cell editable text" data-id="<?=ProductTableStructure::BROWSE_NODE?>">
+        <input class="input-text" type="text" value="<?=$specifications->browseNode->node?>">
+    </div>
+    <div class="table-cell editable select" data-id="<?=ProductTableStructure::AMAZON_PRODUCT_TYPE?>">
+        <?php
+            echo $this->render('@layouts/common/simple_select', [
+                'title' => $specifications->amazonProductType->id,
+                'value' => $specifications->amazon_product_type_id,
+            ])
+        ?>
+    </div>
+    <div class="table-cell editable select" data-id="<?=ProductTableStructure::VARIATION_THEME?>">
+        <?php
+            echo $this->render('@layouts/common/simple_select', [
+                'title' => $specifications->variationTheme->title,
+                'value' => $specifications->variation_theme_id,
+            ])
+        ?>
     </div>
