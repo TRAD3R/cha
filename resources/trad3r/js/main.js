@@ -57,7 +57,8 @@ $(document).ready(function () {
         removeDoubleBtn($(this));
     });
 
-    $('.chosen-select').chosen({
+    $('.chosen-select')
+        .chosen({
         disable_search_threshold: 10,
         no_results_text         : "",
         search_contains         : true,
@@ -79,7 +80,11 @@ $(document).ready(function () {
         let tableBody = $('.table-body');
         tableBody.append("<div class='table-row' data-id='0'>" + newRow.html() + "</div>");
         scrollToEditedRow(tableBody.find('.table-row').last());
-    })
+    });
+
+    $('#device-model').chosen().change(function() {
+        console.log('working');
+    });
 });
 
 
@@ -259,7 +264,9 @@ $(function () {
         if (!$(e.target).closest('.simple-select').length) {
             $('.simple-select').removeClass('is-active');
         }
-
+        if (!$(e.target).closest('.dropdown').length) {
+            $('.dropdown').removeClass('is-active');
+        }
     });
     $(document).on('keydown.simple-select', '.simple-select', function(event) {
         let $dropdown = $(this);
@@ -356,3 +363,9 @@ function sort(type, param) {
     Device.addSort(type, param);
 }
 
+/*dropdown*/
+$(document).ready(function() {
+    $('.dropdown').on('click', function(){
+        $(this).addClass('is-active');
+    });
+});
