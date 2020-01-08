@@ -11,6 +11,7 @@ namespace App;
  */
 class Params
 {
+    const GADGET = 'gadget';
     const PAGE = 'page';
     const PER_PAGE = 'per_page';
     const SORT_ASC = 'sort_asc';

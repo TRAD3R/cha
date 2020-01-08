@@ -170,7 +170,7 @@ class Gadget
         this.update();
     }
     
-    update() {
+    update(id = 0) {
         let query = "?" + PAGE + "=" + this.page + "&" + PER_PAGE + "=" + this.perPage;
         if(this.sortAsc) {
             query += "&" + SORT_ASC + "=" + this.sortAsc;
@@ -178,6 +178,10 @@ class Gadget
     
         if(this.sortDesc) {
             query += "&" + SORT_DESC + "=" + this.sortDesc;
+        }
+        
+        if(id > 0) {
+            query = "?gadget=" + id
         }
     
         location.href = location.origin + location.pathname + query;
