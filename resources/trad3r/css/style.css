@@ -125,8 +125,8 @@
     display: flex;
     flex-direction: column; }
     .table-body-wrapper {
-      max-height: 65vh;
-      min-height: 65vh;
+      max-height: 70vh;
+      min-height: 70vh;
       overflow: hidden auto; }
       .table-body-wrapper::-webkit-scrollbar-track {
         -webkit-box-shadow: none; }
@@ -156,6 +156,8 @@
     border: 1px solid #E3E7F4;
     background: #fff;
     padding: 5px; }
+    .table-cell * {
+      font-size: 13px; }
     .table-cell .text {
       position: absolute;
       white-space: nowrap;
@@ -171,6 +173,7 @@
       margin: 0 auto; }
     .table-cell .simple-select {
       width: 100%;
+      height: 100%;
       position: relative;
       border: 1px solid #E3E7F4; }
       .table-cell .simple-select-main {
@@ -223,6 +226,7 @@
         opacity: 0; }
     .table-cell input[type="text"] {
       width: 100%;
+      height: 100%;
       position: relative;
       border: 1px solid #E3E7F4;
       padding: 5px;
@@ -308,7 +312,13 @@
       background: #E3E7F4;
       margin-right: 10px;
       border-radius: 4px;
-      font-size: 14px; }
+      font-size: 14px;
+      transition: all .2s ease;
+      -webkit-transition: all .2s ease;
+      -moz-transition: all .2s ease;
+      -o-transition: all .2s ease; }
+      .pagination > ul li a:hover {
+        background: #fff; }
       .pagination > ul li a.active {
         font-weight: bold;
         color: #005AF5;
@@ -319,12 +329,17 @@
     top: auto;
     bottom: 50px; }
 
+button {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px; }
+
 .btn {
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 10px 20px;
+  font-family: 'Roboto', sans-serif;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
@@ -338,6 +353,8 @@
   -webkit-transition: all .2s ease;
   -moz-transition: all .2s ease;
   -o-transition: all .2s ease; }
+  .btn-empty .icon {
+    margin: 0 !important; }
   .btn-box {
     width: 28px;
     height: 28px;
@@ -468,6 +485,53 @@
       padding: 10px;
       width: 100%; }
 
+.dropdown {
+  position: relative; }
+  .dropdown > .icon {
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -o-transition: all .3s ease; }
+  .dropdown.is-active .dropdown-list {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); }
+  .dropdown.is-active > .icon {
+    transform: rotate(180deg); }
+  .dropdown-list {
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    left: 0;
+    bottom: 50px;
+    z-index: 1;
+    background: #fff;
+    box-shadow: 0 10px 20px rgba(161, 172, 188, 0.4);
+    min-width: 260px;
+    transform: translateY(20px);
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -o-transition: all .3s ease; }
+    .dropdown-list-item * {
+      display: block;
+      background: transparent;
+      padding: 15px 20px;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      text-align: left;
+      transition: all .2s ease;
+      -webkit-transition: all .2s ease;
+      -moz-transition: all .2s ease;
+      -o-transition: all .2s ease; }
+      .dropdown-list-item *:hover {
+        background: #F6F7FB;
+        color: #A1ACBC; }
+    .dropdown-list-item:not(:last-child) {
+      border-bottom: 1px solid #E3E7F4; }
+
 .column-tool-dropdown {
   width: 100%;
   opacity: 0;
@@ -558,7 +622,12 @@
 .table-btn-tool {
   padding-left: 40px;
   display: flex;
+  width: 100%;
+  justify-content: space-between;
   align-items: center; }
+  .table-btn-tool__item {
+    display: flex;
+    align-items: center; }
   .table-btn-tool .btn .icon {
     display: flex;
     align-items: center;
@@ -690,5 +759,15 @@
 input[type="text"].chosen-search-input, .chosen-container-single .chosen-search {
   pointer-events: auto;
   cursor: text; }
+
+.conpos-btns {
+  display: flex;
+  flex-wrap: nowrap; }
+  .conpos-btns > .btn:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0; }
+  .conpos-btns > .btn:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0; }
 
 /*# sourceMappingURL=style.css.map */

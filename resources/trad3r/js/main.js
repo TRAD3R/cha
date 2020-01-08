@@ -259,7 +259,9 @@ $(function () {
         if (!$(e.target).closest('.simple-select').length) {
             $('.simple-select').removeClass('is-active');
         }
-
+        if (!$(e.target).closest('.dropdown').length) {
+            $('.dropdown').removeClass('is-active');
+        }
     });
     $(document).on('keydown.simple-select', '.simple-select', function(event) {
         let $dropdown = $(this);
@@ -356,3 +358,9 @@ function sort(type, param) {
     Device.addSort(type, param);
 }
 
+/*dropdown*/
+$(document).ready(function() {
+    $('.dropdown').on('click', function(){
+        $(this).addClass('is-active');
+    });
+});
