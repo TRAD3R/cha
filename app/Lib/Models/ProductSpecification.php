@@ -29,6 +29,7 @@ use yii\db\ActiveRecord;
  * @property string             $hersteller_barcode     [varchar(50)]
  * @property int                $barcode_type_id        [integer(11)]
  * @property int                $browse_node_id         [integer(11)]
+ * @property int                $amazon_product_type_id [integer(11)]
  * @property int                $variation_theme_id     [integer(11)]
  * @property int                $price                  [integer(11)]
  * @property int                $quantity               [integer(11)]
@@ -41,6 +42,7 @@ use yii\db\ActiveRecord;
  * @property MeasureUnit        $measureUnit 
  * @property BarcodeType        $barcodeType 
  * @property BrowseNode         $browseNode 
+ * @property AmazonProductType  $amazonProductType 
  * @property VariationTheme     $variationTheme 
  */
 class ProductSpecification extends ActiveRecord
@@ -93,6 +95,11 @@ class ProductSpecification extends ActiveRecord
     public function getBrowseNode()
     {
         return $this->hasOne(BrowseNode::class, ['id' => 'browse_node_id']);
+    }
+
+    public function getAmazonProductType()
+    {
+        return $this->hasOne(AmazonProductType::class, ['id' => 'amazon_product_type_id']);
     }
 
     public function getVariationTheme()

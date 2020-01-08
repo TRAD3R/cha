@@ -21,7 +21,7 @@ $specifications = $product->specifications;
         </div>
     </div>
     <div class="table-cell sequence-number">
-        <?=$sequenceNumber?>
+        <?=$product->id?>
     </div>
     <div class="table-cell" data-id="<?=ProductTableStructure::DATE_CREATED?>">
         <?php
@@ -105,7 +105,7 @@ $specifications = $product->specifications;
         <textarea class="input-text" hidden><?=$product->name?></textarea>
         <span class="text"><?=$product->name?></span>
     </div>
-    <div class="table-cell editable text">
+    <div class="table-cell">
     </div>
     <div class="table-cell">
     </div>

@@ -13,7 +13,7 @@ use yii\db\ActiveRecord;
  * @property int        $id             [integer(11)]
  * @property string     $type           [varchar(50)]
  */
-class ProductType extends ActiveRecord
+class AmazonProductType extends ActiveRecord
 {
     public static function tableName()
     {
