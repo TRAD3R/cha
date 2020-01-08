@@ -26,28 +26,19 @@ use yii\web\View;
   </div>
   <div class="table-btn-tool">
     <div class="table-btn-tool__item">
-      <div class="conpos-btns">
-        <button id="new-device" type="button" class="btn btn-primary">
-      <span class="icon">
-        <svg width="12" height="13" viewBox="0 0 12 13" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6.99951 5.229H11.5591V7.19434H6.99951V12.3604H4.91064V7.19434H0.351074V5.229H4.91064V0.456055H6.99951V5.229Z" fill="white"/>
-        </svg>
-      </span>
-          <span class="btn-text">Новая запись</span>
-        </button>
-        <div class="btn btn-primary dropdown btn-empty">
-          <div class="icon">
-            <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"></path>
-            </svg>
-          </div>
-          <div class="dropdown-list">
-            <ul>
-              <li class="dropdown-list-item"><button id="new-device-parent" type="button">Создать Parent</button></li>
-              <li class="dropdown-list-item"><button id="new-device-child" type="button">Создать Child</button></li>
-            </ul>
-          </div>
-      </div>
+      <div id="new-device" class="btn btn-primary dropdown">
+        <span class="icon">
+          <svg width="12" height="13" viewBox="0 0 12 13" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6.99951 5.229H11.5591V7.19434H6.99951V12.3604H4.91064V7.19434H0.351074V5.229H4.91064V0.456055H6.99951V5.229Z" fill="white"/>
+          </svg>
+        </span>
+        <span class="btn-text">Новая запись</span>
+        <div class="dropdown-list">
+          <ul>
+            <li class="dropdown-list-item"><button id="new-device-parent" type="button">Создать Parent</button></li>
+            <li class="dropdown-list-item"><button id="new-device-child" type="button">Создать Child</button></li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="table-btn-tool__item">
