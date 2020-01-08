@@ -16,10 +16,11 @@ use yii\web\View;
  */
  ?>
 <div class="page page-devices">
-  <h2 class="page-title dr-h2">Девайсы</h2>
 
+  <div class="search-select">
     <?php echo $this->render("@layouts/common/search_select", ["list"=> $models]); ?>
-    
+  </div>
+
   <div class="table" id="horizontal-scroller">
     <div class="table-content">
       <?php echo $this->render('table_head', [
