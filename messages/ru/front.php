@@ -39,8 +39,7 @@ return [
     'QUANTITY' => 'количество',
     'TITLE' => 'название',
     'DESCRIPTION' => 'описание',
-    'BULLETPOINT' => 'ключевой пункт {number}',
-    'IMAGE_NUM' => 'изображение {number}',
+    'BULLETPOINT' => 'ключевой пункт',
     'SWATCH_IMAGE' => 'swatches',
     'BARCODE' => 'баркод',
     'BARCODE_TYPE' => 'тип баркода',
@@ -51,7 +50,7 @@ return [
     'CHILD' => 'вариация',
     'ADD' => 'добавить',
     'LINE' => 'линейка',
-    '' => '',
+    'GADGET_SEARCH' => 'Найти гаджет',
     '' => '',
     '' => '',
 ];
