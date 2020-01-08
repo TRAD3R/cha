@@ -17,7 +17,9 @@ use yii\web\View;
  ?>
 <div class="page page-devices">
 
+  <div class="search-select">
     <?php echo $this->render("@layouts/common/search_select", ["list"=> $models]); ?>
+  </div>
 
   <div class="table" id="horizontal-scroller">
     <div class="table-content">
