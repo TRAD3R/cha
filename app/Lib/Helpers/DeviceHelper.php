@@ -38,19 +38,24 @@ class DeviceHelper
             ->innerJoin('device_specifications s', 'd.id = s.device_id')
         ;
         
-        if($params[Params::SORT_ASC]) {
-            self::addSort($params[Params::SORT_ASC], 'ASC');
-        }
+        if($params[Params::GADGET]) {
+            $this->query
+                ->where(['d.id' => $params[Params::GADGET]])
+                ;
+        }else {
+            if ($params[Params::SORT_ASC]) {
+                self::addSort($params[Params::SORT_ASC], 'ASC');
+            }
 
-        if($params[Params::SORT_DESC]) {
-            self::addSort($params[Params::SORT_DESC], 'DESC');
+            if ($params[Params::SORT_DESC]) {
+                self::addSort($params[Params::SORT_DESC], 'DESC');
+            }
+
+            $this->query
+                ->addOrderBy('d.id ASC')
+                ->limit($params[Params::PER_PAGE])
+                ->offset($offset);
         }
-        
-        $this->query
-            ->addOrderBy('d.id ASC')
-            ->limit($params[Params::PER_PAGE])
-            ->offset($offset)
-            ;
         
         return $this->query->all();
     }

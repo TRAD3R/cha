@@ -25,6 +25,7 @@ class DeviceController extends Main
         $request = $this->getRequest();
         
         $params = [
+            Params::GADGET      => (int)$request->get(Params::GADGET),
             Params::PAGE        => $request->get(Params::PAGE) ?: 1,
             Params::PER_PAGE    => $request->get(Params::PER_PAGE) ?: DeviceHelper::PER_PAGE,
             Params::SORT_ASC    => $request->getArrayStr(Params::SORT_ASC),
