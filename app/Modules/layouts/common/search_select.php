@@ -1,12 +1,20 @@
 <?php
 /**
 * @var array $list
+* @var bool  $showReset
  */
 
-use App\Helpers\TextHelper; 
+use App\Helpers\HtmlHelper;
+use App\Helpers\TextHelper;
+
 ?>
 
-<select id="device-model" class="chosen-select"
+<?php
+if($showReset) {
+    echo HtmlHelper::resetButton('/devices');
+}
+?>
+<select id="device-model"
         size="4"
         data-placeholder="<?=TextHelper::upperFirstChar(Yii::t('front', 'GADGET_SEARCH'))?>"
         style="display: none;"
