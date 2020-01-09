@@ -12,7 +12,7 @@ class HtmlHelper
     {
         $text = is_null($text) ? Yii::t('front', 'RESET') : $text;
         
-        $button = "<a href='{$url}' class='btn btn-empty'>{$text}</a>";
+        $button = "<a href='{$url}' class='btn btn-muted'>{$text}</a>";
         
         return $button;
     }
