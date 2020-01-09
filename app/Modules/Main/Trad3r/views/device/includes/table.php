@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\HtmlHelper;
+use App\Helpers\TextHelper;
 use App\Html;
 use App\Models\Device;
 use App\Params;
@@ -40,7 +41,7 @@ use yii\web\View;
         <path d="M6.99951 5.229H11.5591V7.19434H6.99951V12.3604H4.91064V7.19434H0.351074V5.229H4.91064V0.456055H6.99951V5.229Z" fill="white"/>
         </svg>
       </span>
-      <span class="btn-text">Новая запись</span>
+      <span class="btn-text"><?=TextHelper::upperFirstChar(Yii::t('front', 'ADD_NEW_ROW'))?></span>
     </button>
     <?=Html::renderPaginator([
       'page' => $params[Params::PAGE],

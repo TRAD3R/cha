@@ -7,25 +7,20 @@
  */
 ?>
 <div class="form-group">
-    <span class="cap">
+    <span class="cap" title="<?=$placeholder?>">
       <?php if ($selected):?>
         <?php $ids = array_keys($selected); ?>
           <span data-id="<?=implode(",", $ids)?>"><?=implode(", ", $selected)?></span>
-      <?php else:?>
-        <?=$placeholder?>
       <?php endif; ?>
     </span>
     <select 
-        class="form-control" 
-        name="<?=$name?> 
+        class="form-control hidden-el"
+        name="<?=$name?>"
         <?php if ($isMultiple):?>
-            []" multiple="multiple"
-        <?php else:?>
-            " 
+            multiple="multiple"
         <?php endif; ?>
         size="4" 
-        data-placeholder="Тип устройства" 
-        style="display: none;"
+        data-placeholder="<?=$placeholder?>" 
     >
     </select>
 </div>
