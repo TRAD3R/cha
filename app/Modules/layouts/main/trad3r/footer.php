@@ -3,6 +3,12 @@
 </div>
 </main>
 
+<div class="btn-operations">
+  <div class="btn-operations-edit">
+
+  </div>
+</div>
+
 <div class="modal">
   <div class="modal-content">
     <div class="modal-content-wrapper">
