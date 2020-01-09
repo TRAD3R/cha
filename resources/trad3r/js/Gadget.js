@@ -11,7 +11,7 @@ class Gadget
         this.sortAsc = sortAsc;
         this.sortDesc = sortDesc;
     }
-    
+
     static getSelectClass(){ return 'select'; }
     static getTextClass(){ return 'text'; }
     static getCheckboxClass(){ return 'checkbox'; }
@@ -34,13 +34,13 @@ class Gadget
         let input = this.el.find('input').eq(0);
         input.removeAttr('disabled');
     }
-    
+
     getTextInput() {
         let text = this.el.text();
         let input = this.el.find('.input-text');
         input.value = text;
     }
-    
+
     getSelectInput(url = '') {
         let that = this;
         $.ajax({
@@ -55,12 +55,12 @@ class Gadget
             }
         })
     }
-    
+
     createSelect(list, selected) {
         let ul = document.createElement('ul');
         ul.classList.add("simple-select-list");
         ul.setAttribute("role", "listbox");
-    
+
         for (let el of list) {
             let li = document.createElement('li');
             li.classList.add('simple-select-item');
@@ -72,7 +72,7 @@ class Gadget
             }
             ul.append(li);
         }
-    
+
         return ul;
     }
 
@@ -106,7 +106,8 @@ class Gadget
                     that.row.removeClass('edited-row');
                     that.body.removeClass('edited-body');
                 }
-    
+
+                $('.btn-operations').removeClass("is-active");
                 $("#new-device").removeClass(Gadget.getHiddenClass());
             }
         })
@@ -116,7 +117,8 @@ class Gadget
         this.row.data('id') > 0 ? this.row.html(this.rowHtml) : this.row.remove();
         this.row.removeClass('edited-row');
         this.body.removeClass('edited-body');
-    
+        $('.btn-operations').removeClass("is-active");
+
         $("#new-device").removeClass(Gadget.getHiddenClass());
     }
 
@@ -134,21 +136,21 @@ class Gadget
             }
             data[$(this).data('id')] = value;
         });
-    
+
         data['sequenceNumber'] = this.row.find('.sequence-number').eq(0).text();
-    
+
         return data;
     }
-    
+
     changePerPage(perPage) {
         this.perPage = perPage;
         this.update();
     }
-    
+
     addSort(type, param) {
         let sortAsc = this.strToArray(this.sortAsc);
         let sortDesc = this.strToArray(this.sortDesc);
-    
+
         let res = {};
         if(type === SORT_ASC) {
             res = this.addSortParam(sortAsc, sortDesc, +param);
@@ -159,34 +161,34 @@ class Gadget
             this.sortDesc = res.sortIn.join(',');
             this.sortAsc = res.sortOut.join(',');
         }
-    
+
         this.update();
     }
-    
+
     removeSort(param) {
         this.sortAsc = this.removeSortParam(this.strToArray(this.sortAsc), param);
         this.sortDesc = this.removeSortParam(this.strToArray(this.sortDesc), param);
-    
+
         this.update();
     }
-    
+
     update(id = 0) {
         let query = "?" + PAGE + "=" + this.page + "&" + PER_PAGE + "=" + this.perPage;
         if(this.sortAsc) {
             query += "&" + SORT_ASC + "=" + this.sortAsc;
         }
-    
+
         if(this.sortDesc) {
             query += "&" + SORT_DESC + "=" + this.sortDesc;
         }
-        
+
         if(id > 0) {
             query = "?gadget=" + id
         }
-    
+
         location.href = location.origin + location.pathname + query;
     }
-    
+
     addSortParam(sortIn, sortOut, param) {
         if(sortOut.includes(param)) {
             sortOut.splice(sortOut.indexOf(param), 1);
@@ -194,29 +196,29 @@ class Gadget
         if (!sortIn.includes(param)) {
             sortIn.push(param);
         }
-    
+
         return {
             sortIn: sortIn,
             sortOut: sortOut
         };
     }
-    
+
     removeSortParam(sort, param) {
         if(sort.includes(param)) {
             sort.splice(sort.indexOf(param), 1);
         }
-    
+
         return sort.length > 0 ? sort.join(',') : '';
     }
-    
+
     strToArray(string) {
         let res = [];
-    
+
         if( string.length > 0)
             res = string.split(',').map(item => {
                 return parseInt(item, 10);
             });
-    
+
         return res;
     }
 }
