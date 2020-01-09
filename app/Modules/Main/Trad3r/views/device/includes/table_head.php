@@ -60,7 +60,7 @@ $sortedColumns = DeviceTableStructure::getSortedColumns();
                         </ul>
                       </div>
                     </div>
-                    <?php if(in_array($key, [DeviceTableStructure::DEVICE_BRAND, DeviceTableStructure::DEVICE_MODEL])):
+                    <?php if(in_array($key, [DeviceTableStructure::BRAND, DeviceTableStructure::TITLE])):
                       ?>
 
                       <!--                <div class="column-tool-group">-->
