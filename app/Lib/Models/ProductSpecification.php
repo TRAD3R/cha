@@ -34,7 +34,7 @@ use yii\db\ActiveRecord;
  * @property int                $price                  [integer(11)]
  * @property int                $quantity               [integer(11)]
  * @property Product            $product 
- * @property DeviceType         $deviceType 
+ * @property DeviceType[]       $deviceTypes 
  * @property ProductType        $productType 
  * @property ProductBrand       $productBrand 
  * @property Manufacturer       $manufacturer 
@@ -57,9 +57,11 @@ class ProductSpecification extends ActiveRecord
         return $this->hasOne(Product::class, ['id' => 'product_id']);
     }
 
-    public function getDeviceType()
+    public function getDeviceTypes()
     {
-        return $this->hasOne(DeviceType::class, ['id' => 'device_type_id']);
+        return $this->hasMany(DeviceType::class, ['id' => 'device_type_id'])
+            ->viaTable(ProductDeviceType::tableName(), ['product_id' => 'product_id'])
+            ;
     }
 
     public function getProductType()

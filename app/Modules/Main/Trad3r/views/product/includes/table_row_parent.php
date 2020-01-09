@@ -63,7 +63,8 @@ $specifications = $product->specifications;
         <?php echo $this->render('@layouts/common/chosen-select', [
                 'name' => ProductTableStructure::DEVICE_TYPE,
                 'placeholder' => Yii::t('front', 'DEVICE_TYPE'),
-                'isMultiple' => true, 
+                'isMultiple' => true,
+                'selected'  => $specifications->deviceTypes,
         ]); ?>
     </div>
     <div class="table-cell editable select"  data-id="<?=ProductTableStructure::TYPE?>">
