@@ -28,7 +28,7 @@ $specifications = $product->specifications;
         ?>
     </div>
     <div class="table-cell editable" data-id="<?=ProductTableStructure::NODE?>">
-        <?php $nodeName = TextHelper::upperFirstChar(Yii::t('front', $product->parent_id ? 'CHILD' : 'PARENT')); ?> 
+        <?php $nodeName = TextHelper::upperFirstChar(Yii::t('front', 'PARENT')); ?> 
         <div class="simple-select">
             <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
                 <input hidden type="text" name="sort-view" value="<?=$product->parent->id;?>" data-default-value="1">
@@ -59,24 +59,24 @@ $specifications = $product->specifications;
                 'name' => ProductTableStructure::DEVICE_TYPE,
                 'placeholder' => Yii::t('front', 'DEVICE_TYPE'),
                 'isMultiple' => true,
-                'selected' => [0 => 'handy',1 => 'tablet', 2 => 'laptop', 3 => 'laptop'],
+                'selected'  => $specifications->deviceTypes,
         ]); ?>
     </div>
     <div class="table-cell editable select"  data-id="<?=ProductTableStructure::TYPE?>">
-        <?php
-            echo $this->render('@layouts/common/simple_select', [
-                'title' => $specifications->productType->type,
-                'value' => $specifications->productType->id,
-            ])
-        ?>
+        <?php echo $this->render('@layouts/common/chosen-select', [
+            'name' => ProductTableStructure::TYPE,
+            'placeholder' => Yii::t('front', 'TYPE'),
+            'isMultiple' => false,
+            'selected'  => (new Product())->getProductType($specifications->type_id ?: 0),
+        ]); ?>
     </div>
     <div class="table-cell editable select"  data-id="<?=ProductTableStructure::MERCHANT?>">
-        <?php
-            echo $this->render('@layouts/common/simple_select', [
-                'title' => $specifications->merchant->name,
-                'value' => $specifications->merchant->id,
-            ])
-        ?>
+        <?php echo $this->render('@layouts/common/chosen-select', [
+            'name' => ProductTableStructure::MERCHANT,
+            'placeholder' => Yii::t('front', 'MERCHANT'),
+            'isMultiple' => false,
+            'selected'  => $specifications->merchant_id ? [$specifications->merchant_id => $specifications->merchant->name] : [],
+        ]); ?>
     </div>
     <div class="table-cell">
     </div>
@@ -142,18 +142,18 @@ $specifications = $product->specifications;
         <span class="text"><?=$specifications->browseNode->node?></span>
     </div>
     <div class="table-cell editable select" data-id="<?=ProductTableStructure::BROWSE_NODE?>">
-        <?php
-        echo $this->render('@layouts/common/simple_select', [
-            'title' => $specifications->browseNode->product_type,
-            'value' => $specifications->browse_node_id,
-        ])
-        ?>
+        <?php echo $this->render('@layouts/common/chosen-select', [
+            'name' => ProductTableStructure::BROWSE_NODE,
+            'placeholder' => Yii::t('front', 'AMAZON_PRODUCT_TYPE'),
+            'isMultiple' => false,
+            'selected'  => $specifications->browse_node_id ? [$specifications->browseNode->id => $specifications->browseNode->product_type] : [],
+        ]); ?>
     </div>
     <div class="table-cell editable select" data-id="<?=ProductTableStructure::VARIATION_THEME?>">
-        <?php
-        echo $this->render('@layouts/common/simple_select', [
-            'title' => $specifications->variationTheme->title,
-            'value' => $specifications->variation_theme_id,
-        ])
-        ?>
+        <?php echo $this->render('@layouts/common/chosen-select', [
+            'name' => ProductTableStructure::VARIATION_THEME,
+            'placeholder' => Yii::t('front', 'VARIATION_THEME'),
+            'isMultiple' => false,
+            'selected'  => $specifications->variation_theme_id ? [$specifications->variation_theme_id => $specifications->variationTheme->title] : [],
+        ]); ?>
     </div>

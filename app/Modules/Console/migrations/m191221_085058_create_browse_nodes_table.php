@@ -17,6 +17,10 @@ class m191221_085058_create_browse_nodes_table extends Migration
             'node' => $this->string(20),
             'product_type' => $this->string(100),
         ]);
+        
+        $this->batchInsert('{{%browse_nodes}}', ['id', 'node', 'product_type'], [
+            [1, '364921031', 'PhoneAccessory']
+        ]);
     }
 
     /**

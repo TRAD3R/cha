@@ -11,18 +11,13 @@ class Product extends Gadget
         let url = '/products/specification/list/' + this.el.data('id');
         let that = this;
         
+        that.el.find('span.cap').addClass(HIDDEN_EL_CLASS);
         $.ajax({
             url: url,
             method: 'GET',
             success: function (res) {
                 if(res.status === 'success'){
-                    let select = that.el.find('select');
-                    for (let item of res.list) {
-                        let option = document.createElement('option');
-                        option.value = item.id;
-                        option.innerText = item.title;
-                        select.append(option);
-                    }
+                    let select = createChosenSelect(that.el.find('select'), res.list);
                     
                     select.chosen({
                         disable_search_threshold: 10,
@@ -48,14 +43,26 @@ var gadget = new Product();
 
 $(document).ready(function () {
     $('#new-product-parent').on('click', function () {
-        newRow('empty-row-parent');
+        newRow($(this), 'empty-row-parent');
     });
     $('#new-product-child').on('click', function () {
-        newRow('empty-row-child');
+        newRow($(this), 'empty-row-child');
     });
 });
 
-function newRow(newRowId) {
+function createChosenSelect(select, list) {
+    for (let item in list) {
+        let option = document.createElement('option');
+        option.value = list[item].id;
+        option.innerText = list[item].title;
+        select.append(option);
+    }
+    
+    return select;
+}
+
+function newRow(el, newRowId) {
+    el.closest('.dropdown').removeClass('is-active');
     let tableBody = $('.' + TABLE_BODY_CLASS);
     let rowTemplate = $('#' + newRowId);
     let newRow = document.createElement('div');

@@ -16,6 +16,10 @@ class m191221_084414_create_variation_themes_table extends Migration
             'id' => $this->primaryKey(),
             'title' => $this->string(50),
         ]);
+        
+        $this->batchInsert('{{%variation_themes}}', ['id', 'title'], [
+            [1, 'SizeName'],
+        ]);
     }
 
     /**

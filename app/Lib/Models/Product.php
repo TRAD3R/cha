@@ -5,6 +5,7 @@ namespace App\Models;
 
 
 use App\Behaviors\Timestamp;
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -23,6 +24,10 @@ use yii\db\ActiveRecord;
  */
 class Product extends ActiveRecord
 {
+    const TYPE_MICROUSB     = 1;
+    const TYPE_USB_C        = 2;
+    const TYPE_LIGHTNING    = 3;
+    
     public static function tableName()
     {
         return 'products';
@@ -53,5 +58,20 @@ class Product extends ActiveRecord
     public function getImages()
     {
         return $this->hasMany(ProductImage::class, ['product_id' => 'id']);
+    }
+
+    public function getProductType($type = null)
+    {
+        $types = [
+            self::TYPE_MICROUSB => Yii::t('front', 'MICROUSB'),
+            self::TYPE_USB_C => Yii::t('front', 'USB-C'),
+            self::TYPE_LIGHTNING => Yii::t('front', 'LIGHTNING'),
+        ];
+        
+        if(is_null($type)) {
+            return $types;
+        }
+        
+        return  $types[$type] ? $types[$type] : [];
     }
 }
