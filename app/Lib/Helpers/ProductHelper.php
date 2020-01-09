@@ -19,6 +19,7 @@ use App\Repositories\DeviceTypeRepository;
 use App\Repositories\UsbStandardRepository;
 use App\Repositories\UsbTypeRepository;
 use App\Tables\DeviceTableStructure;
+use App\Tables\ProductTableStructure;
 use yii\db\Query;
 use yii\db\QueryBuilder;
 
@@ -180,7 +181,7 @@ class ProductHelper
     {
         $list = [];
         switch ($id) {
-            case DeviceTableStructure::DEVICE_TYPE:
+            case ProductTableStructure::DEVICE_TYPE:
                 $list = DeviceTypeRepository::getAllAsArray();
                 break;
             case DeviceTableStructure::BRAND:

@@ -9,7 +9,30 @@ class Product extends Gadget
 
     getSelectInput() {
         let url = '/products/specification/list/' + this.el.data('id');
-        super.getSelectInput(url);
+        let that = this;
+        
+        $.ajax({
+            url: url,
+            method: 'GET',
+            success: function (res) {
+                if(res.status === 'success'){
+                    let select = that.el.find('select');
+                    for (let item of res.list) {
+                        let option = document.createElement('option');
+                        option.value = item.id;
+                        option.innerText = item.title;
+                        select.append(option);
+                    }
+                    
+                    select.chosen({
+                        disable_search_threshold: 10,
+                        no_results_text         : "",
+                        search_contains         : true,
+                        width                   : '100%'
+                    });
+                }
+            }
+        })
     }
 
     deleteRow() {

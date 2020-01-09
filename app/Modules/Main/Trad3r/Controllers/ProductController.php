@@ -165,7 +165,7 @@ class ProductController extends Main
 
         return [
             'status' => Response::STATUS_SUCCESS,
-            'list' => DeviceHelper::getSpecificationList($id),
+            'list' => ProductHelper::getSpecificationList($id),
         ];
     }
    
