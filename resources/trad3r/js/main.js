@@ -101,12 +101,13 @@ function editRow(gadget) {
         .append(gadget.btnCancel)
         .append(gadget.btnSave)
     ;
+    $('.btn-operations').addClass('is-active');
 
     gadget.row
         .find(".btn-box-wrapper")
         .html(btnDeleteRow);
 
-    $('.new-row').addClass(Gadget.getHiddenClass());
+    $('#new-device').addClass(Gadget.getHiddenClass());
 }
 
 /**

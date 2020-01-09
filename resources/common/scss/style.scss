@@ -127,23 +127,16 @@ ul {
   display: flex;
   justify-content: center;
   top: 5px;
-  right: 15px;
+  right: 50%;
+  margin-right: -115px;
   z-index: 3;
   transition: all .2s ease;
   -webkit-transition: all .2s ease;
   -moz-transition: all .2s ease;
   -o-transition: all .2s ease;
-  &:before {
-    content: '';
-    position: fixed;
-    width: 500px;
-    height: 300px;
-    right: 0;
-    top: 0;
-    background-image: radial-gradient(ellipse at 85% 0,
-            rgba(0, 0, 0, 0.72) 12%,
-            #fff0 51%);
-    z-index: 1;
+  &.is-active {
+    opacity: 1;
+    visibility: visible;
   }
   &-edit {
     display: flex;
@@ -209,6 +202,7 @@ ul {
 
 .form-group {
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   label {
