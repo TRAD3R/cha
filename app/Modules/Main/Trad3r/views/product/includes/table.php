@@ -35,8 +35,8 @@ use yii\web\View;
         <span class="btn-text">Новая запись</span>
         <div class="dropdown-list">
           <ul>
-            <li class="dropdown-list-item"><button id="new-device-parent" type="button">Создать Parent</button></li>
-            <li class="dropdown-list-item"><button id="new-device-child" type="button">Создать Child</button></li>
+            <li class="dropdown-list-item"><button id="new-product-parent" type="button">Создать Parent</button></li>
+            <li class="dropdown-list-item"><button id="new-product-child" type="button">Создать Child</button></li>
           </ul>
         </div>
       </div>

@@ -59,6 +59,14 @@ $specifications = $product->specifications;
             </div>
         </div>
     </div>
+    <div class="table-cell editable" data-id="<?=ProductTableStructure::PARENT_ID?>">
+        <?php
+            echo $this->render('@layouts/common/simple_select', [
+                'title' => $product->parent_id,
+                'value' => $product->parent_id,
+            ])
+        ?>
+    </div>
     <div class="table-cell">
     </div>
     <div class="table-cell">
@@ -126,7 +134,7 @@ $specifications = $product->specifications;
         </div>
     <?php endforeach; ?>
     <?php 
-        $lastBP = count($product->buletpoints) - ProductTableStructure::BULLETPOINT_COUNT;
+        $lastBP = ProductTableStructure::BULLETPOINT_COUNT - count($product->buletpoints);
         if($lastBP > 0):
             for ($i = ProductTableStructure::BULLETPOINT_COUNT - $lastBP + 1; $i <= ProductTableStructure::BULLETPOINT_COUNT; $i++):
     ?>
@@ -146,7 +154,7 @@ $specifications = $product->specifications;
         </div>
     <?php endforeach; ?>
     <?php
-        $lastIM = count($product->images) - ProductTableStructure::IMAGE_COUNT;
+        $lastIM = ProductTableStructure::IMAGE_COUNT - count($product->images);
         if($lastIM > 0):
             for ($i = ProductTableStructure::IMAGE_COUNT - $lastIM + 1; $i <= ProductTableStructure::IMAGE_COUNT; $i++):
     ?>
