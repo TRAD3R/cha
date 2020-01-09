@@ -19,6 +19,7 @@ use yii\db\ActiveRecord;
  * @property int                $length                 [integer(8)]        длина(высота) в мм
  * @property int                $width                  [integer(8)]        ширина в мм
  * @property int                $depth                  [integer(8)]        глубина(толщина) в мм
+ * @property int                $size                   [integer(8)]        размер в мм
  * @property int                $merchant_id            [integer(11)]
  * @property string             $sku                    [varchar(50)]
  * @property int                $measure_unit_id        [integer(11)]
@@ -35,7 +36,6 @@ use yii\db\ActiveRecord;
  * @property int                $quantity               [integer(11)]
  * @property Product            $product 
  * @property DeviceType[]       $deviceTypes 
- * @property ProductType        $productType 
  * @property ProductBrand       $productBrand 
  * @property Manufacturer       $manufacturer 
  * @property Merchant           $merchant 
@@ -62,11 +62,6 @@ class ProductSpecification extends ActiveRecord
         return $this->hasMany(DeviceType::class, ['id' => 'device_type_id'])
             ->viaTable(ProductDeviceType::tableName(), ['product_id' => 'product_id'])
             ;
-    }
-
-    public function getProductType()
-    {
-        return $this->hasOne(ProductType::class, ['id' => 'type_id']);
     }
 
     public function getProductBrand()

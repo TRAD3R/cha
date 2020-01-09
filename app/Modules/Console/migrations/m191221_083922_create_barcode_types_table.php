@@ -16,6 +16,10 @@ class m191221_083922_create_barcode_types_table extends Migration
             'id' => $this->primaryKey(),
             'type' => $this->string(20),
         ]);
+        
+        $this->batchInsert('{{%barcode_types}}', ['id', 'type'], [
+            [1, 'EAN'],
+        ]);
     }
 
     /**

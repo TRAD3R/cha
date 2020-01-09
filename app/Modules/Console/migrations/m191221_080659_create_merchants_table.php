@@ -16,6 +16,10 @@ class m191221_080659_create_merchants_table extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string(255),
         ]);
+        
+        $this->batchInsert('{{%merchants}}', ['id', 'name'], [
+            [1, 'Dropshipping'],
+        ]);
     }
 
     /**

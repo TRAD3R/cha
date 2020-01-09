@@ -96,8 +96,7 @@ function editRow(gadget) {
     gadget.btnSave = createBtnSave(gadget);
     gadget.btnCancel = createBtnCancel(gadget);
 
-    gadget.row
-        .find('.btn-operations .btn-operations-edit')
+    $('.btn-operations .btn-operations-edit')
         .html('')
         .append(gadget.btnCancel)
         .append(gadget.btnSave)
@@ -107,7 +106,7 @@ function editRow(gadget) {
         .find(".btn-box-wrapper")
         .html(btnDeleteRow);
 
-    $('#new-device').addClass(Gadget.getHiddenClass());
+    $('.new-row').addClass(Gadget.getHiddenClass());
 }
 
 /**

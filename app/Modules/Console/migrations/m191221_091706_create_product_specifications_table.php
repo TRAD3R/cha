@@ -22,6 +22,7 @@ class m191221_091706_create_product_specifications_table extends Migration
             'length' => $this->float(1)->defaultValue(0),
             'width' => $this->float(1)->defaultValue(0),
             'depth' => $this->float(1)->defaultValue(0),
+            'size' => $this->float(1)->defaultValue(0),
             'merchant_id' => $this->integer(),
             'sku' => $this->string(50),
             'measure_unit_id' => $this->integer(),

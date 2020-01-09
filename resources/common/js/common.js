@@ -1,5 +1,6 @@
 const TABLE_BODY_CLASS = 'table-body';
 const TABLE_ROW_CLASS = 'table-row';
+const HIDDEN_EL_CLASS = 'hidden-el';
 
 function getAllUrlParams(url) {
     // извлекаем строку из URL или объекта window
