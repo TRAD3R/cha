@@ -168,8 +168,8 @@
       font-size: 13px; }
     .table-cell img {
       display: block;
-      width: 100%;
-      max-width: 40px;
+      width: auto;
+      max-height: 40px;
       margin: 0 auto; }
     .table-cell .simple-select {
       width: 100%;
@@ -778,7 +778,10 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
   position: fixed;
   top: 10px;
   right: 15px;
-  z-index: 2; }
+  z-index: 2;
+  display: flex; }
+  .search-select > .btn {
+    margin-right: 15px; }
   .search-select .chosen-container {
     border: none;
     background: #fff;
