@@ -115,9 +115,19 @@ ul {
   -webkit-transition: all .2s ease;
   -moz-transition: all .2s ease;
   -o-transition: all .2s ease; }
+  .btn-operations:before {
+    content: '';
+    position: fixed;
+    width: 500px;
+    height: 300px;
+    right: 0;
+    top: 0;
+    background-image: radial-gradient(ellipse at 85% 0, rgba(0, 0, 0, 0.72) 12%, #fff0 51%);
+    z-index: 1; }
   .btn-operations-edit {
     display: flex;
-    flex-direction: row; }
+    flex-direction: row;
+    z-index: 2; }
   .btn-operations .btn {
     box-shadow: 0 10px 20px rgba(15, 52, 116, 0.21); }
     .btn-operations .btn:not(:last-child) {
