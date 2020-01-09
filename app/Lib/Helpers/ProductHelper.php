@@ -4,20 +4,32 @@
 namespace App\Helpers;
 
 
+use App\Models\BrowseNode;
 use App\Models\CardMemory;
 use App\Models\Device;
 use App\Models\DeviceBrand;
 use App\Models\DeviceSpecification;
 use App\Models\DeviceType;
+use App\Models\Manufacturer;
+use App\Models\Merchant;
 use App\Models\Product;
+use App\Models\ProductBrand;
 use App\Models\UsbStandard;
 use App\Models\UsbType;
 use App\Params;
+use App\Repositories\BarcodeTypeRepository;
+use App\Repositories\BrowseNodeRepository;
 use App\Repositories\CardMemoryRepository;
 use App\Repositories\DeviceBrandRepository;
 use App\Repositories\DeviceTypeRepository;
+use App\Repositories\ManufacturerRepository;
+use App\Repositories\MerchantRepository;
+use App\Repositories\ProductBrandRepository;
+use App\Repositories\ProductRepository;
+use App\Repositories\MeasureUnitRepository;
 use App\Repositories\UsbStandardRepository;
 use App\Repositories\UsbTypeRepository;
+use App\Repositories\VariationThemeRepository;
 use App\Tables\DeviceTableStructure;
 use App\Tables\ProductTableStructure;
 use yii\db\Query;
@@ -184,17 +196,32 @@ class ProductHelper
             case ProductTableStructure::DEVICE_TYPE:
                 $list = DeviceTypeRepository::getAllAsArray();
                 break;
-            case DeviceTableStructure::BRAND:
-                $list = DeviceBrandRepository::getAllAsArray();
+            case ProductTableStructure::TYPE:
+                $list = ProductRepository::getTypeAsArray();
                 break;
-            case DeviceTableStructure::DEVICE_CARD_MEMORY:
-                $list = CardMemoryRepository::getAllAsArray();
+            case ProductTableStructure::MERCHANT:
+                $list = MerchantRepository::getAllAsArray();
                 break;
-            case DeviceTableStructure::DEVICE_USB_TYPE:
-                $list = UsbTypeRepository::getAllAsArray();
+            case ProductTableStructure::BRAND:
+                $list = ProductBrandRepository::getAllAsArray();
                 break;
-            case DeviceTableStructure::DEVICE_USB_STANDARD:
-                $list = UsbStandardRepository::getAllAsArray();
+            case ProductTableStructure::MANUFACTURER:
+                $list = ManufacturerRepository::getAllAsArray();
+                break;
+            case ProductTableStructure::UNIT_MEASURE:
+                $list = MeasureUnitRepository::getAllAsArray();
+                break;
+            case ProductTableStructure::BARCODE_TYPE:
+                $list = BarcodeTypeRepository::getAllAsArray();
+                break;
+            case ProductTableStructure::BROWSE_NODE:
+                $list = BrowseNodeRepository::getAllAsArray();
+                break;
+            case ProductTableStructure::VARIATION_THEME:
+                $list = VariationThemeRepository::getAllAsArray();
+                break;
+            case ProductTableStructure::PARENT_ID:
+                $list = ProductRepository::getParentsAsArray();
                 break;
         }
         
