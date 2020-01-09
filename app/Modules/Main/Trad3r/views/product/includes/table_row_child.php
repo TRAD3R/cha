@@ -17,11 +17,6 @@ $specifications = $product->specifications;
 ?>
 
     <div class="btn-box-wrapper"></div>
-    <div class="btn-operations">
-        <div class="btn-operations-edit">
-    
-        </div>
-    </div>
     <div class="table-cell sequence-number">
         <?=$product->id?>
     </div>

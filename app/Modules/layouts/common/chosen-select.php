@@ -7,14 +7,13 @@
  */
 ?>
 <div class="form-group">
-    <span class="text cap">
-        <?php if ($selected):?>
-            <?php foreach ($selected as $key => $value):?>
-                <b data-id="<?=$key?>"><?=$value?></b>
-            <?php endforeach?>
-        <?php else:?>
-            <?=$placeholder?>
-        <?php endif; ?>
+    <span class="cap">
+      <?php if ($selected):?>
+        <?php $ids = array_keys($selected); ?>
+          <span data-id="<?=implode(",", $ids)?>"><?=implode(", ", $selected)?></span>
+      <?php else:?>
+        <?=$placeholder?>
+      <?php endif; ?>
     </span>
     <select 
         class="form-control hidden-el"

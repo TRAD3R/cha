@@ -97,6 +97,20 @@
   width: 100%;
   overflow: hidden;
   flex-direction: column;
+  z-index: 3;
+  background: $lightGray;
+  .cap {
+    padding: 5px;
+    pointer-events: none;
+    cursor: default;
+    border-radius: 2px;
+    background: $lightGray;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border: 1px solid $gray;
+    font-size: 14px;
+  }
   &-content {
     display: grid;
     width: 100%;
@@ -398,7 +412,6 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin: 15px 0;
   flex: 1;
   > ul {
     display: flex;
@@ -562,7 +575,7 @@ button {
     left: 0;
     top: 50px;
     background: $light;
-    z-index: 2;
+    z-index: 10;
     border-radius: 0;
     visibility: hidden;
     opacity: 0;
@@ -661,7 +674,7 @@ button {
     position: absolute;
     left: 0;
     bottom: 50px;
-    z-index: 1;
+    z-index: 10;
     background: $light;
     box-shadow: 0 10px 20px rgba(161, 172, 188, 0.4);
     min-width: 260px;
@@ -702,7 +715,7 @@ button {
     position: absolute;
     top: 40px;
     left: 0;
-    z-index: 1;
+    z-index: 10;
     background: $light;
     box-shadow: 0 10px 20px rgba(161, 172, 188, 0.4);
     min-width: 260px;
@@ -814,6 +827,7 @@ button {
   width: 100%;
   justify-content: space-between;
   align-items: center;
+  margin: 15px 0;
   &__item {
     display: flex;
     align-items: center;
@@ -856,7 +870,7 @@ button {
     font-size: 14px;
     line-height: 20px;
     background-color: #fff;
-    z-index: 2;
+    z-index: 10;
     margin-bottom: 0;
     border: none;
   }
@@ -1012,7 +1026,7 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
   position: fixed;
   top: 10px;
   right: 15px;
-  z-index: 2;
+  z-index: 10;
   display: flex;
   > .btn {
     margin-right: 15px;
