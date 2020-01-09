@@ -15,11 +15,6 @@ $specifications = $product->specifications;
 ?>
 
     <div class="btn-box-wrapper"></div>
-    <div class="btn-operations">
-        <div class="btn-operations-edit">
-
-        </div>
-    </div>
     <div class="table-cell sequence-number">
         <?=$product->id?>
     </div>
@@ -63,7 +58,8 @@ $specifications = $product->specifications;
         <?php echo $this->render('@layouts/common/chosen-select', [
                 'name' => ProductTableStructure::DEVICE_TYPE,
                 'placeholder' => Yii::t('front', 'DEVICE_TYPE'),
-                'isMultiple' => true, 
+                'isMultiple' => true,
+                'selected' => [0 => 'handy',1 => 'tablet', 2 => 'laptop', 3 => 'laptop'],
         ]); ?>
     </div>
     <div class="table-cell editable select"  data-id="<?=ProductTableStructure::TYPE?>">
