@@ -38,11 +38,10 @@ class DeviceController extends Main
         $devices = $devices->getDevices($params, $offset);
         
         $models = DeviceRepository::getAllModelsAsArray();
-        
-        $totalCount = Device::find()->count();
+
         return $this->render('index', [
-            'devices' => $devices,
-            'totalCount' => $totalCount,
+            'devices' => $devices['devices'],
+            'totalCount' => $devices['total'],
             'params' => $params,
             'offset' => $offset,
             'models' => $models,

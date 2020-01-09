@@ -72,15 +72,6 @@ $(document).ready(function () {
             width                   : '100%'
         });
     });
-
-    $('#new-device').on('click', function () {
-        $(this).addClass(Gadget.getHiddenClass());
-
-        let newRow = $('#empty-row');
-        let tableBody = $('.table-body');
-        tableBody.append("<div class='table-row' data-id='0'>" + newRow.html() + "</div>");
-        scrollToEditedRow(tableBody.find('.table-row').last());
-    });
 });
 
 

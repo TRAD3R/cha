@@ -9,39 +9,30 @@ use Yii;
 
 class ProductTableStructure extends AbstractTS
 {
-    const DATE_CREATED = 1;
-    const NODE = 2;
-    const DEVICE_TYPE = 4;
-    const TYPE = 5;
-    const MERCHANT = 6;
-    const SKU = 7;
-    const BRAND = 8;
-    const MANUFACTURER = 9;
-    const LENGTH = 10;
-    const WIDTH = 11;
-    const DEPTH = 12;
-    const SIZE = 13;
-    const UNIT_MEASURE = 14;
-    const PRICE = 15;
-    const QUANTITY = 16;
-    const TITLE = 17;
-    const DESCRIPTION = 18;
-    const BULLETPOINT = 19;
-    const IMAGE = 24;
-    const SWATCH_IMAGE = 33;
-    const BARCODE = 34;
-    const BARCODE_TYPE = 35;
-    const BROWSE_NODE = 36;
-    const AMAZON_PRODUCT_TYPE = 37;
-    const VARIATION_THEME = 38;
+    const NODE = 101;
+    const DEVICE_TYPE = 102;
+    const TYPE = 103;
+    const MERCHANT = 104;
+    const SKU = 105;
+    const MANUFACTURER = 106;
+    const LENGTH = 107;
+    const WIDTH = 108;
+    const DEPTH = 109;
+    const SIZE = 110;
+    const UNIT_MEASURE = 111;
+    const QUANTITY = 112;
+    const DESCRIPTION = 113;
+    const BULLETPOINT = 114;
+    const SWATCH_IMAGE = 115;
+    const BARCODE = 116;
+    const BARCODE_TYPE = 117;
+    const BROWSE_NODE = 118;
+    const AMAZON_PRODUCT_TYPE = 119;
+    const VARIATION_THEME = 120;
+    const PARENT_ID = 121;
     
-    const PRODUCT_GROUP_CUSTOM = 'custom';
-    const PRODUCT_GROUP_MAINCHARACTERISTIC = 'mainCharacteristic';
-    const PRODUCT_GROUP_PARAMS = 'params';
-    const PRODUCT_GROUP_PRICE = 'price';
-    const PRODUCT_GROUP_SEO = 'seo';
-    const PRODUCT_GROUP_CONTENT = 'content';
-    const PRODUCT_GROUP_AMAZON = 'amazon';
+    const GROUP_SEO = 'seo';
+    const GROUP_AMAZON = 'amazon';
     
     const BULLETPOINT_COUNT = 5;        // макс количество ключевых фраз
     const IMAGE_COUNT = 9;              // макс количество картинок
@@ -49,12 +40,13 @@ class ProductTableStructure extends AbstractTS
     public static function getTitles()
     {
         return [
-          self::PRODUCT_GROUP_CUSTOM => [
-            0 => Yii::t('front', 'SECUENCE_NUMBER'),
+          self::GROUP_CUSTOM => [
+            self::ID => Yii::t('front', 'ID'),
           ],
-          self::PRODUCT_GROUP_MAINCHARACTERISTIC => [
+          self::GROUP_MAINCHARACTERISTIC => [
             self::DATE_CREATED  => Yii::t('front', 'DATE_CREATED'),
             self::NODE          => Yii::t('front', 'NODE'),
+            self::PARENT_ID     => Yii::t('front', 'PARENT'),
             self::DEVICE_TYPE   => Yii::t('front', 'DEVICE_TYPE'),
             self::TYPE          => Yii::t('front', 'TYPE'),
             self::MERCHANT      => Yii::t('front', 'MERCHANT'),
@@ -62,27 +54,27 @@ class ProductTableStructure extends AbstractTS
             self::BRAND         => Yii::t('front', 'BRAND'),
             self::MANUFACTURER  => Yii::t('front', 'MANUFACTURER'),
           ],
-          self::PRODUCT_GROUP_PARAMS => [
+          self::GROUP_PARAMS => [
             self::LENGTH => Yii::t('front', 'LENGTH'),
             self::WIDTH => Yii::t('front', 'WIDTH'),
             self::DEPTH => Yii::t('front', 'DEPTH'),
             self::SIZE => Yii::t('front', 'SIZE'),
             self::UNIT_MEASURE => Yii::t('front', 'UNIT_MEASURE'),
           ],
-          self::PRODUCT_GROUP_PRICE => [
+          self::GROUP_PRICE => [
             self::PRICE => Yii::t('front', 'PRICE'),
             self::QUANTITY => Yii::t('front', 'QUANTITY'),
           ],
-          self::PRODUCT_GROUP_SEO => [
+          self::GROUP_SEO => [
             self::TITLE => Yii::t('front', 'TITLE'),
             self::DESCRIPTION => Yii::t('front', 'DESCRIPTION'),
             self::BULLETPOINT => Yii::t('front', 'BULLETPOINT'),
           ],
-          self::PRODUCT_GROUP_CONTENT => [
+          self::GROUP_CONTENT => [
             self::IMAGE => Yii::t('front', 'IMAGE'),
             self::SWATCH_IMAGE => Yii::t('front', 'SWATCH_IMAGE'),
           ],
-          self::PRODUCT_GROUP_AMAZON => [
+          self::GROUP_AMAZON => [
             self::BARCODE => Yii::t('front', 'BARCODE'),
             self::BARCODE_TYPE => Yii::t('front', 'BARCODE_TYPE'),
             self::BROWSE_NODE => Yii::t('front', 'BROWSE_NODE'),

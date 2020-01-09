@@ -56,14 +56,15 @@ $specifications = $product->specifications;
             </div>
         </div>
     </div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::PARENT_ID?>">
+        <span class="text"><?php echo $product->parent_id ?: '-' ?></span>
+    </div>
     <div class="table-cell editable select" data-id="<?=ProductTableStructure::DEVICE_TYPE?>">
-        <div class="form-group">
-            <select class="form-control chosen-select" name="device_type[]" multiple="multiple" size="4" data-placeholder="Тип устройства" style="display: none;">
-                <option value="5980">Handy</option>
-                <option value="5985">Tablet</option>
-                <option value="5986">Laptop</option>
-            </select>
-        </div>
+        <?php echo $this->render('@layouts/common/chosen-select', [
+                'name' => ProductTableStructure::DEVICE_TYPE,
+                'placeholder' => Yii::t('front', 'DEVICE_TYPE'),
+                'isMultiple' => true, 
+        ]); ?>
     </div>
     <div class="table-cell editable select"  data-id="<?=ProductTableStructure::TYPE?>">
         <?php
