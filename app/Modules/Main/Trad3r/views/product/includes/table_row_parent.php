@@ -56,6 +56,9 @@ $specifications = $product->specifications;
             </div>
         </div>
     </div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::PARENT_ID?>">
+        <span class="text"><?php echo $product->parent_id ?: '-' ?></span>
+    </div>
     <div class="table-cell editable select" data-id="<?=ProductTableStructure::DEVICE_TYPE?>">
         <div class="form-group">
             <select class="form-control chosen-select" name="device_type[]" multiple="multiple" size="4" data-placeholder="Тип устройства" style="display: none;">

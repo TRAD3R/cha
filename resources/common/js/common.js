@@ -1,3 +1,6 @@
+const TABLE_BODY_CLASS = 'table-body';
+const TABLE_ROW_CLASS = 'table-row';
+
 function getAllUrlParams(url) {
     // извлекаем строку из URL или объекта window
     var queryString = url ? url.split('?')[1] : window.location.search.slice(1);

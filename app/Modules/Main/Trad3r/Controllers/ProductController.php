@@ -35,10 +35,9 @@ class ProductController extends Main
         $products = new ProductHelper();
         $products = $products->getProducts($params, $offset);
         
-        $totalCount = Device::find()->count();
         return $this->render('index', [
-            'products' => $products,
-            'totalCount' => $totalCount,
+            'products' => $products['products'],
+            'totalCount' => $products['total'],
             'params' => $params,
             'offset' => $offset
         ]);

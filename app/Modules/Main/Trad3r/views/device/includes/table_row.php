@@ -47,7 +47,7 @@ $specifications = $device->specifications;
             ])
         ?>
     </div>
-    <div class="table-cell editable select" data-id="<?=DeviceTableStructure::DEVICE_BRAND?>">
+    <div class="table-cell editable select" data-id="<?=DeviceTableStructure::BRAND?>">
         <?php
             echo $this->render('@layouts/common/simple_select', [
                 'title' => $device->brand->name,
@@ -55,7 +55,7 @@ $specifications = $device->specifications;
             ])
         ?>
     </div>
-    <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_MODEL?>">
+    <div class="table-cell editable text" data-id="<?=DeviceTableStructure::TITLE?>">
       <input class="input-text" type="text" value="<?=$device->title?>">
     </div>
     <div class="table-cell editable select" data-id="<?=DeviceTableStructure::DEVICE_LINE?>">
@@ -160,10 +160,10 @@ $specifications = $device->specifications;
             <span class="checkbox-text"></span>
         </label>
     </div>
-    <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_PRICE?>">
+    <div class="table-cell editable text" data-id="<?=DeviceTableStructure::PRICE?>">
       <input class="input-text" type="text" value="<?=PriceHelper::toFloat($specifications->price);?>">
     </div>
-    <div class="table-cell editable text" data-id="<?=DeviceTableStructure::DEVICE_IMAGE?>">
+    <div class="table-cell editable text" data-id="<?=DeviceTableStructure::IMAGE?>">
         <?php
             $imageName = UrlHelper::createImageAlias('png', $device->brand->name, $device->title);
             $image = "/images/models/" . $imageName;
