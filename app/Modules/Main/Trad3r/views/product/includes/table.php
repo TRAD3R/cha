@@ -15,6 +15,11 @@ use yii\web\View;
  */
  ?>
 <div class="page page-product">
+  <div class="btn-operations">
+    <div class="btn-operations-edit">
+
+    </div>
+  </div>
   <div class="table" id="horizontal-scroller">
     <div class="table-content">
       <?php echo $this->render('table_head', [

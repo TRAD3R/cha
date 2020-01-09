@@ -24,6 +24,12 @@ use yii\web\View;
     <?php echo $this->render("@layouts/common/search_select", ["list"=> $models, 'showReset' => $params[Params::GADGET]]); ?>
   </div>
 
+  <div class="btn-operations">
+    <div class="btn-operations-edit">
+
+    </div>
+  </div>
+
   <div class="table" id="horizontal-scroller">
     <div class="table-content">
       <?php echo $this->render('table_head', [
