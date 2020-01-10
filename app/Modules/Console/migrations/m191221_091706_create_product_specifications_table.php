@@ -14,7 +14,6 @@ class m191221_091706_create_product_specifications_table extends Migration
     {
         $this->createTable('{{%product_specifications}}', [
             'product_id' => $this->primaryKey(),
-            'type' => $this->string(20),
             'device_type_id' => $this->integer(),
             'type_id' => $this->integer(),
             'product_brand_id' => $this->integer(),
@@ -22,6 +21,7 @@ class m191221_091706_create_product_specifications_table extends Migration
             'length' => $this->float(1)->defaultValue(0),
             'width' => $this->float(1)->defaultValue(0),
             'depth' => $this->float(1)->defaultValue(0),
+            'size' => $this->float(1)->defaultValue(0),
             'merchant_id' => $this->integer(),
             'sku' => $this->string(50),
             'measure_unit_id' => $this->integer(),

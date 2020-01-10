@@ -9,8 +9,10 @@ use App\Helpers\DeviceHelper;
 use App\Models\Device;
 use App\Models\DeviceSpecification;
 use App\Params;
+use App\Repositories\DeviceRepository;
 use App\Request;
 use App\Response;
+use App\Tables\DeviceTableStructure;
 use Yii;
 
 class DeviceController extends Main
@@ -23,6 +25,7 @@ class DeviceController extends Main
         $request = $this->getRequest();
         
         $params = [
+            Params::GADGET      => (int)$request->get(Params::GADGET),
             Params::PAGE        => $request->get(Params::PAGE) ?: 1,
             Params::PER_PAGE    => $request->get(Params::PER_PAGE) ?: DeviceHelper::PER_PAGE,
             Params::SORT_ASC    => $request->getArrayStr(Params::SORT_ASC),
@@ -34,12 +37,14 @@ class DeviceController extends Main
         $devices = new DeviceHelper();
         $devices = $devices->getDevices($params, $offset);
         
-        $totalCount = Device::find()->count();
+        $models = DeviceRepository::getAllModelsAsArray();
+
         return $this->render('index', [
-            'devices' => $devices,
-            'totalCount' => $totalCount,
+            'devices' => $devices['devices'],
+            'totalCount' => $devices['total'],
             'params' => $params,
-            'offset' => $offset
+            'offset' => $offset,
+            'models' => $models,
         ]);
     }
 

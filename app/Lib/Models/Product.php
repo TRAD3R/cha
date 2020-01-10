@@ -35,6 +35,17 @@ class Product extends ActiveRecord
         ];
     }
 
+    public function beforeDelete()
+    {
+        if(!parent::beforeDelete()) {
+            return false;
+        }
+
+        $specifications = $this->specifications;
+
+        return $specifications->delete();
+    }
+
     public function getParent()
     {
         return $this->hasOne(Product::class, ['id' => 'parent_id']);
@@ -54,4 +65,5 @@ class Product extends ActiveRecord
     {
         return $this->hasMany(ProductImage::class, ['product_id' => 'id']);
     }
+
 }

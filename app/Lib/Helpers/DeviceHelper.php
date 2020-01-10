@@ -15,6 +15,7 @@ use App\Models\UsbType;
 use App\Params;
 use App\Repositories\CardMemoryRepository;
 use App\Repositories\DeviceBrandRepository;
+use App\Repositories\DeviceRepository;
 use App\Repositories\DeviceTypeRepository;
 use App\Repositories\LineRepository;
 use App\Repositories\UsbStandardRepository;
@@ -37,21 +38,31 @@ class DeviceHelper
             ->innerJoin('device_specifications s', 'd.id = s.device_id')
         ;
         
-        if($params[Params::SORT_ASC]) {
-            self::addSort($params[Params::SORT_ASC], 'ASC');
-        }
+        if($params[Params::GADGET]) {
+            $this->query
+                ->where(['d.id' => $params[Params::GADGET]])
+                ;
+        }else {
+            if ($params[Params::SORT_ASC]) {
+                self::addSort($params[Params::SORT_ASC], 'ASC');
+            }
 
-        if($params[Params::SORT_DESC]) {
-            self::addSort($params[Params::SORT_DESC], 'DESC');
+            if ($params[Params::SORT_DESC]) {
+                self::addSort($params[Params::SORT_DESC], 'DESC');
+            }
         }
         
+        $total = $this->query->count();
+
         $this->query
             ->addOrderBy('d.id ASC')
             ->limit($params[Params::PER_PAGE])
-            ->offset($offset)
-            ;
+            ->offset($offset);
         
-        return $this->query->all();
+        return [
+            'devices' => $this->query->all(),
+            'total'   => $total
+        ];
     }
     
     public static function modifyData(Device $device, array $data)
@@ -72,7 +83,7 @@ class DeviceHelper
 
                     $specifications->type_id = $deviceType->id;
                     break;
-                case DeviceTableStructure::DEVICE_BRAND:
+                case DeviceTableStructure::BRAND:
                     $brand = DeviceBrand::findOne($value);
                     
                     if(!$brand){
@@ -83,7 +94,7 @@ class DeviceHelper
 
                     $device->brand_id = $brand->id;
                     break;
-                case DeviceTableStructure::DEVICE_MODEL:
+                case DeviceTableStructure::TITLE:
                     $device->title = $value;
                     break;
                 case DeviceTableStructure::DEVICE_LINE:
@@ -162,10 +173,10 @@ class DeviceHelper
                 case DeviceTableStructure::DEVICE_REMOVABLE_BATTERY:
                     $specifications->removable_battery = $value;
                     break;
-                case DeviceTableStructure::DEVICE_PRICE:
+                case DeviceTableStructure::PRICE:
                     $specifications->price = PriceHelper::toInt($value);
                     break;
-                case DeviceTableStructure::DEVICE_IMAGE:
+                case DeviceTableStructure::IMAGE:
                     $specifications->image = $value;
                     break;
             }
@@ -192,7 +203,7 @@ class DeviceHelper
             case DeviceTableStructure::DEVICE_TYPE:
                 $list = DeviceTypeRepository::getAllAsArray();
                 break;
-            case DeviceTableStructure::DEVICE_BRAND:
+            case DeviceTableStructure::BRAND:
                 $list = DeviceBrandRepository::getAllAsArray();
                 break;
             case DeviceTableStructure::DEVICE_CARD_MEMORY:
@@ -223,12 +234,12 @@ class DeviceHelper
                         ->innerJoin('device_type dt' . $uniqParam, "dt{$uniqParam}.id = s.type_id")
                         ->addOrderBy("dt{$uniqParam}.type $type");
                     break;
-                case DeviceTableStructure::DEVICE_BRAND:
+                case DeviceTableStructure::BRAND:
                     $this->query
                         ->innerJoin('device_brand db' . $uniqParam, "db{$uniqParam}.id = d.brand_id")
                         ->addOrderBy("db{$uniqParam}.name $type");
                     break;
-                case DeviceTableStructure::DEVICE_MODEL:
+                case DeviceTableStructure::TITLE:
                     $this->query
                         ->addOrderBy("d.title $type");
                     break;
@@ -287,7 +298,7 @@ class DeviceHelper
                     $this->query
                         ->addOrderBy("s.removable_battery $type");
                     break;
-                case DeviceTableStructure::DEVICE_PRICE:
+                case DeviceTableStructure::PRICE:
                     $this->query
                         ->addOrderBy("s.price $type");
                     break;

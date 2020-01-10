@@ -1,3 +1,47 @@
+/**
+ * Клонирование строки
+ */
+BOX_WRAPPER.on('click', '#btnDublicateRow', function () {
+    gadget.row = $(this).closest('.table-row');
+    gadget.body = $(this).closest('.table-body');
+    gadget.body
+        .append("<div class='table-row' data-id='0'>" +  gadget.row.html() + "</div>")
+    ;
+    let lastRow =  gadget.body.find('.table-row').last();
+    scrollToEditedRow(lastRow);
+});
+
+/**
+ * Удаление строки
+ */
+BOX_WRAPPER.on('click', '#btnDeleteRow', function () {
+    gadget.row = $(this).closest('.table-row');
+    gadget.body = $(this).closest('.table-body');
+    gadget.deleteRow();
+});
+
+
+$('.table-body').on('dblclick', '.editable', function () {
+
+    gadget.el = $(this);
+    gadget.row =  gadget.el.closest('.table-row');
+
+    if(!gadget.row.hasClass('edited-row')) {
+        editRow(gadget);
+    }
+
+    gadget.changeInput();
+});
+
+$("#per_page").on('change', function () {
+    let perPage = $(this).val();
+    gadget.changePerPage(perPage);
+});
+
+$('.btn-remove-sort').on('click', function () {
+    gadget.removeSort($(this).data('key'));
+});
+
 $(document).ready(function () {
     var paginationItem = $('.pagination-item');
     paginationItem.on('click', function () {
@@ -13,12 +57,13 @@ $(document).ready(function () {
         removeDoubleBtn($(this));
     });
 
-    $('.chosen-select').chosen({
-        disable_search_threshold: 10,
-        no_results_text         : "",
-        search_contains         : true,
-        width                   : '100%'
-    });
+    $('.chosen-select')
+        .chosen({
+            disable_search_threshold: 10,
+            no_results_text         : "",
+            search_contains         : true,
+            width                   : '100%'
+        });
     $('body').on('click', '.chosen-select', function () {
         $(this).chosen({
             disable_search_threshold: 10,
@@ -27,58 +72,15 @@ $(document).ready(function () {
             width                   : '100%'
         });
     });
-
-    /**
-     * Клонирование строки
-     */
-    $('.btn-box-wrapper').on('click', '#btnDublicateRow', function () {
-        Device.row = $(this).closest('.table-row');
-        Device.body = $(this).closest('.table-body');
-        Device.body
-            .append("<div class='table-row' data-id='0'>" + Device.row.html() + "</div>")
-            ;
-        let lastRow = Device.body.find('.table-row').last();
-        scrollToEditedRow(lastRow);
-    });
-
-    /**
-     * Удаление строки
-     */
-    $('.btn-box-wrapper').on('click', '#btnDeleteRow', function () {
-        Device.row = $(this).closest('.table-row');
-        Device.body = $(this).closest('.table-body');
-        Device.deleteRow();
-    });
-
-
-    $('.table-body').on('dblclick', '.editable', function () {
-        Device.el = $(this);
-        Device.row = Device.el.closest('.table-row');
-        
-        if(!Device.row.hasClass('edited-row')) {
-            editRow(Device);
-        }
-        
-        Device.changeInput();
-    });
-    
-    $('#new-device').on('click', function () {
-        $(this).addClass(CLASS_HIDDEN_ELEMENT);
-
-        let newRow = $('#empty-row');
-        let tableBody = $('.table-body');
-        tableBody.append("<div class='table-row' data-id='0'>" + newRow.html() + "</div>");
-        scrollToEditedRow(tableBody.find('.table-row').last());
-    })
 });
 
 
 
 /**
  * Подготовка стоки к редактированию
- * @param device
+ * @param gadget
  */
-function editRow(device) {
+function editRow(gadget) {
     var btnDeleteRow = `
     <button type="button" class="btn btn-box btn-red" id="btnDeleteRow">
         <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -87,25 +89,25 @@ function editRow(device) {
     </button>
     `;
 
-    device.rowHtml = device.row.html();
-    device.row.addClass('edited-row');
-    device.body = device.el.closest('.table-body');
-    device.body.addClass('edited-body');
-    device.btnSave = createBtnSave(device);
-    device.btnCancel = createBtnCancel(device);
+    gadget.rowHtml = gadget.row.html();
+    gadget.row.addClass('edited-row');
+    gadget.body = gadget.el.closest('.table-body');
+    gadget.body.addClass('edited-body');
+    gadget.btnSave = createBtnSave(gadget);
+    gadget.btnCancel = createBtnCancel(gadget);
 
-    device.row
-        .find('.btn-operations .btn-operations-edit')
+    $('.btn-operations .btn-operations-edit')
         .html('')
-        .append(device.btnCancel)
-        .append(device.btnSave)
+        .append(gadget.btnCancel)
+        .append(gadget.btnSave)
     ;
+    $('.btn-operations').addClass('is-active');
 
-    device.row
+    gadget.row
         .find(".btn-box-wrapper")
         .html(btnDeleteRow);
 
-    $('#new-device').addClass(CLASS_HIDDEN_ELEMENT);
+    $('#new-device').addClass(Gadget.getHiddenClass());
 }
 
 /**
@@ -120,9 +122,9 @@ function scrollToEditedRow(row) {
 
 /**
  * Добавление кнопки дублирования строки
- * @param el
+ * @param row
  */
-function addDoubleBtn(el) {
+function addDoubleBtn(row) {
     var btnDublicateRow = `
     <button type="button" class="btn btn-box primary" id="btnDublicateRow">
       <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -130,39 +132,39 @@ function addDoubleBtn(el) {
       </svg>
     </button>
     `;
-    
-    el.find('.btn-box-wrapper').html(btnDublicateRow).addClass("active");
+
+    row.find('.btn-box-wrapper').html(btnDublicateRow).addClass("active");
 }
 
 /**
  * Удаление кнопки дублирования строки
- * @param el
+ * @param row
  */
-function removeDoubleBtn(el) {
-    el.find('.btn-box-wrapper').removeClass("active").html("");
+function removeDoubleBtn(row) {
+    row.find('.btn-box-wrapper').removeClass("active").html("");
 }
 
 /**
  * Работа с кнопками сохранения и отмены
- * @param device
+ * @param gadget
  * @returns {HTMLButtonElement}
  */
-function createBtnSave(device)
+function createBtnSave(gadget)
 {
     let btn = createBtn("Сохранить", 'change-save', ['btn-primary','btn-save-change']);
     btn.addEventListener('click', () => {
-        device.updateRow();
+        gadget.updateRow();
     });
     
     return btn;
 }
 
-function createBtnCancel(device)
+function createBtnCancel(gadget)
 {
     let btn = createBtn("Отменить", 'change-cancel', ['btn-dark-blue','btn-cancel-change']);
 
     btn.addEventListener('click', () => {
-        device.cancelChanges();
+        gadget.cancelChanges();
     });
 
     return btn;
@@ -185,29 +187,17 @@ function createBtn(text, id, classes)
 /** Работа с кнопками сохранения и отмены */
 
 /**
- * Работа с модальным окном
- * для добавления новых элементов в select
- * @param el
+ * Показать модальное окно
  */
-function showModal(el){
+function showModal(){
+    $('#id-edited-textarea').focus();
     $('.modal-overlay').addClass('active');
     $('.modal').addClass('active');
     $('.site').addClass('modal-open');
     $("body, html").css("overflow", "hidden");
-    $(el).closest('.simple-select-drop').find('ul.simple-select-list').attr('id', ID_EDITED_SELECT);
 }
 
-function hideModal(isChange){
-    let editedSelect = $("#" + ID_EDITED_SELECT);
-    if(isChange) {
-        let newValue = $('#id-edited-textarea').val();
-        if(newValue.length > 0) {
-            let li = '<li class="simple-select-item" role="option" data-value="' + newValue + '">' + newValue + '</li>';
-            editedSelect.append(li);
-        }
-    }
-    
-    editedSelect.removeAttr('id');
+function hideModal(){
     $('.modal-overlay').removeClass('active');
     $('.modal').removeClass('active');
     $('.site').removeClass('modal-open');
@@ -249,7 +239,9 @@ $(function () {
         if (!$(e.target).closest('.simple-select').length) {
             $('.simple-select').removeClass('is-active');
         }
-
+        if (!$(e.target).closest('.dropdown').length) {
+            $('.dropdown').removeClass('is-active');
+        }
     });
     $(document).on('keydown.simple-select', '.simple-select', function(event) {
         let $dropdown = $(this);
@@ -340,17 +332,15 @@ $(document).ready(function() {
             checkboxes.prop('checked', false);
         }
     });
-    
-    $("#per_page").on('change', function () {
-        let perPage = $(this).val();
-        Device.changePerPage(perPage);
-    });
-    
-    $('.btn-remove-sort').on('click', function () {
-        Device.removeSort($(this).data('key'));
-    })
 });
+
 function sort(type, param) {
     Device.addSort(type, param);
 }
 
+/*dropdown*/
+$(document).ready(function() {
+    $('.dropdown').on('click', function(){
+        $(this).addClass('is-active');
+    });
+});

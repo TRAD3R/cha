@@ -7,6 +7,8 @@ use App\Tables\DeviceTableStructure;
 /**
  * @var array $sortedColumnsAsc
  * @var array $sortedColumnsDesc
+ * @var array $brands
+ * @var array $models
  */
 $ths = DeviceTableStructure::getTitles();
 $sortedColumns = DeviceTableStructure::getSortedColumns();
@@ -46,19 +48,22 @@ $sortedColumns = DeviceTableStructure::getSortedColumns();
                         </div>
                         <ul class="column-tool-list">
                           <li><button type="button" class="column-tool-item sort tool-sort-asc <?=in_array($key, $sortedColumnsAsc) ? 'is-active' : ''?>" 
-                                      onclick="sort('<?=Params::SORT_ASC?>', <?=$key?>)">
+                                      onclick="Gadget.addSort('<?=Params::SORT_ASC?>', <?=$key?>)">
                                   Сортировать от А - Я
                               </button>
                           </li>
                           <li><button type="button" class="column-tool-item sort tool-sort-desc <?=in_array($key, $sortedColumnsDesc) ? 'is-active' : ''?>" 
-                                      onclick="sort('<?=Params::SORT_DESC?>', <?=$key?>)">
+                                      onclick="Gadget.addSort('<?=Params::SORT_DESC?>', <?=$key?>)">
                                   Сортировать от Я - А
                               </button>
                           </li>
                         </ul>
                       </div>
                     </div>
-<!--                <div class="column-tool-group">-->
+                    <?php if(in_array($key, [DeviceTableStructure::BRAND, DeviceTableStructure::TITLE])):
+                      ?>
+
+                      <!--                <div class="column-tool-group">-->
 <!--                  <div class="column-tool-header">-->
 <!--                    <div class="icon">-->
 <!--                      <svg width="16" height="10" viewBox="0 0 16 10" xmlns="http://www.w3.org/2000/svg">-->
@@ -146,6 +151,7 @@ $sortedColumns = DeviceTableStructure::getSortedColumns();
 <!--                  <button class="btn btn-muted btn-filter-cancel">Отмена</button>-->
 <!--                  <button class="btn btn-primary btn-filter-apply">Применить</button>-->
 <!--                </div>-->
+              <?php endif;?>
               </div>
             </div>
             <?php endif;?>

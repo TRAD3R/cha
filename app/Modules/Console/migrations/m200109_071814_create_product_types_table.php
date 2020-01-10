@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%product_types}}`.
  */
-class m191221_084104_create_product_types_table extends Migration
+class m200109_071814_create_product_types_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -14,14 +14,13 @@ class m191221_084104_create_product_types_table extends Migration
     {
         $this->createTable('{{%product_types}}', [
             'id' => $this->primaryKey(),
-            'type' => $this->string(50),
+            'type' => $this->string(50)
         ]);
         
         $this->batchInsert('{{%product_types}}', ['id', 'type'], [
-            ["1","ConsumerElectronics"],
-            ["2","PhoneAccessory"],
-            ["3","computercomponent"],
-            ["4","kindleaccessories"],
+            [1, 'Lightning'],
+            [2, 'MicroUSB'],
+            [3, 'USB type-C'],
         ]);
     }
 

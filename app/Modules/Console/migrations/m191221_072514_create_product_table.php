@@ -12,12 +12,12 @@ class m191221_072514_create_product_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('{{%product}}', [
+        $this->createTable('{{%products}}', [
             'id' => $this->primaryKey(),
             'date_created' => $this->dateTime(),
             'date_updated' => $this->dateTime(),
             'name' => $this->string(255),
-            'parent_id' => $this->integer()->defaultValue(0),
+            'parent_id' => $this->integer(),
         ]);
     }
 
@@ -26,6 +26,6 @@ class m191221_072514_create_product_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%product}}');
+        $this->dropTable('{{%products}}');
     }
 }

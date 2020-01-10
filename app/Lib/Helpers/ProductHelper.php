@@ -4,22 +4,30 @@
 namespace App\Helpers;
 
 
-use App\Models\CardMemory;
-use App\Models\Device;
-use App\Models\DeviceBrand;
-use App\Models\DeviceSpecification;
 use App\Models\DeviceType;
-use App\Models\UsbStandard;
-use App\Models\UsbType;
+use App\Models\Manufacturer;
+use App\Models\Merchant;
+use App\Models\Product;
+use App\Models\ProductBrand;
+use App\Models\ProductSpecification;
+use App\Models\ProductType;
+use App\Models\VariationTheme;
 use App\Params;
-use App\Repositories\CardMemoryRepository;
-use App\Repositories\DeviceBrandRepository;
+use App\Repositories\BarcodeTypeRepository;
+use App\Repositories\BrowseNodeRepository;
 use App\Repositories\DeviceTypeRepository;
-use App\Repositories\UsbStandardRepository;
-use App\Repositories\UsbTypeRepository;
+use App\Repositories\ManufacturerRepository;
+use App\Repositories\MerchantRepository;
+use App\Repositories\ProductBrandRepository;
+use App\Repositories\ProductRepository;
+use App\Repositories\MeasureUnitRepository;
+use App\Repositories\ProductTypeRepository;
+use App\Repositories\VariationThemeRepository;
 use App\Tables\DeviceTableStructure;
+use App\Tables\ProductTableStructure;
+use Yii;
 use yii\db\Query;
-use yii\db\QueryBuilder;
+use yii\web\HttpException;
 
 class ProductHelper
 {
@@ -30,9 +38,9 @@ class ProductHelper
     
     public function getProducts($params, $offset)
     {
-        $this->query = Device::find()
-            ->alias('d')
-            ->innerJoin('device_specifications s', 'd.id = s.device_id')
+        $this->query = Product::find()
+            ->alias('p')
+            ->innerJoin('product_specifications s', 'p.id = s.product_id')
         ;
         
         if($params[Params::SORT_ASC]) {
@@ -42,128 +50,186 @@ class ProductHelper
         if($params[Params::SORT_DESC]) {
             self::addSort($params[Params::SORT_DESC], 'DESC');
         }
+
+        $total = $this->query->count();
         
         $this->query
-            ->addOrderBy('d.id ASC')
+            ->addOrderBy('p.id ASC')
             ->limit($params[Params::PER_PAGE])
             ->offset($offset)
             ;
         
-        return $this->query->all();
+        return [
+            'products' => $this->query->all(),
+            'total'   => $total
+        ];
     }
     
-    public static function modifyData(Device $device, array $data)
+    public static function modifyData(Product $product, array $data)
     {
-        /** @var DeviceSpecification $specifications */
-        $specifications = $device->id ? $device->specifications : new DeviceSpecification();
+        /** @var ProductSpecification $specifications */
+        $specifications = $product->id ? $product->specifications : new ProductSpecification();
         
         foreach ($data as $key => $value) {
             switch ($key) {
-                case DeviceTableStructure::DEVICE_TYPE:
-                    $deviceType = DeviceType::findOne($value);
+                case ProductTableStructure::PARENT_ID:
+                    $parent = Product::findOne($value);
 
-                    if(!$deviceType){
-                        $deviceType = new DeviceType();
-                        $deviceType->type = $value;
-                        $deviceType->save();
+                    if(!$parent){
+                        throw new HttpException(403, Yii::t('exception', 'ERROR_DATA_UPDATE'));
                     }
 
-                    $specifications->type_id = $deviceType->id;
+                    $product->link('parent', $parent);
                     break;
-                case DeviceTableStructure::DEVICE_BRAND:
-                    $brand = DeviceBrand::findOne($value);
-                    
-                    if(!$brand){
-                        $brand = new DeviceBrand();
-                        $brand->name = $value;
-                        $brand->save();
+                case ProductTableStructure::TYPE:
+                    $type = ProductTypeRepository::findByValue($value);
+
+                    if($type){
+                        $specifications->type_id = $type->id;
+                    }
+                    break;
+                case ProductTableStructure::MERCHANT:
+                    $merchant = MerchantRepository::findByValue($value);
+
+                    if(!$merchant){
+                        $merchant = new Merchant();
+                        $merchant->name = $value;
+                        $merchant->save();
                     }
 
-                    $device->brand_id = $brand->id;
+                    $specifications->merchant_id = $merchant->id;
                     break;
-                case DeviceTableStructure::DEVICE_MODEL:
-                    $device->title = $value;
-                    break;
-                case DeviceTableStructure::DEVICE_YEAR:
-                    $specifications->year = $value;
-                    break;
-                case DeviceTableStructure::DEVICE_LENGTH:
-                    $specifications->length = $value;
-                    break;
-                case DeviceTableStructure::DEVICE_WIDTH:
-                    $specifications->width = $value;
-                    break;
-                case DeviceTableStructure::DEVICE_DEPTH:
-                    $specifications->depth = $value;
-                    break;
-                case DeviceTableStructure::DEVICE_SCREEN_SIZE:
-                    $specifications->screensize = $value;
-                    break;
-                case DeviceTableStructure::DEVICE_CARD_MEMORY:
-                    $cardMemory = CardMemory::findOne($value);
-                    
-                    if(!$cardMemory) {
-                        $cardMemory = new CardMemory();
-                        $cardMemory->size = $value;
-                        $cardMemory->save();
+                case ProductTableStructure::MANUFACTURER:
+                    $manufacturer = ManufacturerRepository::findByValue($value);
+
+                    if(!$manufacturer){
+                        $manufacturer = new Manufacturer();
+                        $manufacturer->name = $value;
+                        $manufacturer->save();
                     }
                     
-                    $specifications->card_memory_id = $cardMemory->id;
+                    $specifications->manufacturer_id = $manufacturer->id;
                     break;
-                case DeviceTableStructure::DEVICE_35_JACK:
-                    $specifications->jack_35 = $value;
+                case ProductTableStructure::TITLE:
+                    $product->name = $value;
                     break;
-                case DeviceTableStructure::DEVICE_BLUETOOTH:
-                    $specifications->bluetooth = $value;
-                    break;
-                case DeviceTableStructure::DEVICE_USB_TYPE:
-                    $usbType = UsbType::findOne($value);
+//                case ProductTableStructure::DEVICE_LENGTH:
+//                    $specifications->length = $value;
+//                    break;
+//                case ProductTableStructure::DEVICE_WIDTH:
+//                    $specifications->width = $value;
+//                    break;
+//                case ProductTableStructure::DEVICE_DEPTH:
+//                    $specifications->depth = $value;
+//                    break;
+//                case ProductTableStructure::DEVICE_SCREEN_SIZE:
+//                    $specifications->screensize = $value;
+//                    break;
+//                case ProductTableStructure::DEVICE_CARD_MEMORY:
+//                    $cardMemory = CardMemory::findOne($value);
+//                    
+//                    if(!$cardMemory) {
+//                        $cardMemory = new CardMemory();
+//                        $cardMemory->size = $value;
+//                        $cardMemory->save();
+//                    }
+//                    
+//                    $specifications->card_memory_id = $cardMemory->id;
+//                    break;
+//                case ProductTableStructure::DEVICE_35_JACK:
+//                    $specifications->jack_35 = $value;
+//                    break;
+//                case ProductTableStructure::DEVICE_BLUETOOTH:
+//                    $specifications->bluetooth = $value;
+//                    break;
+//                case ProductTableStructure::DEVICE_USB_TYPE:
+//                    $usbType = UsbType::findOne($value);
+//                        
+//                    if(!$usbType) {
+//                        $usbType = new UsbType();
+//                        $usbType->type = $value;
+//                        $usbType->save();
+//                    }
+//
+//                    $specifications->usb_type_id = $usbType->id;
+//                    break;
+//                case ProductTableStructure::DEVICE_USB_STANDARD:
+//                    $usbStardard = UsbStandard::findOne($value);
+//                    
+//                    if(!$usbStardard) {
+//                        $usbStardard = new UsbStandard();
+//                        $usbStardard->standard = $value;
+//                        $usbStardard->save();
+//                    }
+//
+//                    $specifications->usb_standard_id = $usbStardard->id;
+//                    break;
+//                case ProductTableStructure::DEVICE_WIRELESS_CHARGE:
+//                    $specifications->wireless_charge = $value;
+//                    break;
+//                case ProductTableStructure::DEVICE_FAST_CHARGE:
+//                    $specifications->fast_charge = $value;
+//                    break;
+                case ProductTableStructure::BROWSE_NODE:
+                    $browseNode = BrowseNodeRepository::findByValue($value);
+
+//                    if(!$amazonProductType) {
+//                        $amazonProductType = new AmazonProductType();
+//                        $amazonProductType->type = $value;
+//                        $amazonProductType->save();
+//                    }
                         
-                    if(!$usbType) {
-                        $usbType = new UsbType();
-                        $usbType->type = $value;
-                        $usbType->save();
+                    $specifications->browse_node_id = $browseNode->id;
+                    break;
+                case ProductTableStructure::VARIATION_THEME:
+                    $variationTheme = VariationThemeRepository::findByValue($value);
+
+                    if(!$variationTheme) {
+                        $variationTheme = new VariationTheme();
+                        $variationTheme->title = $value;
+                        $variationTheme->save();
                     }
 
-                    $specifications->usb_type_id = $usbType->id;
+                    $specifications->variation_theme_id = $variationTheme->id;
                     break;
-                case DeviceTableStructure::DEVICE_USB_STANDARD:
-                    $usbStardard = UsbStandard::findOne($value);
-                    
-                    if(!$usbStardard) {
-                        $usbStardard = new UsbStandard();
-                        $usbStardard->standard = $value;
-                        $usbStardard->save();
-                    }
-
-                    $specifications->usb_standard_id = $usbStardard->id;
-                    break;
-                case DeviceTableStructure::DEVICE_WIRELESS_CHARGE:
-                    $specifications->wireless_charge = $value;
-                    break;
-                case DeviceTableStructure::DEVICE_FAST_CHARGE:
-                    $specifications->fast_charge = $value;
-                    break;
-                case DeviceTableStructure::DEVICE_REMOVABLE_BATTERY:
-                    $specifications->removable_battery = $value;
-                    break;
-                case DeviceTableStructure::DEVICE_PRICE:
+                case ProductTableStructure::PRICE:
                     $specifications->price = PriceHelper::toInt($value);
                     break;
-                case DeviceTableStructure::DEVICE_IMAGE:
+                case ProductTableStructure::IMAGE:
                     $specifications->image = $value;
+                    break;
+                case ProductTableStructure::DEVICE_TYPE:
+                    if($specifications->deviceTypes) {
+                        foreach ($specifications->deviceTypes as $deviceType) {
+                            $specifications->unlink('deviceTypes', $deviceType);
+                        }
+                    }else{
+                        $product->save();
+                        $specifications->save();
+                    }
+                    
+                    $selectedTypes = explode(',', $value);
+                    $types = DeviceType::find()->where(["IN", 'type', $selectedTypes])->all();
+
+                    if($types){
+                        /** @var DeviceType $type */
+                        foreach ($types as $type) {
+                            $specifications->link('deviceTypes', $type);
+                        }
+                    }
+
                     break;
             }
         }
         
-        if($device->id) {
-            return ($device->save() && $specifications->save());
+        if($product->id) {
+            return ($product->save() && $specifications->save());
         }else{
-            if($device->save()) {
-                $specifications->device_id = $device->id;
+            if($product->save()) {
+                $specifications->product_id = $product->id;
                 return $specifications->save();
             }else{
-                \Yii::error($device->getErrors());
+                \Yii::error($product->getErrors());
                 return false;
             }
         }
@@ -174,20 +240,38 @@ class ProductHelper
     {
         $list = [];
         switch ($id) {
-            case DeviceTableStructure::DEVICE_TYPE:
+            case ProductTableStructure::NODE:
+                $list = ProductRepository::getNodeAsArray();
+                break;
+            case ProductTableStructure::DEVICE_TYPE:
                 $list = DeviceTypeRepository::getAllAsArray();
                 break;
-            case DeviceTableStructure::DEVICE_BRAND:
-                $list = DeviceBrandRepository::getAllAsArray();
+            case ProductTableStructure::TYPE:
+                $list = ProductTypeRepository::getAllAsArray();
                 break;
-            case DeviceTableStructure::DEVICE_CARD_MEMORY:
-                $list = CardMemoryRepository::getAllAsArray();
+            case ProductTableStructure::MERCHANT:
+                $list = MerchantRepository::getAllAsArray();
                 break;
-            case DeviceTableStructure::DEVICE_USB_TYPE:
-                $list = UsbTypeRepository::getAllAsArray();
+            case ProductTableStructure::BRAND:
+                $list = ProductBrandRepository::getAllAsArray();
                 break;
-            case DeviceTableStructure::DEVICE_USB_STANDARD:
-                $list = UsbStandardRepository::getAllAsArray();
+            case ProductTableStructure::MANUFACTURER:
+                $list = ManufacturerRepository::getAllAsArray();
+                break;
+            case ProductTableStructure::UNIT_MEASURE:
+                $list = MeasureUnitRepository::getAllAsArray();
+                break;
+            case ProductTableStructure::BARCODE_TYPE:
+                $list = BarcodeTypeRepository::getAllAsArray();
+                break;
+            case ProductTableStructure::BROWSE_NODE:
+                $list = BrowseNodeRepository::getAllAsArray();
+                break;
+            case ProductTableStructure::VARIATION_THEME:
+                $list = VariationThemeRepository::getAllAsArray();
+                break;
+            case ProductTableStructure::PARENT_ID:
+                $list = ProductRepository::getParentsAsArray();
                 break;
         }
         
@@ -200,17 +284,17 @@ class ProductHelper
         
         foreach ($params as $param) {
             switch ($param) {
-                case DeviceTableStructure::DEVICE_TYPE:
+                case ProductTableStructure::DEVICE_TYPE:
                     $this->query
                         ->innerJoin('device_type dt' . $uniqParam, "dt{$uniqParam}.id = s.type_id")
                         ->addOrderBy("dt{$uniqParam}.type $type");
                     break;
-                case DeviceTableStructure::DEVICE_BRAND:
+                case ProductTableStructure::BRAND:
                     $this->query
                         ->innerJoin('device_brand db' . $uniqParam, "db{$uniqParam}.id = d.brand_id")
                         ->addOrderBy("db{$uniqParam}.name $type");
                     break;
-                case DeviceTableStructure::DEVICE_MODEL:
+                case ProductTableStructure::TITLE:
                     $this->query
                         ->addOrderBy("d.title $type");
                     break;
@@ -269,7 +353,7 @@ class ProductHelper
                     $this->query
                         ->addOrderBy("s.removable_battery $type");
                     break;
-                case DeviceTableStructure::DEVICE_PRICE:
+                case DeviceTableStructure::PRICE:
                     $this->query
                         ->addOrderBy("s.price $type");
                     break;

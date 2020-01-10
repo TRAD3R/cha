@@ -9,7 +9,7 @@
 use App\Models\Device;
 
 ?>
-<?php echo $this->render('includes/table', compact('devices', 'totalCount', 'params', 'offset')); ?>
+<?php echo $this->render('includes/table', compact('devices', 'totalCount', 'params', 'offset', 'models')); ?>
 
 
 
