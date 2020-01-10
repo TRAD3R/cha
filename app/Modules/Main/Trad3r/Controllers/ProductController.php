@@ -62,8 +62,8 @@ class ProductController extends Main
             $this->getResponse()->set404();
         }
 
-        $device = Device::findOne($id);
-        if (!$device) {
+        $product = Product::findOne($id);
+        if (!$product) {
             Yii::error(Yii::t('exception', 'DEVICE_NOT_FOUND', ['id' => $id]));
         }
         
@@ -76,16 +76,21 @@ class ProductController extends Main
             ];
         }
         
-        if(!DeviceHelper::modifyData($device, $data)) {
+        if(!ProductHelper::modifyData($product, $data)) {
             return [
                 'status' => Response::STATUS_FAIL,
                 'error' => Yii::t('exception', 'ERROR_DATA_UPDATE'),
             ];
         }
 
-        $row = $this->renderPartial('includes/table_row', [
-                'device' => $device, 
-                'sequenceNumber' => $request->post('sequenceNumber') ?: 0
+        $view = 'table_row_parent';
+
+        if($data[ProductTableStructure::PARENT_ID]){
+            $view = 'table_row_child';
+        }
+
+        $row = $this->renderPartial('includes/' . $view, [
+                'product' => $product,
             ]
         );
         
@@ -147,8 +152,8 @@ class ProductController extends Main
             $this->getResponse()->set404();
         }
 
-        $device = Device::findOne($id);
-        if(!$device || !$device->delete()) {
+        $product = Product::findOne($id);
+        if(!$product || !$product->delete()) {
             return [
                 'status' => Response::STATUS_FAIL,
                 'error' => Yii::t('exception', 'ERROR_DATA_UPDATE'),

@@ -89,17 +89,17 @@ $specifications = $product->specifications;
     <div class="table-cell editable text" data-id="<?=ProductTableStructure::QUANTITY?>">
         <input class="input-text" type="text" value="<?=$specifications->quantity?>">
     </div>
-    <div class="table-cell editable text" data-id="<?=ProductTableStructure::TITLE?>">
+    <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::TITLE?>">
         <textarea class="input-text" hidden><?=$product->name?></textarea>
         <span class="text"><?=$product->name?></span>
     </div>
-    <div class="table-cell editable text" data-id="<?=ProductTableStructure::DESCRIPTION?>">
+    <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::DESCRIPTION?>">
         <textarea class="input-text" hidden><?=$specifications->description?></textarea>
         <span class="text"><?=$specifications->description?></span>
     </div>
     <?php /** @var Buletpoint $buletpoint */?>
     <?php foreach ($product->buletpoints as $buletpoint): ?>
-        <div class="table-cell editable text" data-id="<?=ProductTableStructure::BULLETPOINT?>">
+        <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::BULLETPOINT?>">
             <textarea class="input-text" data-id="<?=$buletpoint->id?>" hidden><?=$buletpoint->buletpoint?></textarea>
             <span class="text"><?=$buletpoint->buletpoint?></span>
         </div>
@@ -109,7 +109,7 @@ $specifications = $product->specifications;
         if($lastBP > 0):
             for ($i = ProductTableStructure::BULLETPOINT_COUNT - $lastBP + 1; $i <= ProductTableStructure::BULLETPOINT_COUNT; $i++):
     ?>
-                <div class="table-cell editable text" data-id="<?=ProductTableStructure::BULLETPOINT?>">
+                <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::BULLETPOINT?>">
                     <textarea class="input-text" data-id="<?=(0-$i)?>" hidden></textarea>
                     <span class="text"></span>
                 </div>
