@@ -35,6 +35,7 @@ class DeviceTableStructure extends AbstractTS
           ],
           self::GROUP_MAINCHARACTERISTIC => [
             self::DATE_CREATED   => Yii::t('front', 'DATE_CREATED'),
+            self::IMAGE => Yii::t('front', 'IMAGE'),
             self::DEVICE_TYPE    => Yii::t('front', 'DEVICE_TYPE'),
             self::BRAND   => Yii::t('front', 'BRAND'),
             self::TITLE   => Yii::t('front', 'DEVICE_MODEL'),
@@ -60,9 +61,6 @@ class DeviceTableStructure extends AbstractTS
           self::GROUP_PRICE => [
             self::PRICE => Yii::t('front', 'PRICE'),
           ],
-          self::GROUP_CONTENT => [
-            self::IMAGE => Yii::t('front', 'IMAGE'),
-          ]
         ];
     }
 
