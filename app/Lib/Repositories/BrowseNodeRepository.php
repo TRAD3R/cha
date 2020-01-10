@@ -11,8 +11,8 @@ class BrowseNodeRepository
     public static function getAllAsArray()
     {
         return BrowseNode::find()
-            ->select('id, product_type as title')
-            ->orderBy('product_type')
+            ->select('id, title')
+            ->orderBy('title')
             ->asArray()
             ->all()
             ;
@@ -21,7 +21,7 @@ class BrowseNodeRepository
     public static function findByValue($value)
     {
         return BrowseNode::find()
-            ->where(['product_type' => $value])
+            ->where(['title' => $value])
             ->one();
     }
 }

@@ -122,16 +122,19 @@ $specifications = $product->specifications;
     </div>
     <div class="table-cell">
     </div>
-    <div class="table-cell text">
-        <span class="text"><?=$specifications->browseNode->node?></span>
-    </div>
     <div class="table-cell editable select" data-id="<?=ProductTableStructure::BROWSE_NODE?>">
         <?php echo $this->render('@layouts/common/chosen-select', [
             'name' => ProductTableStructure::BROWSE_NODE,
-            'placeholder' => Yii::t('front', 'BROWSE_NODE'),
+            'placeholder' => Yii::t('front', 'AMAZON_PRODUCT_TYPE'),
             'isMultiple' => false,
-            'selected'  => $specifications->browse_node_id ? [$specifications->browseNode->id => $specifications->browseNode->product_type] : [],
+            'selected'  => $specifications->browse_node_id ? [$specifications->browseNode->id => $specifications->browseNode->title] : [],
         ]); ?>
+    </div>
+    <div class="table-cell">
+        <span class="text"><?=$specifications->browseNode->node?></span>
+    </div>
+    <div class="table-cell">
+        <span class="text"><?=$specifications->browseNode->product_type?></span>
     </div>
     <div class="table-cell editable select" data-id="<?=ProductTableStructure::VARIATION_THEME?>">
         <?php echo $this->render('@layouts/common/chosen-select', [

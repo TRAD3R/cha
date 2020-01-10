@@ -205,6 +205,7 @@ class ProductHelper
                         }
                     }else{
                         $product->save();
+                        $specifications->link('product', $product);
                         $specifications->save();
                     }
                     
