@@ -60,7 +60,7 @@ class Product extends Gadget
             if($(this).hasClass(Gadget.getTextClass())) {
                 value = $(this).find('input').eq(0).val();
             }else if($(this).hasClass(Gadget.getTextareaClass())) {
-                value = $(this).find('textarea').text();
+                value = $(this).find('textarea').val();
             }else if($(this).hasClass(Gadget.getCheckboxClass())) {
                 value = $(this).find('input').prop('checked') ? 1 : 0;
             }else if($(this).hasClass(Gadget.getSelectClass())) {
@@ -93,7 +93,7 @@ class Product extends Gadget
     showModal(el) {
         showModal();
         $(el).closest('.table-cell').attr('id', Gadget.getEditedSelectClass());
-        $('#id-edited-textarea').text($(el).text());
+        $('#id-edited-textarea').val($(el).val());
     }
 
     hideModal(isChange){

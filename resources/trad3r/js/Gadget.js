@@ -91,8 +91,10 @@ class Gadget
             method: 'GET',
             success: function (res) {
                 if(res.status === 'success'){
-                    Device.row.remove();
-                    Device.body.removeClass('edited-body');
+                    gadget.row.remove();
+                    gadget.body.removeClass('edited-body');
+                    
+                    $('.btn-operations').removeClass("is-active");
                     $("#new-device").removeClass(Gadget.getHiddenClass());
                 }
             }

@@ -5,7 +5,6 @@ namespace App\Models;
 
 
 use App\Behaviors\Timestamp;
-use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -24,10 +23,6 @@ use yii\db\ActiveRecord;
  */
 class Product extends ActiveRecord
 {
-    const TYPE_MICROUSB     = 1;
-    const TYPE_USB_C        = 2;
-    const TYPE_LIGHTNING    = 3;
-    
     public static function tableName()
     {
         return 'products';
@@ -38,6 +33,17 @@ class Product extends ActiveRecord
         return [
             Timestamp::class
         ];
+    }
+
+    public function beforeDelete()
+    {
+        if(!parent::beforeDelete()) {
+            return false;
+        }
+
+        $specifications = $this->specifications;
+
+        return $specifications->delete();
     }
 
     public function getParent()
