@@ -29,6 +29,7 @@ class ProductTableStructure extends AbstractTS
     const AMAZON_PRODUCT_TYPE = 119;
     const VARIATION_THEME = 120;
     const PARENT_ID = 121;
+    const PRODUCT_TYPE = 122;
     const DEVICE_TYPE = 199;        // должен быть последним, чтобы сохранить товар перед привязкой
     
     const GROUP_SEO = 'seo';
@@ -77,8 +78,9 @@ class ProductTableStructure extends AbstractTS
           self::GROUP_AMAZON => [
             self::BARCODE => Yii::t('front', 'BARCODE'),
             self::BARCODE_TYPE => Yii::t('front', 'BARCODE_TYPE'),
+            self::PRODUCT_TYPE => Yii::t('front', 'PRODUCT_TYPE'),
             self::BROWSE_NODE => Yii::t('front', 'BROWSE_NODE'),
-            self::AMAZON_PRODUCT_TYPE => Yii::t('front', 'PRODUCT_TYPE'),
+            self::AMAZON_PRODUCT_TYPE => Yii::t('front', 'AMAZON_PRODUCT_TYPE'),
             self::VARIATION_THEME => Yii::t('front', 'VARIATION_THEME'),
           ],
         ];
