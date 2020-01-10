@@ -17,7 +17,7 @@ class m191221_072514_create_product_table extends Migration
             'date_created' => $this->dateTime(),
             'date_updated' => $this->dateTime(),
             'name' => $this->string(255),
-            'parent_id' => $this->integer()->defaultValue(0),
+            'parent_id' => $this->integer(),
         ]);
     }
 

@@ -10,7 +10,6 @@ use Yii;
 class ProductTableStructure extends AbstractTS
 {
     const NODE = 101;
-    const DEVICE_TYPE = 102;
     const TYPE = 103;
     const MERCHANT = 104;
     const SKU = 105;
@@ -30,6 +29,7 @@ class ProductTableStructure extends AbstractTS
     const AMAZON_PRODUCT_TYPE = 119;
     const VARIATION_THEME = 120;
     const PARENT_ID = 121;
+    const DEVICE_TYPE = 199;        // должен быть последним, чтобы сохранить товар перед привязкой
     
     const GROUP_SEO = 'seo';
     const GROUP_AMAZON = 'amazon';

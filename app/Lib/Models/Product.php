@@ -60,18 +60,4 @@ class Product extends ActiveRecord
         return $this->hasMany(ProductImage::class, ['product_id' => 'id']);
     }
 
-    public function getProductType($type = null)
-    {
-        $types = [
-            self::TYPE_MICROUSB => Yii::t('front', 'MICROUSB'),
-            self::TYPE_USB_C => Yii::t('front', 'USB-C'),
-            self::TYPE_LIGHTNING => Yii::t('front', 'LIGHTNING'),
-        ];
-        
-        if(is_null($type)) {
-            return $types;
-        }
-        
-        return  $types[$type] ? $types[$type] : [];
-    }
 }

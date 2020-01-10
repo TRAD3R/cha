@@ -14,7 +14,6 @@ class m191221_091706_create_product_specifications_table extends Migration
     {
         $this->createTable('{{%product_specifications}}', [
             'product_id' => $this->primaryKey(),
-            'type' => $this->string(20),
             'device_type_id' => $this->integer(),
             'type_id' => $this->integer(),
             'product_brand_id' => $this->integer(),

@@ -8,10 +8,11 @@ use App\Controller\Main;
 use App\Helpers\DeviceHelper;
 use App\Helpers\ProductHelper;
 use App\Models\Device;
-use App\Models\DeviceSpecification;
+use App\Models\Product;
 use App\Params;
 use App\Request;
 use App\Response;
+use App\Tables\ProductTableStructure;
 use Yii;
 
 class ProductController extends Main
@@ -112,17 +113,22 @@ class ProductController extends Main
             ];
         }
 
-        $device = new Device();
-        if(!DeviceHelper::modifyData($device, $data)) {
+        $product = new Product();
+        if(!ProductHelper::modifyData($product, $data)) {
             return [
                 'status' => Response::STATUS_FAIL,
                 'error' => Yii::t('exception', 'ERROR_DATA_UPDATE'),
             ];
         }
-
-        $row = $this->renderPartial('includes/table_row', [
-                'device' => $device,
-                'sequenceNumber' => $request->post('sequenceNumber') ?: 0
+        
+        $view = 'table_row_parent';
+        
+        if($data[ProductTableStructure::PARENT_ID]){
+            $view = 'table_row_child';
+        }
+        
+        $row = $this->renderPartial('includes/' . $view, [
+                'product' => $product,
             ]
         );
 

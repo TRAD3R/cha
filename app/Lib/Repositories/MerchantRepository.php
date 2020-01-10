@@ -17,4 +17,11 @@ class MerchantRepository
             ->all()
             ;
     }
+
+    public static function findByValue($value)
+    {
+        return Merchant::find()
+            ->where(['name' => $value])
+            ->one();
+    }
 }

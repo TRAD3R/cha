@@ -187,29 +187,17 @@ function createBtn(text, id, classes)
 /** Работа с кнопками сохранения и отмены */
 
 /**
- * Работа с модальным окном
- * для добавления новых элементов в select
- * @param el
+ * Показать модальное окно
  */
-function showModal(el){
+function showModal(){
+    $('#id-edited-textarea').focus();
     $('.modal-overlay').addClass('active');
     $('.modal').addClass('active');
     $('.site').addClass('modal-open');
     $("body, html").css("overflow", "hidden");
-    $(el).closest('.simple-select-drop').find('ul.simple-select-list').attr('id', Gadget.getEditedSelectClass());
 }
 
-function hideModal(isChange){
-    let editedSelect = $("#" + Gadget.getEditedSelectClass());
-    if(isChange) {
-        let newValue = $('#id-edited-textarea').val();
-        if(newValue.length > 0) {
-            let li = '<li class="simple-select-item" role="option" data-value="' + newValue + '">' + newValue + '</li>';
-            editedSelect.append(li);
-        }
-    }
-    
-    editedSelect.removeAttr('id');
+function hideModal(){
     $('.modal-overlay').removeClass('active');
     $('.modal').removeClass('active');
     $('.site').removeClass('modal-open');

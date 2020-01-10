@@ -4,22 +4,10 @@
 namespace App\Repositories;
 
 use App\Models\Product;
+use Yii;
 
 class ProductRepository
 {
-    public static function getTypeAsArray($type = null)
-    {
-        $arr = [];
-        $types = (new Product())->getProductType($type);
-
-        foreach ($types as $key => $title) {
-            $arr[$key]['id'] = $key;
-            $arr[$key]['title'] = $title;
-        }
-        
-        return $arr;
-    }
-
     public static function getParentsAsArray()
     {
         return Product::find()
@@ -28,5 +16,21 @@ class ProductRepository
             ->asArray()
             ->all()
             ;
+    }
+
+    public static function getNodeAsArray()
+    {
+        $arr = [];
+        $nodes = [
+            1 => Yii::t('front', 'PARENT'),
+            2 => Yii::t('front', 'CHILD'),
+        ];
+
+        foreach ($nodes as $key => $title) {
+            $arr[$key]['id'] = $key;
+            $arr[$key]['title'] = $title;
+        }
+
+        return $arr;
     }
 }

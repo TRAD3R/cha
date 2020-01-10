@@ -17,4 +17,11 @@ class BrowseNodeRepository
             ->all()
             ;
     }
+
+    public static function findByValue($value)
+    {
+        return BrowseNode::find()
+            ->where(['product_type' => $value])
+            ->one();
+    }
 }
