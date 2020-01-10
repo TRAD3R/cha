@@ -19,7 +19,7 @@ use App\Helpers\TextHelper;
         <div class="simple-select-drop-inner">
         </div>
         <div class="simple-select-add">
-            <button type="button" class="btn btn-primary" onclick="showModal(this)">
+            <button type="button" class="btn btn-primary" onclick="gadget.showModal(this)">
                 <?=TextHelper::upperFirstChar(Yii::t('front', 'ADD'));?>
             </button>
         </div>

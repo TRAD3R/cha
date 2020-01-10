@@ -17,4 +17,11 @@ class ManufacturerRepository
             ->all()
             ;
     }
+
+    public static function findByValue($value)
+    {
+        return Manufacturer::find()
+            ->where(['name' => $value])
+            ->one();
+    }
 }

@@ -1,9 +1,9 @@
 <?php 
 /** 
  * @var $this View
- * @var $products Product[]
- * @var $product Product 
- * @var $offset int 
+ * @var Product[] $products 
+ * @var Product $product  
+ * @var int $offset  
  */
 
 use App\Models\Product;
@@ -15,25 +15,19 @@ use yii\web\View;
     <div id="empty-row-parent" class="table-row hidden-el" data-id="0">
         <?=$this->render('table_row_parent', [
             'product' => new Product(),
-            'sequenceNumber' => 0
         ])?>
     </div>
     <div id="empty-row-child" class="table-row hidden-el" data-id="0">
         <?=$this->render('table_row_child', [
             'product' => new Product(),
-            'sequenceNumber' => 0
         ])?>
     </div>
   <div class="table-body">
     <?php foreach ($products as $key => $product):?>
-          <?php
-              $sequenceNumber = ++$key + $offset;
-          ?>
-    
           <div class="table-row" data-id="<?=$product->id?>">
             <?php 
                 $template = $product->parent_id ? 'table_row_child' : 'table_row_parent';
-                echo $this->render($template, compact('product', 'sequenceNumber'))
+                echo $this->render($template, compact('product'))
             ?>
           </div>
     <?php endforeach; ?>

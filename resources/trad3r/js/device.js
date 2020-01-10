@@ -19,6 +19,31 @@ class Device extends Gadget
     updateRow() {
         super.updateRow('/devices/');
     }
+
+    /**
+     * Работа с модальным окном
+     * для добавления новых элементов в select
+     * @param el
+     */
+    showModal(el) {
+        showModal();
+        $(el).closest('.simple-select-drop').find('ul.simple-select-list').attr('id', Gadget.getEditedSelectClass());
+    }
+    
+    hideModal(isChange){
+        let editedSelect = $("#" + Gadget.getEditedSelectClass());
+        if(isChange) {
+            let newValue = $('#id-edited-textarea').val();
+            if(newValue.length > 0) {
+                let li = '<li class="simple-select-item" role="option" data-value="' + newValue + '">' + newValue + '</li>';
+                editedSelect.append(li);
+            }
+        }
+
+        editedSelect.removeAttr('id');
+        
+        hideModal();
+    }
 }
 
 var gadget = new Device();

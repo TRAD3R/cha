@@ -10,7 +10,7 @@
     <span class="cap" title="<?=$placeholder?>">
       <?php if ($selected):?>
         <?php $ids = array_keys($selected); ?>
-          <span data-id="<?=implode(",", $ids)?>"><?=implode(", ", $selected)?></span>
+          <span class="item-selected" data-id="<?=implode(",", $ids)?>"><?=implode(", ", $selected)?></span>
       <?php endif; ?>
     </span>
     <select 
