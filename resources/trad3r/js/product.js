@@ -33,10 +33,10 @@ class Product extends Gadget
     createSelect(list, select, isset) {
         let selectedValues = [];
         
-        if(isset){
+        if(typeof isset === 'string'){
             selectedValues = isset.split(',');
         }
-        
+
         for (let item in list) {
             let option = document.createElement('option');
             option.value = list[item].id;
