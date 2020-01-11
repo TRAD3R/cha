@@ -18,7 +18,7 @@ class MerchantRepository
             ;
     }
 
-    public static function findByValue($value)
+    public static function findOneByValue($value)
     {
         return Merchant::find()
             ->where(['name' => $value])

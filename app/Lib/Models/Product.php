@@ -18,7 +18,6 @@ use yii\db\ActiveRecord;
  * @property int                    $parent_id          [integer(11)]
  * @property Product                $parent
  * @property ProductSpecification   $specifications
- * @property Buletpoint[]           $buletpoints
  * @property ProductImage[]         $images
  */
 class Product extends ActiveRecord
@@ -54,11 +53,6 @@ class Product extends ActiveRecord
     public function getSpecifications()
     {
         return $this->hasOne(ProductSpecification::class, ['product_id' => 'id']);
-    }
-
-    public function getBuletpoints()
-    {
-        return $this->hasMany(Buletpoint::class, ['product_id' => 'id']);
     }
 
     public function getImages()

@@ -97,26 +97,26 @@ $specifications = $product->specifications;
         <textarea class="input-text" hidden><?=$specifications->description?></textarea>
         <span class="text"><?=$specifications->description?></span>
     </div>
-    <?php /** @var Buletpoint $buletpoint */?>
-    <?php foreach ($product->buletpoints as $buletpoint): ?>
-        <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::BULLETPOINT?>">
-            <textarea class="input-text" data-id="<?=$buletpoint->id?>" hidden><?=$buletpoint->buletpoint?></textarea>
-            <span class="text"><?=$buletpoint->buletpoint?></span>
-        </div>
-    <?php endforeach; ?>
-    <?php 
-        $lastBP = ProductTableStructure::BULLETPOINT_COUNT - count($product->buletpoints);
-        if($lastBP > 0):
-            for ($i = ProductTableStructure::BULLETPOINT_COUNT - $lastBP + 1; $i <= ProductTableStructure::BULLETPOINT_COUNT; $i++):
-    ?>
-                <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::BULLETPOINT?>">
-                    <textarea class="input-text" data-id="<?=(0-$i)?>" hidden></textarea>
-                    <span class="text"></span>
-                </div>
-    <?php
-            endfor;
-        endif;
-    ?>
+    <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::BULLETPOINT_1?>">
+        <textarea class="input-text" data-id="<?=$specifications->bulletpoint_1?>" hidden><?=$specifications->bulletpoint_1?></textarea>
+        <span class="text"><?=$specifications->bulletpoint_1?></span>
+    </div>
+    <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::BULLETPOINT_2?>">
+        <textarea class="input-text" data-id="<?=$specifications->bulletpoint_2?>" hidden><?=$specifications->bulletpoint_2?></textarea>
+        <span class="text"><?=$specifications->bulletpoint_2?></span>
+    </div>
+    <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::BULLETPOINT_3?>">
+        <textarea class="input-text" data-id="<?=$specifications->bulletpoint_3?>" hidden><?=$specifications->bulletpoint_3?></textarea>
+        <span class="text"><?=$specifications->bulletpoint_3?></span>
+    </div>
+    <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::BULLETPOINT_4?>">
+        <textarea class="input-text" data-id="<?=$specifications->bulletpoint_4?>" hidden><?=$specifications->bulletpoint_4?></textarea>
+        <span class="text"><?=$specifications->bulletpoint_4?></span>
+    </div>
+    <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::BULLETPOINT_5?>">
+        <textarea class="input-text" data-id="<?=$specifications->bulletpoint_5?>" hidden><?=$specifications->bulletpoint_5?></textarea>
+        <span class="text"><?=$specifications->bulletpoint_5?></span>
+    </div>
     <?php /** @var ProductImage $image */?>
     <?php foreach ($product->images as $image): ?>
         <div class="table-cell editable text" data-id="<?=ProductTableStructure::IMAGE?>">

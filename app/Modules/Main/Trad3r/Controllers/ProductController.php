@@ -85,7 +85,7 @@ class ProductController extends Main
 
         $view = 'table_row_parent';
 
-        if($data[ProductTableStructure::PARENT_ID]){
+        if($product->parent_id){
             $view = 'table_row_child';
         }
 
@@ -128,7 +128,7 @@ class ProductController extends Main
         
         $view = 'table_row_parent';
         
-        if($data[ProductTableStructure::PARENT_ID]){
+        if($product->parent_id){
             $view = 'table_row_child';
         }
         
