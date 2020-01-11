@@ -17,7 +17,7 @@ class ProductTypeRepository
             ;
     }
     
-    public static function findByValue($value)
+    public static function findOneByValue($value)
     {
         return ProductType::find()->where(['type' => $value])->one();
     }

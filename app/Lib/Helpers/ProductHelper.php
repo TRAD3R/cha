@@ -6,6 +6,7 @@ namespace App\Helpers;
 
 use App\Models\DeviceType;
 use App\Models\Manufacturer;
+use App\Models\MeasureUnit;
 use App\Models\Merchant;
 use App\Models\Product;
 use App\Models\ProductBrand;
@@ -82,14 +83,14 @@ class ProductHelper
                     $product->link('parent', $parent);
                     break;
                 case ProductTableStructure::TYPE:
-                    $type = ProductTypeRepository::findByValue($value);
+                    $type = ProductTypeRepository::findOneByValue($value);
 
                     if($type){
                         $specifications->type_id = $type->id;
                     }
                     break;
                 case ProductTableStructure::MERCHANT:
-                    $merchant = MerchantRepository::findByValue($value);
+                    $merchant = MerchantRepository::findOneByValue($value);
 
                     if(!$merchant){
                         $merchant = new Merchant();
@@ -100,7 +101,7 @@ class ProductHelper
                     $specifications->merchant_id = $merchant->id;
                     break;
                 case ProductTableStructure::MANUFACTURER:
-                    $manufacturer = ManufacturerRepository::findByValue($value);
+                    $manufacturer = ManufacturerRepository::findOneByValue($value);
 
                     if(!$manufacturer){
                         $manufacturer = new Manufacturer();
@@ -110,76 +111,77 @@ class ProductHelper
                     
                     $specifications->manufacturer_id = $manufacturer->id;
                     break;
+                case ProductTableStructure::SKU:
+                    $specifications->sku = $value;
+                    break;
+                case ProductTableStructure::BRAND:
+                    $brand = ProductBrandRepository::findOneByValue($value);
+
+                    if(!$brand){
+                        $brand = new ProductBrand();
+                        $brand->name = $value;
+                        $brand->save();
+                    }
+
+                    $specifications->link('productBrand', $brand);
+                    break;
                 case ProductTableStructure::TITLE:
                     $product->name = $value;
                     break;
-//                case ProductTableStructure::DEVICE_LENGTH:
-//                    $specifications->length = $value;
-//                    break;
-//                case ProductTableStructure::DEVICE_WIDTH:
-//                    $specifications->width = $value;
-//                    break;
-//                case ProductTableStructure::DEVICE_DEPTH:
-//                    $specifications->depth = $value;
-//                    break;
-//                case ProductTableStructure::DEVICE_SCREEN_SIZE:
-//                    $specifications->screensize = $value;
-//                    break;
-//                case ProductTableStructure::DEVICE_CARD_MEMORY:
-//                    $cardMemory = CardMemory::findOne($value);
-//                    
-//                    if(!$cardMemory) {
-//                        $cardMemory = new CardMemory();
-//                        $cardMemory->size = $value;
-//                        $cardMemory->save();
-//                    }
-//                    
-//                    $specifications->card_memory_id = $cardMemory->id;
-//                    break;
-//                case ProductTableStructure::DEVICE_35_JACK:
-//                    $specifications->jack_35 = $value;
-//                    break;
-//                case ProductTableStructure::DEVICE_BLUETOOTH:
-//                    $specifications->bluetooth = $value;
-//                    break;
-//                case ProductTableStructure::DEVICE_USB_TYPE:
-//                    $usbType = UsbType::findOne($value);
-//                        
-//                    if(!$usbType) {
-//                        $usbType = new UsbType();
-//                        $usbType->type = $value;
-//                        $usbType->save();
-//                    }
-//
-//                    $specifications->usb_type_id = $usbType->id;
-//                    break;
-//                case ProductTableStructure::DEVICE_USB_STANDARD:
-//                    $usbStardard = UsbStandard::findOne($value);
-//                    
-//                    if(!$usbStardard) {
-//                        $usbStardard = new UsbStandard();
-//                        $usbStardard->standard = $value;
-//                        $usbStardard->save();
-//                    }
-//
-//                    $specifications->usb_standard_id = $usbStardard->id;
-//                    break;
-//                case ProductTableStructure::DEVICE_WIRELESS_CHARGE:
-//                    $specifications->wireless_charge = $value;
-//                    break;
-//                case ProductTableStructure::DEVICE_FAST_CHARGE:
-//                    $specifications->fast_charge = $value;
-//                    break;
+                case ProductTableStructure::DESCRIPTION:
+                    $specifications->description = $value;
+                    break;
+                case ProductTableStructure::LENGTH:
+                    $specifications->length = $value;
+                    break;
+                case ProductTableStructure::WIDTH:
+                    $specifications->width = $value;
+                    break;
+                case ProductTableStructure::DEPTH:
+                    $specifications->depth = $value;
+                    break;
+                case ProductTableStructure::SIZE:
+                    $specifications->size = $value;
+                    break;
+                case ProductTableStructure::UNIT_MEASURE:
+                    $measureUnit = MeasureUnitRepository::findOneByValue($value);
+                    
+                    if(!$measureUnit) {
+                        $measureUnit = new MeasureUnit();
+                        $measureUnit->type = $value;
+                        $measureUnit->save();
+                    }
+                    
+                    $specifications->link('measureUnit', $measureUnit);
+                    break;
+                case ProductTableStructure::PRICE:
+                    $specifications->price = PriceHelper::toInt($value);
+                    break;
+                case ProductTableStructure::QUANTITY:
+                    $specifications->quantity = $value;
+                    break;
+                case ProductTableStructure::BULLETPOINT_1:
+                    $specifications->bulletpoint_1 = $value;
+                    break;
+                case ProductTableStructure::BULLETPOINT_2:
+                    $specifications->bulletpoint_2 = $value;
+                    break;
+                case ProductTableStructure::BULLETPOINT_3:
+                    $specifications->bulletpoint_3 = $value;
+                    break;
+                case ProductTableStructure::BULLETPOINT_4:
+                    $specifications->bulletpoint_4 = $value;
+                    break;
+                case ProductTableStructure::BULLETPOINT_5:
+                    $specifications->bulletpoint_5 = $value;
+                    break;
                 case ProductTableStructure::BROWSE_NODE:
                     $browseNode = BrowseNodeRepository::findByValue($value);
 
-//                    if(!$amazonProductType) {
-//                        $amazonProductType = new AmazonProductType();
-//                        $amazonProductType->type = $value;
-//                        $amazonProductType->save();
-//                    }
+                    if($browseNode){
+                        $specifications->browse_node_id = $browseNode->id;
+                    }
                         
-                    $specifications->browse_node_id = $browseNode->id;
                     break;
                 case ProductTableStructure::VARIATION_THEME:
                     $variationTheme = VariationThemeRepository::findByValue($value);
@@ -191,9 +193,6 @@ class ProductHelper
                     }
 
                     $specifications->variation_theme_id = $variationTheme->id;
-                    break;
-                case ProductTableStructure::PRICE:
-                    $specifications->price = PriceHelper::toInt($value);
                     break;
                 case ProductTableStructure::IMAGE:
                     $specifications->image = $value;

@@ -16,4 +16,11 @@ class ProductBrandRepository
             ->all()
             ;
     }
+
+    public static function findOneByValue($value)
+    {
+        return ProductBrand::find()
+            ->where(['name' => $value])
+            ->one();
+    }
 }

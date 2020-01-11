@@ -18,7 +18,7 @@ class ManufacturerRepository
             ;
     }
 
-    public static function findByValue($value)
+    public static function findOneByValue($value)
     {
         return Manufacturer::find()
             ->where(['name' => $value])
