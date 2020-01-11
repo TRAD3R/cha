@@ -34,6 +34,18 @@ $specifications = $device->specifications;
         }
         ?>
     </div>
+
+    <div class="table-cell editable text" data-id="<?=DeviceTableStructure::IMAGE?>">
+        <?php
+        $imageName = UrlHelper::createImageAlias('png', $device->brand->name, $device->title);
+        $image = "/images/models/" . $imageName;
+        $image = is_file(Yii::getAlias('@Web') . $image) ? $image : '/images/no-image.png';
+        $src =  App::i()->getFile()->mdUrl($image);
+        ?>
+        <img src="<?= $src?>"
+             data-src="<?=$src ?>"
+             alt="">
+    </div>
     
     <div class="table-cell type-<?=$specifications->type->type; ?> editable select" data-id="<?=DeviceTableStructure::DEVICE_TYPE?>">
         <?php
@@ -158,15 +170,4 @@ $specifications = $device->specifications;
     </div>
     <div class="table-cell editable text" data-id="<?=DeviceTableStructure::PRICE?>">
       <input class="input-text" type="text" value="<?=PriceHelper::toFloat($specifications->price);?>">
-    </div>
-    <div class="table-cell editable text" data-id="<?=DeviceTableStructure::IMAGE?>">
-        <?php
-            $imageName = UrlHelper::createImageAlias('png', $device->brand->name, $device->title);
-            $image = "/images/models/" . $imageName;
-            $image = is_file(Yii::getAlias('@Web') . $image) ? $image : '/images/no-image.png';
-            $src =  App::i()->getFile()->mdUrl($image);
-        ?>
-      <img src="<?= $src?>"
-           data-src="<?=$src ?>"
-           alt="">
     </div>
