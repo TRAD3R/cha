@@ -6524,9 +6524,6 @@ class m191212_082316_create_device_table extends Migration
             [8164, 'Yoga C940 14', 32, NULL],
             [8165, 'Yoga C940 15', 32, NULL],
             [8166, 'XPS 13 2-in-1 2019', 26, NULL],
-            [8167, 'Q-Surf', 1, NULL],
-            [8168, 'Q-Surf', 1, NULL],
-            [8169, 'SmartPad1', 48, NULL],
         ]);
     }
 

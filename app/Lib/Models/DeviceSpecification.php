@@ -4,6 +4,7 @@
 namespace App\Models;
 
 
+use App\Behaviors\Timestamp;
 use yii\db\ActiveRecord;
 
 /**
@@ -39,6 +40,13 @@ class DeviceSpecification extends ActiveRecord
     public static function tableName()
     {
         return 'device_specifications';
+    }
+
+    public function behaviors()
+    {
+        return [
+            Timestamp::class
+        ];
     }
     
     public static function primaryKey()

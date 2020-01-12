@@ -14,6 +14,7 @@ class Gadget
 
     static getSelectClass(){ return 'select'; }
     static getTextClass(){ return 'text'; }
+    static getTextareaClass(){ return 'textarea'; }
     static getCheckboxClass(){ return 'checkbox'; }
     static getHiddenClass(){ return 'hidden-el'; }
     static getEditedSelectClass(){ return 'edited-select'; }
@@ -27,6 +28,8 @@ class Gadget
             this.getTextInput();
         }else if(this.el.hasClass(Gadget.getCheckboxClass())) {
             this.getCheckboxInput();
+        }else if(this.el.hasClass(Gadget.getTextareaClass())) {
+            this.getTextareaInput();
         }
     }
 
@@ -39,6 +42,11 @@ class Gadget
         let text = this.el.text();
         let input = this.el.find('.input-text');
         input.value = text;
+    }
+
+    getTextareaInput() {
+        let input = this.el.find('.input-text');
+        this.showModal(input);
     }
 
     getSelectInput(url = '') {
@@ -83,8 +91,10 @@ class Gadget
             method: 'GET',
             success: function (res) {
                 if(res.status === 'success'){
-                    Device.row.remove();
-                    Device.body.removeClass('edited-body');
+                    gadget.row.remove();
+                    gadget.body.removeClass('edited-body');
+                    
+                    $('.btn-operations').removeClass("is-active");
                     $("#new-device").removeClass(Gadget.getHiddenClass());
                 }
             }
@@ -92,12 +102,12 @@ class Gadget
     }
 
     updateRow(url = '') {
-        this.deviceId = +this.row.data('id');
+        this.gadgetId = +this.row.data('id');
 
         let that = this;
         let data = this.getEditedCells();
         $.ajax({
-            url: url + this.deviceId,
+            url: url + this.gadgetId,
             method: 'POST',
             data: data,
             success: function (res) {
@@ -124,7 +134,7 @@ class Gadget
 
     getEditedCells() {
         let data = {};
-        let cells = this.deviceId > 0 ? '.edited'  : '.editable';
+        let cells = this.gadgetId > 0 ? '.edited'  : '.editable';
 
         this.row.find(cells).each(function () {
             let id = $(this).data('id');
@@ -221,4 +231,7 @@ class Gadget
 
         return res;
     }
+    
+    showModal(){}
+    hideModal(){}
 }

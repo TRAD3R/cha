@@ -1,11 +1,8 @@
 <?php
 /**
  * @var $product Product
- * @var $specifications ProductSpecification
- * @var $sequenceNumber int
  */
 
-use App\Helpers\TextHelper;
 use App\Models\Buletpoint;
 use App\Models\Product;
 use App\Models\ProductImage;
@@ -30,29 +27,8 @@ $specifications = $product->specifications;
         }
         ?>
     </div>
-    <div class="table-cell editable" data-id="<?=ProductTableStructure::NODE?>">
-        <?php $nodeName = TextHelper::upperFirstChar(Yii::t('front', 'CHILD')); ?>
-        <div class="simple-select">
-            <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">
-                <input hidden type="text" name="sort-view" value="<?=$product->parent->id;?>" data-default-value="1">
-                <p class="simple-select-selected" data-placeholder="<?=$nodeName;?>"><?=$nodeName;?></p>
-                <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>
-                </svg>
-            </div>
-            <div class="simple-select-drop">
-                <div class="simple-select-drop-inner">
-                    <ul class="simple-select-list" role="listbox">
-                        <li class="simple-select-item <?=$product->parent_id ? '' : 'is-active'?>" role="option" data-value="0">
-                            <?=TextHelper::upperFirstChar(Yii::t('front', 'PARENT'));?>
-                        </li>
-                        <li class="simple-select-item <?=$product->parent_id ? 'is-active' : ''?>" role="option" data-value="1">
-                            <?=TextHelper::upperFirstChar(Yii::t('front', 'CHILD'));?>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::NODE?>">
+        <span class="text"><?=Yii::t('front', 'CHILD');?></span>
     </div>
     <div class="table-cell editable select" data-id="<?=ProductTableStructure::PARENT_ID?>">
         <?php echo $this->render('@layouts/common/chosen-select', [
@@ -113,34 +89,34 @@ $specifications = $product->specifications;
     <div class="table-cell editable text" data-id="<?=ProductTableStructure::QUANTITY?>">
         <input class="input-text" type="text" value="<?=$specifications->quantity?>">
     </div>
-    <div class="table-cell editable text" data-id="<?=ProductTableStructure::TITLE?>">
+    <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::TITLE?>">
         <textarea class="input-text" hidden><?=$product->name?></textarea>
         <span class="text"><?=$product->name?></span>
     </div>
-    <div class="table-cell editable text" data-id="<?=ProductTableStructure::DESCRIPTION?>">
+    <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::DESCRIPTION?>">
         <textarea class="input-text" hidden><?=$specifications->description?></textarea>
         <span class="text"><?=$specifications->description?></span>
     </div>
-    <?php /** @var Buletpoint $buletpoint */?>
-    <?php foreach ($product->buletpoints as $buletpoint): ?>
-        <div class="table-cell editable text" data-id="<?=ProductTableStructure::BULLETPOINT?>">
-            <textarea class="input-text" data-id="<?=$buletpoint->id?>" hidden><?=$buletpoint->buletpoint?></textarea>
-            <span class="text"><?=$buletpoint->buletpoint?></span>
-        </div>
-    <?php endforeach; ?>
-    <?php 
-        $lastBP = ProductTableStructure::BULLETPOINT_COUNT - count($product->buletpoints);
-        if($lastBP > 0):
-            for ($i = ProductTableStructure::BULLETPOINT_COUNT - $lastBP + 1; $i <= ProductTableStructure::BULLETPOINT_COUNT; $i++):
-    ?>
-                <div class="table-cell editable text" data-id="<?=ProductTableStructure::BULLETPOINT?>">
-                    <textarea class="input-text" data-id="<?=(0-$i)?>" hidden></textarea>
-                    <span class="text"></span>
-                </div>
-    <?php
-            endfor;
-        endif;
-    ?>
+    <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::BULLETPOINT_1?>">
+        <textarea class="input-text" data-id="<?=$specifications->bulletpoint_1?>" hidden><?=$specifications->bulletpoint_1?></textarea>
+        <span class="text"><?=$specifications->bulletpoint_1?></span>
+    </div>
+    <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::BULLETPOINT_2?>">
+        <textarea class="input-text" data-id="<?=$specifications->bulletpoint_2?>" hidden><?=$specifications->bulletpoint_2?></textarea>
+        <span class="text"><?=$specifications->bulletpoint_2?></span>
+    </div>
+    <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::BULLETPOINT_3?>">
+        <textarea class="input-text" data-id="<?=$specifications->bulletpoint_3?>" hidden><?=$specifications->bulletpoint_3?></textarea>
+        <span class="text"><?=$specifications->bulletpoint_3?></span>
+    </div>
+    <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::BULLETPOINT_4?>">
+        <textarea class="input-text" data-id="<?=$specifications->bulletpoint_4?>" hidden><?=$specifications->bulletpoint_4?></textarea>
+        <span class="text"><?=$specifications->bulletpoint_4?></span>
+    </div>
+    <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::BULLETPOINT_5?>">
+        <textarea class="input-text" data-id="<?=$specifications->bulletpoint_5?>" hidden><?=$specifications->bulletpoint_5?></textarea>
+        <span class="text"><?=$specifications->bulletpoint_5?></span>
+    </div>
     <?php /** @var ProductImage $image */?>
     <?php foreach ($product->images as $image): ?>
         <div class="table-cell editable text" data-id="<?=ProductTableStructure::IMAGE?>">
@@ -175,6 +151,10 @@ $specifications = $product->specifications;
             'isMultiple' => false,
             'selected'  => $specifications->barcode_type_id ? [$specifications->barcode_type_id => $specifications->barcodeType->type] : [],
         ]); ?>
+    </div>
+    <div class="table-cell">
+    </div>
+    <div class="table-cell">
     </div>
     <div class="table-cell">
     </div>

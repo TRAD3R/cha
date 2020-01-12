@@ -11,10 +11,17 @@ class BrowseNodeRepository
     public static function getAllAsArray()
     {
         return BrowseNode::find()
-            ->select('id, product_type as title')
-            ->orderBy('product_type')
+            ->select('id, title')
+            ->orderBy('title')
             ->asArray()
             ->all()
             ;
+    }
+
+    public static function findByValue($value)
+    {
+        return BrowseNode::find()
+            ->where(['title' => $value])
+            ->one();
     }
 }

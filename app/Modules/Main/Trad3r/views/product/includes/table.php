@@ -2,7 +2,6 @@
 
 use App\Helpers\TextHelper;
 use App\Html;
-use App\Models\Device;
 use App\Models\Product;
 use App\Params;
 use yii\web\View;
