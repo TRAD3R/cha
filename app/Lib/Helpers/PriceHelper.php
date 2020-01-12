@@ -6,9 +6,9 @@ namespace App\Helpers;
 
 class PriceHelper
 {
-    public static function toInt($price)
+    public static function toInt(float $price)
     {
-        return (int) number_format($price * 100);
+        return number_format($price * 100);
     }
 
     public static function toFloat($price)

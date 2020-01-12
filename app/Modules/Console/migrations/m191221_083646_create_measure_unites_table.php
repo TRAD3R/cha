@@ -12,7 +12,7 @@ class m191221_083646_create_measure_unites_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('{{%measure_unites}}', [
+        $this->createTable('{{%measure_units}}', [
             'id' => $this->primaryKey(),
             'type' => $this->string(10),
         ]);
@@ -23,6 +23,6 @@ class m191221_083646_create_measure_unites_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%measure_unites}}');
+        $this->dropTable('{{%measure_units}}');
     }
 }

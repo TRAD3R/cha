@@ -17,6 +17,6 @@ class ProductDeviceType extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'product_device_type';
+        return 'product_device_types';
     }
 }

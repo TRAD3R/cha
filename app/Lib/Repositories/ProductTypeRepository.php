@@ -3,25 +3,22 @@
 
 namespace App\Repositories;
 
+use App\Models\ProductType;
 
-use App\Models\MeasureUnit;
-
-class MeasureUnitRepository
+class ProductTypeRepository
 {
     public static function getAllAsArray()
     {
-        return MeasureUnit::find()
+        return ProductType::find()
             ->select('id, type as title')
             ->orderBy('type')
             ->asArray()
             ->all()
             ;
     }
-
+    
     public static function findOneByValue($value)
     {
-        return MeasureUnit::find()
-            ->where(['type' => $value])
-            ->one();
+        return ProductType::find()->where(['type' => $value])->one();
     }
 }

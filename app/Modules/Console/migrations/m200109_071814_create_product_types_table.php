@@ -16,6 +16,12 @@ class m200109_071814_create_product_types_table extends Migration
             'id' => $this->primaryKey(),
             'type' => $this->string(50)
         ]);
+        
+        $this->batchInsert('{{%product_types}}', ['id', 'type'], [
+            [1, 'Lightning'],
+            [2, 'MicroUSB'],
+            [3, 'USB type-C'],
+        ]);
     }
 
     /**

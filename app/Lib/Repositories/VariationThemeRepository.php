@@ -17,4 +17,11 @@ class VariationThemeRepository
             ->all()
             ;
     }
+
+    public static function findByValue($value)
+    {
+        return VariationTheme::find()
+            ->where(['title' => $value])
+            ->one();
+    }
 }

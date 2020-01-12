@@ -21,4 +21,8 @@ abstract class AbstractTS
 
 
     public static function getTitles() {}
+
+    public static function getSortedColumns() {}
+    
+    public static function getConstant($staticPart, $dymanicPart) {}
 }

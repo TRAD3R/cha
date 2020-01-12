@@ -3,21 +3,22 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `{{%product}}`.
+ * Handles the creation of table `{{%eans}}`.
  */
-class m191221_072514_create_product_table extends Migration
+class m200111_061938_create_eans_table extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->createTable('{{%products}}', [
+        $this->createTable('{{%eans}}', [
             'id' => $this->primaryKey(),
             'date_created' => $this->dateTime(),
             'date_updated' => $this->dateTime(),
-            'name' => $this->string(255),
-            'parent_id' => $this->integer(),
+            'ean' => $this->string(50),
+            'is_used' => $this->boolean()->defaultValue(false),
+            
         ]);
     }
 
@@ -26,6 +27,6 @@ class m191221_072514_create_product_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%products}}');
+        $this->dropTable('{{%eans}}');
     }
 }

@@ -11,8 +11,6 @@ use yii\db\ActiveRecord;
  * Class ProductSpecification
  * @package App\Models
  * @property int                $product_id             [integer(11)]
- * @property string             $type                   [varchar(20)]
- * @property int                $device_type_id         [integer(11)]
  * @property int                $type_id                [integer(11)]
  * @property int                $product_brand_id       [integer(11)]
  * @property int                $manufacturer_id        [integer(11)]
@@ -25,24 +23,27 @@ use yii\db\ActiveRecord;
  * @property int                $measure_unit_id        [integer(11)]
  * @property string             $description            [text]
  * @property string             $keywords               [varchar(255)]
- * @property string             $main_image             [varchar(255)]
+ * @property string             $bulletpoint_1          [text]
+ * @property string             $bulletpoint_2          [text]
+ * @property string             $bulletpoint_3          [text]
+ * @property string             $bulletpoint_4          [text]
+ * @property string             $bulletpoint_5          [text]
  * @property string             $swatch_image           [varchar(255)]
- * @property string             $hersteller_barcode     [varchar(50)]
+ * @property string             $barcode                [varchar(50)]
  * @property int                $barcode_type_id        [integer(11)]
  * @property int                $browse_node_id         [integer(11)]
- * @property int                $amazon_product_type_id [integer(11)]
  * @property int                $variation_theme_id     [integer(11)]
  * @property int                $price                  [integer(11)]
  * @property int                $quantity               [integer(11)]
  * @property Product            $product 
  * @property DeviceType[]       $deviceTypes 
+ * @property ProductType        $type 
  * @property ProductBrand       $productBrand 
  * @property Manufacturer       $manufacturer 
  * @property Merchant           $merchant 
  * @property MeasureUnit        $measureUnit 
  * @property BarcodeType        $barcodeType 
  * @property BrowseNode         $browseNode 
- * @property AmazonProductType  $amazonProductType 
  * @property VariationTheme     $variationTheme 
  */
 class ProductSpecification extends ActiveRecord
@@ -62,6 +63,11 @@ class ProductSpecification extends ActiveRecord
         return $this->hasMany(DeviceType::class, ['id' => 'device_type_id'])
             ->viaTable(ProductDeviceType::tableName(), ['product_id' => 'product_id'])
             ;
+    }
+
+    public function getType()
+    {
+        return $this->hasOne(ProductType::class, ['id' => 'type_id']);
     }
 
     public function getProductBrand()
