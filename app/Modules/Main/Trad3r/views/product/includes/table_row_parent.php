@@ -28,7 +28,7 @@ $specifications = $product->specifications;
         <span class="text"><?=Yii::t('front', 'PARENT');?></span>
     </div>
     <div class="table-cell" data-id="<?=ProductTableStructure::PARENT_ID?>">
-        <span class="text"><?php echo $product->parent_id ?: '-' ?></span>
+        <span class="text<?php echo $product->parent_id ?: ' no-parent' ?>"></span>
     </div>
     <div class="table-cell editable select" data-id="<?=ProductTableStructure::DEVICE_TYPE?>">
         <?php

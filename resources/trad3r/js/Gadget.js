@@ -51,6 +51,7 @@ class Gadget
 
     getSelectInput(url = '') {
         let that = this;
+        that.el.addClass('preloader-cell');
         $.ajax({
             url: url,
             method: 'GET',
@@ -60,6 +61,7 @@ class Gadget
                     let select = that.createSelect(res.list, selected);
                     that.el.find('.simple-select-drop-inner').html(select);
                 }
+                that.el.removeClass('preloader-cell');
             }
         })
     }

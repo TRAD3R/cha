@@ -49,15 +49,15 @@ class Device extends Gadget
 var gadget = new Device();
 
 $(document).ready(function () {
-    $('#device-model').chosen({
-        disable_search_threshold: 10,
-        no_results_text         : "",
-        search_contains         : true,
-        width                   : '100%'
-    }).change(function() {
-        let deviceId = +$(this).val();
-        gadget.update(deviceId);
-    });
+    // $('#device-model').chosen({
+    //     disable_search_threshold: 10,
+    //     no_results_text         : "",
+    //     search_contains         : true,
+    //     width                   : '100%'
+    // }).change(function() {
+    //     let deviceId = +$(this).val();
+    //     gadget.update(deviceId);
+    // });
 });
 
 $('#new-device').on('click', function () {
