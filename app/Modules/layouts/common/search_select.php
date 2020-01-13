@@ -14,6 +14,16 @@ if($showReset) {
     echo HtmlHelper::resetButton('/devices');
 }
 ?>
+<div class="search-select-container">
+  <input type="text" class="search-select-input" placeholder="Найти девайс">
+  <div class="search-select-results">
+    <ul class="search-select-list">
+      <li>Пункт поиска №1</li>
+      <li>Пункт поиска №2</li>
+      <li>Пункт поиска №3</li>
+    </ul>
+  </div>
+</div>
 <select id="device-model"
         size="4"
         data-placeholder="<?=TextHelper::upperFirstChar(Yii::t('front', 'GADGET_SEARCH'))?>"

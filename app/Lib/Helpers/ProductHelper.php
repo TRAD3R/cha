@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\ProductBrand;
 use App\Models\ProductSpecification;
 use App\Models\ProductType;
+use App\Models\Swatch;
 use App\Models\VariationTheme;
 use App\Params;
 use App\Repositories\BarcodeTypeRepository;
@@ -24,6 +25,7 @@ use App\Repositories\ProductRepository;
 use App\Repositories\MeasureUnitRepository;
 use App\Repositories\ProductTypeRepository;
 use App\Repositories\VariationThemeRepository;
+use App\Repositories\SwatchRepository;
 use App\Tables\DeviceTableStructure;
 use App\Tables\ProductTableStructure;
 use Yii;
@@ -273,6 +275,9 @@ class ProductHelper
             case ProductTableStructure::PARENT_ID:
                 $list = ProductRepository::getParentsAsArray();
                 break;
+            case ProductTableStructure::SWATCH_IMAGE:
+              $list = SwatchRepository::getAllAsArray();
+              break;
         }
         
         return $list;
