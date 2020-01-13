@@ -18,8 +18,8 @@ use yii\db\ActiveRecord;
  * @property int                    $parent_id          [integer(11)]
  * @property Product                $parent
  * @property ProductSpecification   $specifications
- * @property Buletpoint[]           $buletpoints
  * @property ProductImage[]         $images
+ * @property Product[]              $children
  */
 class Product extends ActiveRecord
 {
@@ -56,14 +56,18 @@ class Product extends ActiveRecord
         return $this->hasOne(ProductSpecification::class, ['product_id' => 'id']);
     }
 
-    public function getBuletpoints()
-    {
-        return $this->hasMany(Buletpoint::class, ['product_id' => 'id']);
-    }
-
     public function getImages()
     {
         return $this->hasMany(ProductImage::class, ['product_id' => 'id']);
+    }
+    
+    public function getChildren()
+    {
+        return self::find()
+            ->where(['parent_id' => $this->id])
+            ->orderBy('id ASC')
+            ->all()
+            ;
     }
 
 }

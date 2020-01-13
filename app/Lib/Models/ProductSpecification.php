@@ -23,9 +23,13 @@ use yii\db\ActiveRecord;
  * @property int                $measure_unit_id        [integer(11)]
  * @property string             $description            [text]
  * @property string             $keywords               [varchar(255)]
- * @property string             $main_image             [varchar(255)]
- * @property string             $swatch_image           [varchar(255)]
- * @property string             $hersteller_barcode     [varchar(50)]
+ * @property string             $bulletpoint_1          [text]
+ * @property string             $bulletpoint_2          [text]
+ * @property string             $bulletpoint_3          [text]
+ * @property string             $bulletpoint_4          [text]
+ * @property string             $bulletpoint_5          [text]
+ * @property int                $swatch_id              [integer(11)]
+ * @property string             $barcode                [varchar(50)]
  * @property int                $barcode_type_id        [integer(11)]
  * @property int                $browse_node_id         [integer(11)]
  * @property int                $variation_theme_id     [integer(11)]
@@ -41,6 +45,7 @@ use yii\db\ActiveRecord;
  * @property BarcodeType        $barcodeType 
  * @property BrowseNode         $browseNode 
  * @property VariationTheme     $variationTheme 
+ * @property Swatch             $swatch
  */
 class ProductSpecification extends ActiveRecord
 {
@@ -96,13 +101,13 @@ class ProductSpecification extends ActiveRecord
         return $this->hasOne(BrowseNode::class, ['id' => 'browse_node_id']);
     }
 
-    public function getAmazonProductType()
-    {
-        return $this->hasOne(AmazonProductType::class, ['id' => 'amazon_product_type_id']);
-    }
-
     public function getVariationTheme()
     {
         return $this->hasOne(VariationTheme::class, ['id' => 'variation_theme_id']);
+    }
+
+    public function getSwatch()
+    {
+      return $this->hasOne(Swatch::class, ['id' => 'swatch_id']);
     }
 }

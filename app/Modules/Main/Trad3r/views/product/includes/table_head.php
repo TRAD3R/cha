@@ -18,8 +18,8 @@ $sortedColumns = ProductTableStructure::getSortedColumns();
   <div class="table-row">
     <?php foreach ($ths as $groupKey => $group){
         foreach ($group as $key => $th) {
-            if(in_array($key, [ProductTableStructure::BULLETPOINT, ProductTableStructure::IMAGE])) {
-                $count = $key == ProductTableStructure::BULLETPOINT ? ProductTableStructure::BULLETPOINT_COUNT : ProductTableStructure::IMAGE_COUNT;
+            if(in_array($key, [ProductTableStructure::IMAGE])) {
+                $count = ProductTableStructure::IMAGE_COUNT;
                 
                 for ($i = 0; $i < $count; $i++){
                     echo $this->render('headers', compact('groupKey', 'sortedColumnsAsc', 'sortedColumnsDesc', 'key', 'th', 'sortedColumns'));

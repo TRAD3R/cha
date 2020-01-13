@@ -24,12 +24,24 @@ use yii\web\View;
     </div>
   <div class="table-body">
     <?php foreach ($products as $key => $product):?>
-          <div class="table-row" data-id="<?=$product->id?>">
-            <?php 
-                $template = $product->parent_id ? 'table_row_child' : 'table_row_parent';
-                echo $this->render($template, compact('product'))
-            ?>
-          </div>
+        <div class="table-row" data-id="<?=$product->id?>">
+            <?= $this->render('table_row_parent', [
+                    'product' => $product
+            ]); ?>
+        </div>
+        <?php
+            if ($children = $product->children):
+                foreach ($children as $child): 
+        ?>
+                  <div class="table-row" data-id="<?=$child->id?>">
+                        <?=$this->render('table_row_child', [
+                                'product' => $child
+                        ]);?>
+                  </div>
+        <?php
+                endforeach;
+            endif;
+        ?>
     <?php endforeach; ?>
   </div>
 </div>

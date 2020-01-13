@@ -10,7 +10,8 @@ class Product extends Gadget
     getSelectInput() {
         let url = '/products/specification/list/' + this.el.data('id');
         let that = this;
-        
+
+        that.el.addClass('preloader-cell');
         that.el.find('span.cap').addClass(Gadget.getHiddenClass());
         $.ajax({
             url: url,
@@ -25,6 +26,8 @@ class Product extends Gadget
                         search_contains         : true,
                         width                   : '100%'
                     });
+                        
+                    that.el.removeClass('preloader-cell');
                 }
             }
         })

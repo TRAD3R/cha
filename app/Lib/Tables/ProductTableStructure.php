@@ -21,7 +21,7 @@ class ProductTableStructure extends AbstractTS
     const UNIT_MEASURE = 111;
     const QUANTITY = 112;
     const DESCRIPTION = 113;
-    const BULLETPOINT = 114;
+    const BULLETPOINT_1 = 114;
     const SWATCH_IMAGE = 115;
     const BARCODE = 116;
     const BARCODE_TYPE = 117;
@@ -30,6 +30,10 @@ class ProductTableStructure extends AbstractTS
     const VARIATION_THEME = 120;
     const PARENT_ID = 121;
     const PRODUCT_TYPE = 122;
+    const BULLETPOINT_2 = 123;
+    const BULLETPOINT_3 = 124;
+    const BULLETPOINT_4 = 125;
+    const BULLETPOINT_5 = 126;
     const DEVICE_TYPE = 199;        // должен быть последним, чтобы сохранить товар перед привязкой
     
     const GROUP_SEO = 'seo';
@@ -69,7 +73,11 @@ class ProductTableStructure extends AbstractTS
           self::GROUP_SEO => [
             self::TITLE => Yii::t('front', 'TITLE'),
             self::DESCRIPTION => Yii::t('front', 'DESCRIPTION'),
-            self::BULLETPOINT => Yii::t('front', 'BULLETPOINT'),
+            self::BULLETPOINT_1 => Yii::t('front', 'BULLETPOINT'),
+            self::BULLETPOINT_2 => Yii::t('front', 'BULLETPOINT'),
+            self::BULLETPOINT_3 => Yii::t('front', 'BULLETPOINT'),
+            self::BULLETPOINT_4 => Yii::t('front', 'BULLETPOINT'),
+            self::BULLETPOINT_5 => Yii::t('front', 'BULLETPOINT'),
           ],
           self::GROUP_CONTENT => [
             self::IMAGE => Yii::t('front', 'IMAGE'),
@@ -107,6 +115,11 @@ class ProductTableStructure extends AbstractTS
             self::AMAZON_PRODUCT_TYPE,
             self::VARIATION_THEME,
         ];
+    }
+    
+    public static function getConstant($staticPart, $dymanicPart)
+    {
+        return constant($staticPart . $dymanicPart);
     }
 
 }

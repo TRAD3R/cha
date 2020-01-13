@@ -17,4 +17,11 @@ class MeasureUnitRepository
             ->all()
             ;
     }
+
+    public static function findOneByValue($value)
+    {
+        return MeasureUnit::find()
+            ->where(['type' => $value])
+            ->one();
+    }
 }

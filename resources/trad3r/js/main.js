@@ -343,4 +343,6 @@ $(document).ready(function() {
     $('.dropdown').on('click', function(){
         $(this).addClass('is-active');
     });
+
+    $('.preloader').addClass('hidden-el');
 });
