@@ -9,7 +9,7 @@
 use App\Models\Product;
 
 ?>
-
+<?php echo $this->render("@layouts/common/preloader"); ?>
 <?php echo $this->render('includes/table', compact('products', 'totalCount', 'params', 'offset')); ?>
 
 

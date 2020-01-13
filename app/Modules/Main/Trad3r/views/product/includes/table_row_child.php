@@ -137,9 +137,9 @@ $specifications = $product->specifications;
             endfor;
         endif;
     ?>
-    <div class="table-cell editable text" data-id="<?=ProductTableStructure::SWATCH_IMAGE?>">
-        <textarea class="input-text" hidden><?=$specifications->swatch_image?></textarea>
-        <span class="text"><?=$specifications->swatch_image?></span>
+    <div class="table-cell editable select select-image" data-id="<?=ProductTableStructure::SWATCH_IMAGE?>">
+        <img class="swatch-img" data-id="<?=$specifications->swatch->id ?>" src="<?=$specifications->swatch->name ?>">
+
     </div>
     <div class="table-cell editable text" data-id="<?=ProductTableStructure::BARCODE?>">
         <input class="input-text" type="text" value="<?=$specifications->barcode?>">
