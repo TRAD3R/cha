@@ -17,4 +17,9 @@ class BarcodeTypeRepository
             ->all()
             ;
     }
+
+    public static function findOneByValue($value)
+    {
+        return BarcodeType::findOne(['type' => $value]);
+    }
 }
