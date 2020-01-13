@@ -31,7 +31,7 @@ class m191221_091706_create_product_specifications_table extends Migration
             'bulletpoint_3' => $this->text(),
             'bulletpoint_4' => $this->text(),
             'bulletpoint_5' => $this->text(),
-            'swatch_image' => $this->string(255),
+            'swatch_id' => $this->integer(),
             'barcode' => $this->string(255),
             'barcode_type_id' => $this->integer(),
             'browse_node_id' => $this->integer(),

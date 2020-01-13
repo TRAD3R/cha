@@ -5,14 +5,11 @@ namespace Main\Trad3r\Controllers;
 
 
 use App\Controller\Main;
-use App\Helpers\DeviceHelper;
 use App\Helpers\ProductHelper;
-use App\Models\Device;
 use App\Models\Product;
 use App\Params;
 use App\Request;
 use App\Response;
-use App\Tables\ProductTableStructure;
 use Yii;
 
 class ProductController extends Main

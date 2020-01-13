@@ -18,17 +18,15 @@ class Product extends Gadget
             method: 'GET',
             success: function (res) {
                 if(res.status === 'success'){
-                    if (that.el.hasClass('select-image')) {
-                        let select = that.createImageSelect(res.list, that.el.find('img').data('id'))
-                    } else {
-                        let select = that.createSelect(res.list, that.el.find('select'), that.el.find('span.item-selected').data('id'));
-                        select.chosen({
-                            disable_search_threshold: 10,
-                            no_results_text         : "",
-                            search_contains         : true,
-                            width                   : '100%'
-                        });
-                    }
+                    let select = that.createSelect(res.list, that.el.find('select'), that.el.find('span.item-selected').data('id'));
+                    
+                    select.chosen({
+                        disable_search_threshold: 10,
+                        no_results_text         : "",
+                        search_contains         : true,
+                        width                   : '100%'
+                    });
+                        
                     that.el.removeClass('preloader-cell');
                 }
             }
@@ -53,30 +51,6 @@ class Product extends Gadget
         }
 
         return select;
-    }
-
-    createImageSelect(list, selected) {
-        let ul = document.createElement('ul');
-        ul.classList.add("simple-select-list");
-        ul.setAttribute("role", "listbox");
-
-        for (let el of list) {
-            let li = document.createElement('li');
-            let img = document.createElement('img');
-            li.classList.add('simple-select-item');
-            li.setAttribute("role", "option");
-            li.setAttribute("data-value", el.id);
-            img.src = "/images/swatches/" + el.title;
-            img.title = el.title;
-            img.alt = el.title;
-            li.innerHTML = img;
-            if (el.id === selected) {
-                li.classList.add("is-active");
-            }
-            ul.append(li);
-        }
-
-        return ul;
     }
 
     getEditedCells() {

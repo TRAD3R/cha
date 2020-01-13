@@ -3,7 +3,7 @@
  * @var $product Product
  */
 
-use App\Models\Buletpoint;
+use App\Helpers\PriceHelper;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductSpecification;
@@ -20,7 +20,7 @@ $specifications = $product->specifications;
     <div class="table-cell" data-id="<?=ProductTableStructure::DATE_CREATED?>">
         <?php
         try {
-            $dateCreated = new DateTime($specifications->date_created);
+            $dateCreated = new DateTime($product->date_created);
             echo $dateCreated->format('d.m.Y');
         } catch (Exception $e) {
             $e->getMessage();
@@ -84,7 +84,7 @@ $specifications = $product->specifications;
         ]); ?>
     </div>
     <div class="table-cell editable text" data-id="<?=ProductTableStructure::PRICE?>">
-        <input class="input-text" type="text" value="<?=$specifications->price?>">
+        <input class="input-text" type="text" value="<?=PriceHelper::toFloat($specifications->price)?>">
     </div>
     <div class="table-cell editable text" data-id="<?=ProductTableStructure::QUANTITY?>">
         <input class="input-text" type="text" value="<?=$specifications->quantity?>">
@@ -137,9 +137,13 @@ $specifications = $product->specifications;
             endfor;
         endif;
     ?>
-    <div class="table-cell editable select select-image" data-id="<?=ProductTableStructure::SWATCH_IMAGE?>">
-        <img class="swatch-img" data-id="<?=$specifications->swatch->id ?>" src="<?=$specifications->swatch->name ?>">
-
+    <div class="table-cell editable select" data-id="<?=ProductTableStructure::SWATCH_IMAGE?>">
+        <?php echo $this->render('@layouts/common/chosen-select', [
+            'name' => ProductTableStructure::SWATCH_IMAGE,
+            'placeholder' => Yii::t('front', 'SWATCH_IMAGE'),
+            'isMultiple' => false,
+            'selected'  => $specifications->swatch_id ? [$specifications->swatch_id => $specifications->swatch->title] : [],
+        ]); ?>
     </div>
     <div class="table-cell editable text" data-id="<?=ProductTableStructure::BARCODE?>">
         <input class="input-text" type="text" value="<?=$specifications->barcode?>">

@@ -19,6 +19,7 @@ use yii\db\ActiveRecord;
  * @property Product                $parent
  * @property ProductSpecification   $specifications
  * @property ProductImage[]         $images
+ * @property Product[]              $children
  */
 class Product extends ActiveRecord
 {
@@ -58,6 +59,15 @@ class Product extends ActiveRecord
     public function getImages()
     {
         return $this->hasMany(ProductImage::class, ['product_id' => 'id']);
+    }
+    
+    public function getChildren()
+    {
+        return self::find()
+            ->where(['parent_id' => $this->id])
+            ->orderBy('id ASC')
+            ->all()
+            ;
     }
 
 }
