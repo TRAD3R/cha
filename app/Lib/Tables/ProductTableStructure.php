@@ -34,6 +34,8 @@ class ProductTableStructure extends AbstractTS
     const BULLETPOINT_3 = 124;
     const BULLETPOINT_4 = 125;
     const BULLETPOINT_5 = 126;
+    const KEYWORDS = 128;
+    const VAR_TITLE = 129;
     const DEVICE_TYPE = 199;        // должен быть последним, чтобы сохранить товар перед привязкой
     
     const GROUP_SEO = 'seo';
@@ -73,6 +75,8 @@ class ProductTableStructure extends AbstractTS
           self::GROUP_SEO => [
             self::TITLE => Yii::t('front', 'TITLE'),
             self::DESCRIPTION => Yii::t('front', 'DESCRIPTION'),
+            self::KEYWORDS => Yii::t('front', 'KEYWORDS'),
+            self::VAR_TITLE => Yii::t('front', 'VARIATION_TITLE'),
             self::BULLETPOINT_1 => Yii::t('front', 'BULLETPOINT'),
             self::BULLETPOINT_2 => Yii::t('front', 'BULLETPOINT'),
             self::BULLETPOINT_3 => Yii::t('front', 'BULLETPOINT'),

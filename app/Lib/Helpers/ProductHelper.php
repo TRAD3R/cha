@@ -4,6 +4,7 @@
 namespace App\Helpers;
 
 
+use App\Models\BarcodeType;
 use App\Models\DeviceType;
 use App\Models\Manufacturer;
 use App\Models\MeasureUnit;
@@ -56,7 +57,9 @@ class ProductHelper
 
         $total = $this->query->count();
         
+        $individualParentid = Product::TYPE_INDIVIDUAL;
         $this->query
+            ->andWhere("p.parent_id IS NULL OR p.parent_id = {$individualParentid}")
             ->addOrderBy('p.id ASC')
             ->limit($params[Params::PER_PAGE])
             ->offset($offset)
@@ -133,6 +136,9 @@ class ProductHelper
                 case ProductTableStructure::DESCRIPTION:
                     $specifications->description = $value;
                     break;
+                case ProductTableStructure::KEYWORDS:
+                    $specifications->keywords = $value;
+                    break;
                 case ProductTableStructure::LENGTH:
                     $specifications->length = $value;
                     break;
@@ -177,16 +183,38 @@ class ProductHelper
                 case ProductTableStructure::BULLETPOINT_5:
                     $specifications->bulletpoint_5 = $value;
                     break;
+                case ProductTableStructure::SWATCH_IMAGE:
+                    $swatch = SwatchRepository::findOneByValue($value);
+
+                    if($swatch){
+                        $specifications->link('swatch', $swatch);
+                    }
+
+                    break;
+                case ProductTableStructure::BARCODE:
+                    $specifications->barcode = $value;
+                    break;
+                case ProductTableStructure::BARCODE_TYPE:
+                    $barcode = BarcodeTypeRepository::findOneByValue($value);
+
+                    if(!$barcode) {
+                        $barcode = new BarcodeType();
+                        $barcode->type = $value;
+                        $barcode->save();
+                    }
+                    
+                    $specifications->link("barcodeType", $barcode); 
+                    break;
                 case ProductTableStructure::BROWSE_NODE:
-                    $browseNode = BrowseNodeRepository::findByValue($value);
+                    $browseNode = BrowseNodeRepository::findOneByValue($value);
 
                     if($browseNode){
-                        $specifications->browse_node_id = $browseNode->id;
+                        $specifications->link("browseNode", $browseNode);
                     }
-                        
+
                     break;
                 case ProductTableStructure::VARIATION_THEME:
-                    $variationTheme = VariationThemeRepository::findByValue($value);
+                    $variationTheme = VariationThemeRepository::findOneByValue($value);
 
                     if(!$variationTheme) {
                         $variationTheme = new VariationTheme();
@@ -224,7 +252,7 @@ class ProductHelper
             }
         }
         
-        if($product->id) {
+        if($specifications->product_id) {
             return ($product->save() && $specifications->save());
         }else{
             if($product->save()) {

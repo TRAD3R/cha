@@ -104,7 +104,7 @@ class Gadget
     }
 
     updateRow(url = '') {
-        this.gadgetId = +this.row.data('id');
+        this.gadgetId = this.row.data('id');
 
         let that = this;
         let data = this.getEditedCells();

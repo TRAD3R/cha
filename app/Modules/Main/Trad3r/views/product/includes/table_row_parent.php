@@ -62,66 +62,40 @@ $specifications = $product->specifications;
             'selected'  => $specifications->merchant_id ? [$specifications->merchant_id => $specifications->merchant->name] : [],
         ]); ?>
     </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::SKU?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::BRAND?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::MANUFACTURER?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::LENGTH?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::WIDTH?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::DEPTH?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::SIZE?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::UNIT_MEASURE?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::PRICE?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::QUANTITY?>"></div>
     <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::TITLE?>">
         <textarea class="input-text" hidden><?=$product->name?></textarea>
         <span class="text"><?=$product->name?></span>
     </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
-    <div class="table-cell">
-    </div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::DESCRIPTION?>"></div>
+    <div class="table-cell"data-id="<?=ProductTableStructure::KEYWORDS?>"></div>
+    <div class="table-cell"data-id="<?=ProductTableStructure::VAR_TITLE?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::BULLETPOINT_1?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::BULLETPOINT_2?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::BULLETPOINT_3?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::BULLETPOINT_4?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::BULLETPOINT_5?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::IMAGE?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::IMAGE?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::IMAGE?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::IMAGE?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::IMAGE?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::IMAGE?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::IMAGE?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::IMAGE?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::IMAGE?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::SWATCH_IMAGE?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::BARCODE?>"></div>
+    <div class="table-cell" data-id="<?=ProductTableStructure::BARCODE_TYPE?>"></div>
     <div class="table-cell editable select" data-id="<?=ProductTableStructure::BROWSE_NODE?>">
         <?php echo $this->render('@layouts/common/chosen-select', [
             'name' => ProductTableStructure::BROWSE_NODE,
