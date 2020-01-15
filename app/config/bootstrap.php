@@ -9,3 +9,4 @@ Yii::setAlias('@common_resources', dirname(dirname(__DIR__)) . '/resources/commo
 Yii::setAlias('@trad3r_resources', dirname(dirname(__DIR__)) . '/resources/trad3r');
 Yii::setAlias('@translates', dirname(dirname(__DIR__)) . '/messages');
 Yii::setAlias('@tests', dirname(dirname(__DIR__)) . '/tests');
+Yii::setAlias('@out', dirname(dirname(__DIR__)) . '/web/out');
