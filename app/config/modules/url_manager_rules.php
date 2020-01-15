@@ -10,7 +10,7 @@ $project_rules = [
         'devices/specification/list/<id:\d{1,}>'        => 'device/spec-list',
         
         'products'                                       => 'product/index',
-        'products/0'                                     => 'product/add',
+        'products/<id:(-1|0)>'                           => 'product/add',
         'products/remove/<id:\d{1,}>'                    => 'product/remove',
         'products/<id:\d{1,}>'                           => 'product/update',
         'products/specification/list/<id:\d{1,}>'        => 'product/spec-list',

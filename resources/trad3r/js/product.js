@@ -122,15 +122,18 @@ $(document).ready(function () {
     $('#new-product-child').on('click', function () {
         newRow($(this), 'empty-row-child');
     });
+    $('#new-product-individual').on('click', function () {
+        newRow($(this), 'empty-row-individual', -1);
+    });
 });
 
-function newRow(el, newRowId) {
+function newRow(el, newRowId, data_id = 0) {
     el.closest('.dropdown').removeClass('is-active');
     let tableBody = $('.' + TABLE_BODY_CLASS);
     let rowTemplate = $('#' + newRowId);
     let newRow = document.createElement('div');
     newRow.classList.add(TABLE_ROW_CLASS);
-    newRow.setAttribute('data-id', 0);
+    newRow.setAttribute('data-id', data_id);
     newRow.innerHTML = rowTemplate.html();
     tableBody.append(newRow);
     let rows = tableBody.find('.' + TABLE_ROW_CLASS);

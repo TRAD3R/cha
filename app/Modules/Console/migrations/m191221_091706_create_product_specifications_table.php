@@ -26,6 +26,7 @@ class m191221_091706_create_product_specifications_table extends Migration
             'measure_unit_id' => $this->integer(),
             'description' => $this->text(),
             'keywords' => $this->string(255),
+            'var_title' => $this->string(50),
             'bulletpoint_1' => $this->text(),
             'bulletpoint_2' => $this->text(),
             'bulletpoint_3' => $this->text(),

@@ -23,6 +23,7 @@ use yii\db\ActiveRecord;
  * @property int                $measure_unit_id        [integer(11)]
  * @property string             $description            [text]
  * @property string             $keywords               [varchar(255)]
+ * @property string             $var_title              [varchar(50)]
  * @property string             $bulletpoint_1          [text]
  * @property string             $bulletpoint_2          [text]
  * @property string             $bulletpoint_3          [text]
