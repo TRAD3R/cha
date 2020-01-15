@@ -6,13 +6,15 @@ namespace App\Helpers;
 
 class PriceHelper
 {
-    public static function toInt(float $price)
+    public static function toInt($price)
     {
-        return number_format($price * 100);
+        $floatPrice = (float) sprintf("%.2f", $price);
+        return $floatPrice * 100;
     }
 
     public static function toFloat($price)
     {
-        return (float) number_format($price / 100, 2);
+        $realPrice = $price / 100;
+        return sprintf("%.2f", $realPrice);
     }
 }

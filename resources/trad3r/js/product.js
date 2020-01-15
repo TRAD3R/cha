@@ -18,17 +18,15 @@ class Product extends Gadget
             method: 'GET',
             success: function (res) {
                 if(res.status === 'success'){
-                    if (that.el.hasClass('select-image')) {
-                        let select = that.createImageSelect(res.list, that.el.find('img').data('id'))
-                    } else {
-                        let select = that.createSelect(res.list, that.el.find('select'), that.el.find('span.item-selected').data('id'));
-                        select.chosen({
-                            disable_search_threshold: 10,
-                            no_results_text         : "",
-                            search_contains         : true,
-                            width                   : '100%'
-                        });
-                    }
+                    let select = that.createSelect(res.list, that.el.find('select'), that.el.find('span.item-selected').data('id'));
+                    
+                    select.chosen({
+                        disable_search_threshold: 10,
+                        no_results_text         : "",
+                        search_contains         : true,
+                        width                   : '100%'
+                    });
+                        
                     that.el.removeClass('preloader-cell');
                 }
             }
@@ -53,30 +51,6 @@ class Product extends Gadget
         }
 
         return select;
-    }
-
-    createImageSelect(list, selected) {
-        let ul = document.createElement('ul');
-        ul.classList.add("simple-select-list");
-        ul.setAttribute("role", "listbox");
-
-        for (let el of list) {
-            let li = document.createElement('li');
-            let img = document.createElement('img');
-            li.classList.add('simple-select-item');
-            li.setAttribute("role", "option");
-            li.setAttribute("data-value", el.id);
-            img.src = "/images/swatches/" + el.title;
-            img.title = el.title;
-            img.alt = el.title;
-            li.innerHTML = img;
-            if (el.id === selected) {
-                li.classList.add("is-active");
-            }
-            ul.append(li);
-        }
-
-        return ul;
     }
 
     getEditedCells() {
@@ -148,15 +122,18 @@ $(document).ready(function () {
     $('#new-product-child').on('click', function () {
         newRow($(this), 'empty-row-child');
     });
+    $('#new-product-individual').on('click', function () {
+        newRow($(this), 'empty-row-individual', -1);
+    });
 });
 
-function newRow(el, newRowId) {
+function newRow(el, newRowId, data_id = 0) {
     el.closest('.dropdown').removeClass('is-active');
     let tableBody = $('.' + TABLE_BODY_CLASS);
     let rowTemplate = $('#' + newRowId);
     let newRow = document.createElement('div');
     newRow.classList.add(TABLE_ROW_CLASS);
-    newRow.setAttribute('data-id', 0);
+    newRow.setAttribute('data-id', data_id);
     newRow.innerHTML = rowTemplate.html();
     tableBody.append(newRow);
     let rows = tableBody.find('.' + TABLE_ROW_CLASS);

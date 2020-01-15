@@ -18,7 +18,7 @@ class BrowseNodeRepository
             ;
     }
 
-    public static function findByValue($value)
+    public static function findOneByValue($value)
     {
         return BrowseNode::find()
             ->where(['title' => $value])

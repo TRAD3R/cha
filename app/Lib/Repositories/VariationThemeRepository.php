@@ -18,7 +18,7 @@ class VariationThemeRepository
             ;
     }
 
-    public static function findByValue($value)
+    public static function findOneByValue($value)
     {
         return VariationTheme::find()
             ->where(['title' => $value])

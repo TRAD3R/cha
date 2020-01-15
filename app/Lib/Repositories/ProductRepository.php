@@ -12,6 +12,7 @@ class ProductRepository
     {
         return Product::find()
             ->select('id, id as title')
+            ->where(['parent_id' => null])
             ->orderBy('id')
             ->asArray()
             ->all()

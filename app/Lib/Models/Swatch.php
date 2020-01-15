@@ -8,10 +8,11 @@ use App\Behaviors\Timestamp;
 use yii\db\ActiveRecord;
 
 /**
- * Class BarcodeType
+ * Class Swatch
  * @package App\Models
  * @property int        $id             [integer(11)]
- * @property string     $name           [varchar(30)]
+ * @property string     title           [varchar(30)]
+ * @property string     filename           [varchar(30)]
  */
 class Swatch extends ActiveRecord
 {
