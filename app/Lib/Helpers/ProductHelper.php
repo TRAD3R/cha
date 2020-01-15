@@ -57,8 +57,9 @@ class ProductHelper
 
         $total = $this->query->count();
         
+        $individualParentid = Product::TYPE_INDIVIDUAL;
         $this->query
-            ->andWhere('p.parent_id IS NULL')
+            ->andWhere("p.parent_id IS NULL OR p.parent_id = {$individualParentid}")
             ->addOrderBy('p.id ASC')
             ->limit($params[Params::PER_PAGE])
             ->offset($offset)
@@ -134,6 +135,9 @@ class ProductHelper
                     break;
                 case ProductTableStructure::DESCRIPTION:
                     $specifications->description = $value;
+                    break;
+                case ProductTableStructure::KEYWORDS:
+                    $specifications->keywords = $value;
                     break;
                 case ProductTableStructure::LENGTH:
                     $specifications->length = $value;

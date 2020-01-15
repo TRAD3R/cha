@@ -38,6 +38,7 @@ use yii\web\View;
           <ul>
             <li class="dropdown-list-item"><button id="new-product-parent" type="button"><?=TextHelper::upperFirstChar(Yii::t('front', 'PARENT'))?></button></li>
             <li class="dropdown-list-item"><button id="new-product-child" type="button"><?=TextHelper::upperFirstChar(Yii::t('front', 'CHILD'))?></button></li>
+            <li class="dropdown-list-item"><button id="new-product-individual" type="button"><?=TextHelper::upperFirstChar(Yii::t('front', 'INDIVIDUAL'))?></button></li>
           </ul>
         </div>
       </div>

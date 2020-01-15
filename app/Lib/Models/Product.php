@@ -23,6 +23,8 @@ use yii\db\ActiveRecord;
  */
 class Product extends ActiveRecord
 {
+    const TYPE_INDIVIDUAL = -1;
+    
     public static function tableName()
     {
         return 'products';

@@ -81,8 +81,10 @@ class ProductController extends Main
         }
 
         $view = 'table_row_parent';
-
-        if($product->parent_id){
+        
+        if($product->parent_id == -1){
+            $view = 'table_row_individual';
+        }elseif ($product->parent_id) {
             $view = 'table_row_child';
         }
 
@@ -97,7 +99,7 @@ class ProductController extends Main
         ];
     }
     
-    public function actionAdd()
+    public function actionAdd($id)
     {
         /** @var Request $request */
         $request = $this->getRequest();
@@ -116,6 +118,9 @@ class ProductController extends Main
         }
 
         $product = new Product();
+        if($id == Product::TYPE_INDIVIDUAL) {
+            $product->parent_id = Product::TYPE_INDIVIDUAL;
+        }
         if(!ProductHelper::modifyData($product, $data)) {
             return [
                 'status' => Response::STATUS_FAIL,
@@ -124,8 +129,10 @@ class ProductController extends Main
         }
         
         $view = 'table_row_parent';
-        
-        if($product->parent_id){
+
+        if($product->parent_id == Product::TYPE_INDIVIDUAL){
+            $view = 'table_row_individual';
+        }elseif ($product->parent_id) {
             $view = 'table_row_child';
         }
         
