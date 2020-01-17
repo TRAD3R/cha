@@ -10,21 +10,20 @@ use App\Assets\Packages\CommonAsset;
 use App\Assets\Packages\JuiAsset;
 use yii\web\AssetBundle;
 
-class CommonTrad3rAssets extends AssetBundle
+class ListingAssets extends AssetBundle
 {
     public $sourcePath = "@trad3r_resources";
 
     public $js = [
+      'js/main.js'
     ];
 
     public $css = [
+      'css/style.css'
     ];
 
     public $depends = [
-        JuiAsset::class,
-        CommonAsset::class,
-//        BootstrapAsset::class,
-//        BootstrapPluginAsset::class,
+      CommonTrad3rAssets::class
     ];
 
 }

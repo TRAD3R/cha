@@ -8,6 +8,7 @@ use App\App;
 use App\Assets\AssetHelper;
 use App\Assets\Packages\Trad3r\CommonTrad3rAssets;
 use App\Assets\Packages\Trad3r\DeviceAsset;
+use App\Assets\Packages\Trad3r\ListingAssets;
 use App\Assets\Packages\Trad3r\MainAsset;
 use App\Assets\Packages\Trad3r\ProductAsset;
 
@@ -71,7 +72,15 @@ class Trad3rConfig extends Config
                                 MainAsset::class,
                             ],
                         ],
-                    ]
+                    ],
+                  'listing' => [
+                    AssetHelper::CONTROLLER_ALL => [
+                      AssetHelper::BUNDLES => [
+                        ListingAssets::class,
+                        MainAsset::class,
+                      ],
+                    ],
+                  ],
                 ]
             ]
         ];
