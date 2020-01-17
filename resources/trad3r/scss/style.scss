@@ -1,9 +1,33 @@
-@import "../../common/scss/vars";
+@import "vars";
 
+
+* {
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: none;
+    //background-color: $gray;
+  }
+  &::-webkit-scrollbar {
+    width: 8px;
+    background-color: $gray;
+    margin-left: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: $secondary;
+    border-radius: 0;
+    border: none;
+    &:hover {
+      background-color: $primary;
+    }
+  }
+}
 /*стилизация чекбоксов*/
 .checkbox {
   display: flex;
   align-items: center;
+  &-text {
+    color: $dark;
+    font-weight: 500;
+  }
   input[type="checkbox"] {
     opacity: 0;
     -webkit-appearance: none;
@@ -61,7 +85,7 @@
     }
   }
   &-box {
-    margin: 0 5px 0 0;
+    margin: 0 15px 0 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -125,11 +149,7 @@
       margin-left: 10px;
     }
     &::-webkit-scrollbar-thumb {
-      transition: all .2s ease;
-      -webkit-transition: all .2s ease;
-      -moz-transition: all .2s ease;
-      -o-transition: all .2s ease;
-      background-color: transparentize($primary, 0.7);
+      background-color: $secondary;
       border-radius: 0;
       border: none;
       &:hover {
@@ -181,16 +201,17 @@
         margin-left: 10px;
       }
       &::-webkit-scrollbar-thumb {
-        transition: all .2s ease;
-        -webkit-transition: all .2s ease;
-        -moz-transition: all .2s ease;
-        -o-transition: all .2s ease;
-        background-color: transparentize($primary, 0.7);
+        background-color: $secondary;
         border-radius: 0;
         border: none;
         &:hover {
           background-color: $primary;
         }
+      }
+    }
+    .table-cell {
+      &:not(.editable) {
+        cursor: default;
       }
     }
     &.edited-body .table-row:not(.edited-row) {
@@ -272,9 +293,7 @@
         }
       }
     }
-    &:not(.editable) {
-      cursor: not-allowed;
-    }
+
     &.type-laptop, &.type-tablet, &.type-handy, &.type-ebook {
       padding-left: 25px;
       &:before {
@@ -626,9 +645,12 @@ button {
         margin-left: 10px;
       }
       &::-webkit-scrollbar-thumb {
-        background-color: $primary;
+        background-color: $secondary;
         border-radius: 0;
         border: none;
+        &:hover {
+          background-color: $primary;
+        }
       }
     }
   }
@@ -688,7 +710,7 @@ button {
       visibility: visible;
       transform: translateY(0);
     }
-    > .icon {
+    > .icon:not(.no-transform) {
       transform: rotate(180deg);
     }
   }
@@ -708,8 +730,13 @@ button {
     -webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
     -o-transition: all .3s ease;
+    > ul {
+      position: relative;
+      max-height: 350px;
+      overflow: hidden auto;
+    }
     &-item {
-      * {
+      > * {
         display: block;
         background: transparent;
         padding: 15px 20px;
@@ -784,20 +811,7 @@ button {
   &-list {
     max-height: 120px;
     overflow: hidden auto;
-    &::-webkit-scrollbar-track {
-      -webkit-box-shadow: none;
-      //background-color: $gray;
-    }
-    &::-webkit-scrollbar {
-      width: 4px;
-      background-color: $gray;
-      margin-left: 10px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: $primary;
-      border-radius: 0;
-      border: none;
-    }
+
     > li {
       > .column-tool-item {
         &:not(.checkbox).is-active {
@@ -821,14 +835,17 @@ button {
   &-total {
     display: flex;
     align-items: center;
-    margin-bottom: 12px;
-    margin-left: 35px;
+    margin: 12px 0 12px 35px;
     > * {
       padding: 8px 0;
       color: $primary;
       font-size: 12px;
       font-weight: bold;
       cursor: pointer;
+      justify-content: flex-start;
+      text-align: left;
+      border: none;
+      background: transparent;
       &:not(:last-child) {
         margin-right: 15px;
       }
@@ -847,6 +864,7 @@ button {
 }
 
 .table-btn-tool {
+  position: relative;
   padding-left: 40px;
   display: flex;
   width: 100%;
@@ -858,6 +876,9 @@ button {
     align-items: center;
   }
   .btn {
+    &:not(:last-child) {
+      margin-right: 15px;
+    }
     .icon {
       display: flex;
       align-items: center;
@@ -865,6 +886,7 @@ button {
       margin-right: 10px;
     }
   }
+
 }
 
 
@@ -930,9 +952,12 @@ button {
       margin-left: 10px;
     }
     &::-webkit-scrollbar-thumb {
-      background-color: $primary;
+      background-color: $secondary;
       border-radius: 0;
       border: none;
+      &:hover {
+        background-color: $primary;
+      }
     }
   }
   &.chosen-container-active .chosen-drop {
@@ -1117,10 +1142,12 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
       -o-transition: all .2s ease;
       transform: translateY(20px);
       opacity: 0;
+      visibility: hidden;
       box-shadow: 0 10px 20px rgba(161, 172, 188, 0.4);
       &.is-active {
         transform: translateY(0);
         opacity: 1;
+        visibility: visible;
       }
 
       &::-webkit-scrollbar-track {
@@ -1133,9 +1160,12 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
         margin-left: 10px;
       }
       &::-webkit-scrollbar-thumb {
-        background-color: $primary;
+        background-color: $secondary;
         border-radius: 0;
         border: none;
+        &:hover {
+          background-color: $primary;
+        }
       }
       .search-select-list {
         li {
@@ -1229,5 +1259,52 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
     * {
       display: none!important;
     }
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  > label {
+    margin: 0 0 10px 0;
+  }
+  &.inline-form {
+    flex-direction: row;
+    justify-content: flex-end;
+    > label {
+      margin: 0 10px 0 0;
+    }
+  }
+  input {
+    height: 50px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    padding: 10px;
+    font-size: 14px;
+    &:focus {
+      border: 1px solid $gray;
+    }
+  }
+}
+
+.input-date-range {
+  display: flex;
+  align-items: center;
+  > * {
+    margin-right: 10px;
+  }
+}
+
+.operations-process {
+  .modal-overlay {
+    opacity: 1;
+    visibility: visible;
+    z-index: 19;
+  }
+  .c-secondary, label {
+    color: $light;
+  }
+  .btn-operations, .table, .table-btn-tool {
+    z-index: 20;
   }
 }
