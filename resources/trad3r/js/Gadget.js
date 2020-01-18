@@ -120,6 +120,7 @@ class Gadget
                 }
 
                 $('.btn-operations').removeClass("is-active");
+                $('body').removeClass('operations-process');
                 $("#new-device").removeClass(Gadget.getHiddenClass());
             }
         })
@@ -130,7 +131,7 @@ class Gadget
         this.row.removeClass('edited-row');
         this.body.removeClass('edited-body');
         $('.btn-operations').removeClass("is-active");
-
+        $('body').removeClass('operations-process');
         $("#new-device").removeClass(Gadget.getHiddenClass());
     }
 
