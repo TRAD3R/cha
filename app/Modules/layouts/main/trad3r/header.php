@@ -10,7 +10,7 @@
                       echo 'active';
                   }
                 ?>
-            ">Девайсы</a>
+            "><?=Yii::t('front', 'DEVICES')?></a>
         </li>
         <li>
           <a href="/products" class="tab
@@ -19,16 +19,16 @@
                     echo 'active';
                 }
           ?>
-            ">Товары</a>
+            "><?=Yii::t('front', 'PRODUCTS')?></a>
         </li>
         <li>
-          <a href="/listing" class="tab
+          <a href="/listings" class="tab
             <?php 
                 if(App\App::i()->getController()->id == 'listing') {
                     echo 'active';
                 } 
           ?>
-            ">Листинг</a>
+            "><?=Yii::t('front', 'LISTINGS')?></a>
         </li>
       </ul>
     </nav>
