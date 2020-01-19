@@ -297,6 +297,10 @@ ul {
     box-shadow: 0px 10px 20px rgba(161, 172, 188, 0.4);
     width: 100%;
     max-width: 970px;
+    display: none;
+    &.is-active {
+      display: flex;
+    }
   }
   &-content-tools{
     display: flex;

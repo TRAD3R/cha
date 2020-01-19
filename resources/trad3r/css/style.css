@@ -1006,4 +1006,11 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
 .operations-process .btn-operations, .operations-process .table, .operations-process .table-btn-tool {
   z-index: 20; }
 
+.table-cell .checkbox-text {
+  font-weight: bold; }
+
+.search-select-results {
+  max-height: 350px;
+  overflow: hidden auto; }
+
 /*# sourceMappingURL=style.css.map */

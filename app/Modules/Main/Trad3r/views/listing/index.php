@@ -15,7 +15,7 @@ use App\Params;
 <?php //echo $this->render("@layouts/common/preloader"); ?>
 <?php //echo $this->render('includes/table', compact('products', 'totalCount', 'params', 'offset')); ?>
 
-<div class="page page-devices">
+<div class="page page-listing">
   <div class="table" id="horizontal-scroller">
     <div class="table-content">
       <?php echo $this->render('includes/table_head', [
@@ -27,7 +27,7 @@ use App\Params;
   </div>
   <div class="table-btn-tool">
     <div class="table-btn-tool__item">
-      <button id="new-device" type="button" class="btn btn-primary">
+      <button id="create-listing" type="button" class="btn btn-primary">
           <span class="icon">
             <svg width="12" height="13" viewBox="0 0 12 13" xmlns="http://www.w3.org/2000/svg">
             <path d="M6.99951 5.229H11.5591V7.19434H6.99951V12.3604H4.91064V7.19434H0.351074V5.229H4.91064V0.456055H6.99951V5.229Z" fill="white"/>
@@ -67,8 +67,8 @@ use App\Params;
       ])?>
     </div>
   </div>
+  <div class="showed-listing">
+    <div class="preloader"></div>
+    <a href="#" class="showed-listing-file">File listing.xlsx</a>
+  </div>
 </div>
-
-<script>
-    const BOX_WRAPPER = $('.btn-box-wrapper');
-</script>

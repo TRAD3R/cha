@@ -1308,3 +1308,12 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
     z-index: 20;
   }
 }
+
+.table-cell .checkbox-text {
+  font-weight: bold;
+}
+
+.search-select-results {
+  max-height: 350px;
+  overflow: hidden auto;
+}
