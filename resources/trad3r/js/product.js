@@ -1,4 +1,3 @@
-const BOX_WRAPPER = $('.btn-box-wrapper');
 
 class Product extends Gadget
 {

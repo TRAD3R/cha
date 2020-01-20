@@ -16,21 +16,14 @@ if($showReset) {
 }
 ?>
 <div class="search-select-container">
-  <input type="text" class="search-select-input" placeholder="Найти девайс">
-  <div class="search-select-results">
+  <input type="text"
+         class="search-select-input is-active"
+         placeholder="<?=TextHelper::upperFirstChar(Yii::t('front', 'GADGET_SEARCH'))?>">
+  <div class="search-select-results is-active">
     <ul class="search-select-list">
-      <li>Пункт поиска №1</li>
-      <li>Пункт поиска №2</li>
-      <li>Пункт поиска №3</li>
+      <?php foreach ($list as $item): ?>
+        <li class="selected" value="<?=$item['id']?>"><?=$item['title']?></li>
+      <?php endforeach; ?>
     </ul>
   </div>
 </div>
-<select id="device-model"
-        size="4"
-        data-placeholder="<?=TextHelper::upperFirstChar(Yii::t('front', 'GADGET_SEARCH'))?>"
-        style="display: none;"
->
-  <?php foreach ($list as $item): ?>
-    <option value="<?=$item['id']?>"><?=$item['title']?></option>
-  <?php endforeach; ?>
-</select>
