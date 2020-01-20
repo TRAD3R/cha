@@ -22,7 +22,13 @@ use yii\web\View;
 <div class="page page-devices">
 
   <div class="search-select">
-    <?php echo $this->render("@layouts/common/search_select", ["list"=> $models, 'showReset' => $params[Params::GADGET]]); ?>
+    <?php 
+        echo $this->render("@layouts/common/search_select", [
+            "models"=> $models, 
+            'showReset' => $params[Params::GADGET],
+            'urlReset' => '/devices'
+            ]
+        ); ?>
   </div>
 
   <div class="table" id="horizontal-scroller">

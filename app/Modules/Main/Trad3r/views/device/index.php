@@ -4,6 +4,7 @@
  * @var $devices Device[]
  * @var $params array
  * @var $offset int
+ * @var $models array
  */
 
 use App\Models\Device;

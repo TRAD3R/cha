@@ -348,6 +348,8 @@ $(document).ready(function() {
     });
 
     $('.preloader').addClass('hidden-el');
+    
+    
 
 
     var selectProduct = `

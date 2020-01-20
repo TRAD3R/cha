@@ -57,7 +57,7 @@ class ListingHelper
     private function save(string $newFilename)
     {
         try {
-            $writer = IOFactory::createWriter($this->preadsheet, 'Xlsx');
+            $writer = IOFactory::createWriter($this->spreadsheet, 'Xlsx');
             $file = \Yii::getAlias("@out") . "/" . $newFilename . "." . self::FILETYPE;
             $writer->save($file);
         }catch(Exception $e){

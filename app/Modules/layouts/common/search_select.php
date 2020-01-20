@@ -1,7 +1,8 @@
 <?php
 /**
-* @var array $list
-* @var bool  $showReset
+ * @var array $list
+ * @var bool  $showReset
+ * @var string $urlReset
  */
 
 use App\Helpers\HtmlHelper;
@@ -11,7 +12,7 @@ use App\Helpers\TextHelper;
 
 <?php
 if($showReset) {
-    echo HtmlHelper::resetButton('/devices');
+    echo HtmlHelper::resetButton($urlReset);
 }
 ?>
 <div class="search-select-container">
