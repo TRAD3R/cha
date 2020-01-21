@@ -1,5 +1,6 @@
 const TABLE_BODY_CLASS = 'table-body';
 const TABLE_ROW_CLASS = 'table-row';
+const BOX_WRAPPER = $('.btn-box-wrapper');
 
 function getAllUrlParams(url) {
     // извлекаем строку из URL или объекта window

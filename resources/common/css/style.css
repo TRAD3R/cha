@@ -34,8 +34,8 @@ a {
   cursor: pointer; }
 
 .text-center {
-  text-align: center;
-  justify-content: center; }
+  text-align: center !important;
+  justify-content: center !important; }
 
 ul {
   padding: 0;
@@ -61,19 +61,22 @@ ul {
   cursor: default !important;
   opacity: 0.5 !important; }
 
+.icon.ml {
+  margin-left: 7px; }
+
 .btn-primary {
   background: #005AF5 !important;
   color: #fff !important; }
   .btn-primary .icon svg {
     fill: #fff; }
   .btn-primary:hover {
-    background: #2978ff !important; }
+    background: #0047c2 !important; }
 
 .btn-muted {
   background: #E3E7F4 !important;
   color: #A1ACBC !important; }
   .btn-muted:hover {
-    background: #f5f7fb !important; }
+    background: #d1d7ed !important; }
 
 .btn-gray-transparency {
   background: rgba(255, 255, 255, 0.5) !important;
@@ -91,13 +94,19 @@ ul {
   background: #ff2d41 !important;
   color: #fff !important; }
   .btn-red:hover {
-    background: #ff606f; }
+    background: #f90018 !important; }
 
 .btn-dark-blue {
   background: #465970 !important;
   color: #fff !important; }
+  .btn-dark-blue .icon svg {
+    transition: all .2s ease;
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    fill: #fff; }
   .btn-dark-blue:hover {
-    background: #5a728f; }
+    background: #324051 !important; }
 
 .c-secondary {
   color: #A1ACBC; }
@@ -110,7 +119,7 @@ ul {
   justify-content: center;
   top: 5px;
   right: 50%;
-  margin-right: -115px;
+  margin-right: -15%;
   z-index: 3;
   transition: all .2s ease;
   -webkit-transition: all .2s ease;
@@ -127,6 +136,12 @@ ul {
     box-shadow: 0 10px 20px rgba(15, 52, 116, 0.21); }
     .btn-operations .btn:not(:last-child) {
       margin-right: 20px; }
+  .btn-operations .dropdown-list {
+    bottom: auto;
+    top: 50px; }
+    .btn-operations .dropdown-list-item > * {
+      display: flex;
+      padding: 10px; }
 
 .login-form {
   max-width: 350px;
@@ -239,7 +254,10 @@ ul {
     border-radius: 10px;
     box-shadow: 0px 10px 20px rgba(161, 172, 188, 0.4);
     width: 100%;
-    max-width: 970px; }
+    max-width: 970px;
+    display: none; }
+    .modal-content.is-active {
+      display: flex; }
   .modal-content-tools {
     display: flex;
     width: 100%;

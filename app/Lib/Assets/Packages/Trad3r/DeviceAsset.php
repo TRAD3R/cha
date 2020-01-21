@@ -12,5 +12,6 @@ class DeviceAsset extends AssetBundle
 
     public $js = [
         'js/device.js',
+        'js/search_models.js',
     ];
 }

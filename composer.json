@@ -23,7 +23,8 @@
         "codeception/codeception": "^3.0",
         "codeception/specify": "*",
         "codeception/verify": "*",
-        "se/selenium-server-standalone": "^3.12"
+        "se/selenium-server-standalone": "^3.12",
+        "phpoffice/phpspreadsheet": "^1.10"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

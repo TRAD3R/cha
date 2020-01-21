@@ -1,6 +1,7 @@
 /**
  * Клонирование строки
  */
+
 BOX_WRAPPER.on('click', '#btnDublicateRow', function () {
     gadget.row = $(this).closest('.table-row');
     gadget.body = $(this).closest('.table-body');
@@ -103,6 +104,8 @@ function editRow(gadget) {
     ;
     $('.btn-operations').addClass('is-active');
 
+    $('body').addClass('operations-process');
+
     gadget.row
         .find(".btn-box-wrapper")
         .html(btnDeleteRow);
@@ -189,8 +192,12 @@ function createBtn(text, id, classes)
 /**
  * Показать модальное окно
  */
-function showModal(){
-    $('#id-edited-textarea').focus();
+function showModal(input = false){
+    if(input) {
+        $("#modal-content-input").addClass('is-active');
+    } else {
+        $("#modal-content-textarea").addClass('is-active');
+    }
     $('.modal-overlay').addClass('active');
     $('.modal').addClass('active');
     $('.site').addClass('modal-open');
@@ -320,10 +327,10 @@ $(document).ready(function() {
     });
 
     // выбираем и убираем состояние checked у checkbox
-    $('.column-tool-total > button').on('click', function(){
+    $('body').on('click', '.column-tool-total > button', function(){
         var checkboxes = $(this)
             .closest('.column-tool-total')
-            .next('.column-tool-list')
+            .next('ul')
             .find("input[type='checkbox']");
 
         if ($(this).hasClass('btn-select-all')) {
@@ -340,9 +347,26 @@ function sort(type, param) {
 
 /*dropdown*/
 $(document).ready(function() {
-    $('.dropdown').on('click', function(){
+    $('body').on('click', '.dropdown', function(){
         $(this).addClass('is-active');
     });
 
     $('.preloader').addClass('hidden-el');
+    
+    
+
+
+    $("#listing-to-device").on('click', function(){
+        $('.btn-operations .btn-operations-edit')
+            .html('')
+            .append(filters)
+            // .append(gadget.btnCancel)
+        ;
+        $('.btn-operations').addClass('is-active');
+        $('body').addClass('operations-process');
+    });
+
+    $("#create-listing").on('click', function () {
+        showModal(true);
+    })
 });
