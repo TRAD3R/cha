@@ -139,6 +139,9 @@ class ProductHelper
                 case ProductTableStructure::KEYWORDS:
                     $specifications->keywords = $value;
                     break;
+                case ProductTableStructure::VAR_TITLE:
+                    $specifications->var_title = $value;
+                    break;
                 case ProductTableStructure::LENGTH:
                     $specifications->length = $value;
                     break;
