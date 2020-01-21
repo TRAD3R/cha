@@ -102,7 +102,7 @@ $specifications = $product->specifications;
         <span class="text"><?=$specifications->keywords?></span>
     </div>
     <div class="table-cell editable text" data-id="<?=ProductTableStructure::VAR_TITLE?>">
-        <input class="input-text" type="text" value="<?=PriceHelper::toFloat($specifications->var_title)?>">
+        <input class="input-text" type="text" value="<?=$specifications->var_title?>">
     </div>
     <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::BULLETPOINT_1?>">
         <textarea class="input-text" data-id="<?=$specifications->bulletpoint_1?>" hidden><?=$specifications->bulletpoint_1?></textarea>
