@@ -4,14 +4,13 @@
  * @var $devices Device[]
  * @var $params array
  * @var $offset int
- * @var $models array
  */
 
 use App\Models\Device;
 
 ?>
 <?php echo $this->render("@layouts/common/preloader"); ?>
-<?php echo $this->render('includes/table', compact('devices', 'totalCount', 'params', 'offset', 'models')); ?>
+<?php echo $this->render('includes/table', compact('devices', 'totalCount', 'params', 'offset')); ?>
 
 
 
