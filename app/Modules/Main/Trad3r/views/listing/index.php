@@ -69,6 +69,6 @@ use App\Params;
   </div>
   <div class="showed-listing">
     <div class="preloader"></div>
-    <a href="#" class="showed-listing-file">File listing.xlsx</a>
+    <a href="#" class="showed-listing-file"></a>
   </div>
 </div>

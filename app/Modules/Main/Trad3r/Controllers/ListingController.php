@@ -10,7 +10,6 @@ use App\Helpers\ListingHelper;
 use App\Helpers\ProductHelper;
 use App\Models\Product;
 use App\Params;
-use App\Repositories\ProductRepository;
 use App\Request;
 use App\Response;
 
@@ -24,6 +23,7 @@ class ListingController extends Main
         $request = $this->getRequest();
 
         $params = [
+            Params::LISTING_TYPE => $request->get(Params::LISTING_TYPE),
             Params::PAGE        => $request->get(Params::PAGE) ?: 1,
             Params::PER_PAGE    => $request->get(Params::PER_PAGE) ?: ProductHelper::PER_PAGE,
             Params::SORT_ASC    => $request->getArrayStr(Params::SORT_ASC),
@@ -49,15 +49,17 @@ class ListingController extends Main
         
         $params = [
             ListingHelper::FILENAME => $request->post(ListingHelper::FILENAME, date('Y-m-d-H-m-s', time())),
-            ListingHelper::PRODUCTS => $request->post(ListingHelper::PRODUCTS, []),
+            ListingHelper::IDS => $request->post(ListingHelper::IDS, []),
         ];
-        
+        $filename = $params[ListingHelper::FILENAME] . "." . ListingHelper::FILETYPE;
         $helper = new ListingHelper();
-        $products = Product::findAll($params[ListingHelper::PRODUCTS]);
-        if($helper->create($products, $params[ListingHelper::FILENAME])){
+        $products = Product::findAll($params[ListingHelper::IDS]);
+        if($helper->create($products, $filename)){
+            
             return [
                 'status' => Response::STATUS_SUCCESS,
-                'file' => App::i()->getFile()->mdUrl(\Yii::getAlias('@out') . "/" . $params[ListingHelper::FILENAME] . "." . ListingHelper::FILETYPE),
+                'href' => App::i()->getFile()->mdUrl("/out/" . $filename),
+                'file' => $filename,
             ];
         }
 

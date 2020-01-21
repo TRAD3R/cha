@@ -16,4 +16,5 @@ class Params
     const PER_PAGE = 'per_page';
     const SORT_ASC = 'sort_asc';
     const SORT_DESC = 'sort_desc';
+    const LISTING_TYPE = 'listing';
 }

@@ -33,7 +33,7 @@
         <span class="">.xlsx</span>
       </div>
       <div class="modal-content-tools jc-end">
-        <button type="button" class="btn btn-primary" onclick="">Создать </button>
+        <button type="button" class="btn btn-primary" onclick="listingCreate()">Создать </button>
         <button type="button" class="btn btn-muted" onclick="hideModal()">Отменить</button>
       </div>
     </div>
