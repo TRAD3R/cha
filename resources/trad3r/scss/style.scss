@@ -134,6 +134,7 @@
     position: relative;
     border: 1px solid $gray;
     font-size: 14px;
+    min-height: 30px;
   }
   &-content {
     display: grid;
@@ -393,6 +394,7 @@
       .table-cell {
         &.editable {
           border-color: $darkBlue;
+          box-shadow: inset 0px 0px 0px 1px $darkBlue;
         }
       }
     }
