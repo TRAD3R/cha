@@ -28,7 +28,7 @@ class ListingHelper
     const START_ROW = 4;
 
     const MACROS_DEVICE_BRAND = '{DEVICE_BRAND}';
-    const MACROS_DEVICE_MODEL = '{DEVICE_MODEL}';
+    const MACROS_DEVICE_MODEL = '{DEVICE_NAME}';
     const SKU_PREFIX = 'cha-';
     
     const ACTION_TYPE_UPDATE = 0;
