@@ -64,6 +64,7 @@ return [
     'FILENAME_IS_NOT_UNIQUE' => 'не уникальное имя файла ({filename})',
     'UPDATE' => 'обновление',
     'DELETE' => 'удаление',
+    'ARCHIVE' => 'Архив файлов',
     '' => '',
     '' => '',
 ];
