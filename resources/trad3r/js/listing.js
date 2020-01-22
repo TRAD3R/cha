@@ -3,7 +3,7 @@ const LISTING_FILE = $(".showed-listing-file");
 
 $(document).ready(function () {
     $("#select-all").on('click', selectAll);
-})
+});
 
 let Listing = {
     create: function () {

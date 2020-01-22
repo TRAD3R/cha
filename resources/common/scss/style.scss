@@ -264,7 +264,9 @@ ul {
   z-index: 9999;
   .modal-content {
     label {
+      display: flex;
       color: $dark;
+      margin-bottom: 20px;
     }
   }
   &-open {
@@ -337,13 +339,20 @@ ul {
 }
 textarea {
   width: 100%;
-  margin-top: 30px;
   resize: vertical;
   border: none;
   background: $lightGray;
   border-radius: 5px;
   max-height: 400px;
   min-height: 70px;
+  padding: 10px;
+}
+input {
+  border: none;
+  background: $lightGray;
+  border-radius: 5px;
+  max-height: 400px;
+  min-height: 50px;
   padding: 10px;
 }
 .jc-end {
