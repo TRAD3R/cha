@@ -134,6 +134,7 @@
     position: relative;
     border: 1px solid $gray;
     font-size: 14px;
+    min-height: 30px;
   }
   &-content {
     display: grid;
@@ -393,6 +394,7 @@
       .table-cell {
         &.editable {
           border-color: $darkBlue;
+          box-shadow: inset 0px 0px 0px 1px $darkBlue;
         }
       }
     }
@@ -587,6 +589,11 @@ button {
   border: none;
   display: flex;
   align-items: center;
+  &.gray {
+    .simple-select-main {
+      background: $lightGray;
+    }
+  }
   &-main {
     width: 100%;
     display: flex;
@@ -748,9 +755,18 @@ button {
         -webkit-transition: all .2s ease;
         -moz-transition: all .2s ease;
         -o-transition: all .2s ease;
+        * {
+          transition: all .2s ease;
+          -webkit-transition: all .2s ease;
+          -moz-transition: all .2s ease;
+          -o-transition: all .2s ease;
+        }
         &:hover {
           background: $lightGray;
           color: $secondary;
+          * {
+            color: $secondary;
+          }
         }
       }
       &:not(:last-child) {
@@ -1135,7 +1151,7 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
       position: absolute;
       background: $light;
       width: 100%;
-      top: 47px;
+      top: 50px;
       transition: all .2s ease;
       -webkit-transition: all .2s ease;
       -moz-transition: all .2s ease;
@@ -1170,17 +1186,27 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
       .search-select-list {
         li {
           cursor: pointer;
-          padding: 10px 15px;
           transition: all .2s ease;
           -webkit-transition: all .2s ease;
           -moz-transition: all .2s ease;
           -o-transition: all .2s ease;
+          > * {
+            display: flex;
+            padding: 10px 15px;
+            transition: all .2s ease;
+            -webkit-transition: all .2s ease;
+            -moz-transition: all .2s ease;
+            -o-transition: all .2s ease;
+            color: $dark;
+          }
           &:not(:last-child) {
             border-bottom: 1px solid $lightGray;
           }
           &:hover, &.selected {
-            background: $lightGray;
-            color: $secondary;
+            > * {
+              background: $lightGray;
+              color: $secondary;
+            }
           }
         }
       }
@@ -1209,15 +1235,18 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
     .search-select-results li.active-result {
       border-radius: 0;
       margin: 0;
-      padding: 10px 20px;
       font-size: 13px;
-      transition: all .2s ease;
-      -webkit-transition: all .2s ease;
-      -moz-transition: all .2s ease;
-      -o-transition: all .2s ease;
+      > * {
+        transition: all .2s ease;
+        -webkit-transition: all .2s ease;
+        -moz-transition: all .2s ease;
+        -o-transition: all .2s ease;
+      }
       &:hover {
-        background: $lightGray;
-        color: $secondary;
+        > * {
+          background: $lightGray;
+          color: $secondary;
+        }
       }
     }
   }
@@ -1268,6 +1297,18 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
   > label {
     margin: 0 0 10px 0;
   }
+  &.row {
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    flex: 1;
+
+    > * {
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+    }
+  }
   &.inline-form {
     flex-direction: row;
     justify-content: flex-end;
@@ -1316,4 +1357,29 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
 .search-select-results {
   max-height: 350px;
   overflow: hidden auto;
+}
+
+.dropdown-list-item > button > * {
+  display: flex;
+  padding: 15px 20px;
+  color: $dark;
+}
+
+.page-listing .dropdown-list-item > * {
+  padding: 0;
+}
+.listing-modal-content {
+  display: flex;
+  align-items: center;
+  #id-edited-input {
+    flex: 1;
+  }
+  > * {
+    &:not(:last-child) {
+      margin-right: 15px;
+    }
+    &:first-child {
+      flex: 3;
+    }
+  }
 }

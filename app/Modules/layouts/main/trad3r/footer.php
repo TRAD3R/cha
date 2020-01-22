@@ -29,13 +29,47 @@ use App\Params; ?>
   <div id="modal-content-input" class="modal-content">
     <div class="modal-content-wrapper">
       <label for="id-edited-input">Введите название: </label>
-      <div class="">
-        <input name="edited-input" id="id-edited-input">
-        <span class="">.xlsx</span>
-          <select name="update-type" id="action-type">
-              <option value="<?=ListingHelper::ACTION_TYPE_UPDATE?>" selected><?=Yii::t('front', 'UPDATE')?></option>
-              <option value="<?=ListingHelper::ACTION_TYPE_DELETE?>"><?=Yii::t('front', 'DELETE')?></option>
-          </select>
+      <div class="listing-modal-content">
+        <div class="form-group row">
+          <input name="edited-input" id="id-edited-input">
+          <span class="">.xlsx</span>
+        </div>
+        <div class="form-group row">
+
+              <select name="update-type" id="action-type">
+                  <option value="<?=ListingHelper::ACTION_TYPE_UPDATE?>" selected><?=Yii::t('front', 'UPDATE')?></option>
+                  <option value="<?=ListingHelper::ACTION_TYPE_DELETE?>"><?=Yii::t('front', 'DELETE')?></option>
+              </select>
+
+<!--          <div class="simple-select gray" id="action-type">-->
+<!--            <div class="simple-select-label">-->
+<!--            </div>-->
+<!--            <div class="simple-select-main" tabindex="0" role="combobox" aria-expanded="false">-->
+<!--              <input hidden type="text" name="sort-view" value="" data-default-value="50">-->
+<!--              <p class="simple-select-selected" data-placeholder="">--><?//=Yii::t('front', 'UPDATE')?><!--</p>-->
+<!--              <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">-->
+<!--                <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"/>-->
+<!--              </svg>-->
+<!--            </div>-->
+<!--            <div class="simple-select-drop">-->
+<!--              <div class="simple-select-drop-inner">-->
+<!--                <ul class="simple-select-list" role="listbox">-->
+<!--                  <li-->
+<!--                    class="simple-select-item"-->
+<!--                    data-value="--><?//=ListingHelper::ACTION_TYPE_UPDATE?><!--"-->
+<!--                    role="option"-->
+<!--                    value="--><?//=ListingHelper::ACTION_TYPE_UPDATE?><!--">--><?//=Yii::t('front', 'UPDATE')?><!--</li>-->
+<!--                  <li-->
+<!--                    class="simple-select-item"-->
+<!--                    data-value="--><?//=ListingHelper::ACTION_TYPE_DELETE?><!--"-->
+<!--                    role="option"-->
+<!--                    value="--><?//=ListingHelper::ACTION_TYPE_DELETE?><!--">--><?//=Yii::t('front', 'DELETE')?><!--</li>-->
+<!--                </ul>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+        </div>
+
       </div>
       <div class="modal-content-tools jc-end">
         <button type="button" class="btn btn-primary" onclick="listingCreate()">Создать </button>
