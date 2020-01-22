@@ -44,7 +44,9 @@ function listingCreate() {
     let checked = getIds();
     let url = new URL(location.href);
     let actionType = $("#action-type").val();
-    
+
+    showModal("log");
+
     if(checked.length){
         $.ajax({
             url: '/listings/create',

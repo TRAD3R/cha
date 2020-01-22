@@ -192,12 +192,14 @@ function createBtn(text, id, classes)
 /**
  * Показать модальное окно
  */
-function showModal(input = false){
-    if(input) {
-        $("#modal-content-input").addClass('is-active');
-    } else {
-        $("#modal-content-textarea").addClass('is-active');
+function showModal(typeModalContent = "textarea"){
+    switch (typeModalContent) {
+        case "input" : $("#modal-content-input").addClass('is-active'); break;
+        case "textarea" : $("#modal-content-textarea").addClass('is-active'); break;
+        case "log" : $("#modal-content-log").addClass('is-active'); break;
+        case "archive" : $("#modal-content-archive").addClass('is-active'); break;
     }
+
     $('.modal-overlay').addClass('active');
     $('.modal').addClass('active');
     $('.site').addClass('modal-open');
@@ -207,6 +209,7 @@ function showModal(input = false){
 function hideModal(){
     $('.modal-overlay').removeClass('active');
     $('.modal').removeClass('active');
+    $('.modal-content').removeClass('is-active');
     $('.site').removeClass('modal-open');
     $("body, html").css("overflow", "hidden auto");
 }
@@ -376,6 +379,6 @@ $(document).ready(function() {
     });
 
     $("#create-listing").on('click', function () {
-        showModal(true);
+        showModal("input");
     })
 });

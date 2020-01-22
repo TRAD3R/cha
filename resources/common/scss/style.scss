@@ -46,6 +46,7 @@ ul {
   font-weight: bold;
   font-size: 22px;
   line-height: 31px;
+  margin: 0 0 10px 0;
 }
 
 .container {
@@ -54,7 +55,7 @@ ul {
   padding: 0 15px;
   &-fluid {
     width: 100%;
-    padding: 0 15px;
+    //padding: 0 15px;
   }
 }
 
@@ -128,6 +129,14 @@ ul {
   }
 }
 
+.btn-light {
+  background: $light!important;
+  color: $dark!important;
+  &:hover {
+    background: darken($light, 1%)!important;
+  }
+}
+
 .c-secondary {
   color: $secondary;
 }
@@ -172,6 +181,10 @@ ul {
   }
 }
 
+
+.error {
+  color: $red;
+}
 
 .login-form {
   max-width: 350px;
@@ -268,6 +281,9 @@ ul {
       color: $dark;
       margin-bottom: 20px;
     }
+    &-item {
+      margin-top: 15px;
+    }
   }
   &-open {
     filter: blur(2px);
@@ -299,7 +315,7 @@ ul {
     }
   }
   &-content {
-    padding: 30px;
+    padding: 45px 30px 30px 30px;
     overflow: hidden;
     position: relative;
     background: #fff;
@@ -365,6 +381,16 @@ input {
   align-items: center;
   width: 100%;
   margin-bottom: 20px;
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: $gray;
+  }
   &-bar {
     display: flex;
     align-items: center;
@@ -383,10 +409,23 @@ input {
         -o-transition: all .2s ease;
         text-transform: uppercase;
         font-weight: bold;
+        .icon {
+          margin-right: 10px;
+          svg {
+            stroke: #a1acbc;
+            fill: transparent;
+          }
+        }
         &.active {
           color: $primary;
           border-bottom-color: $primary;
           background: $light;
+          .icon {
+            svg {
+              stroke: blue;
+              fill: transparent;
+            }
+          }
         }
       }
     }

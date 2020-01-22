@@ -46,15 +46,15 @@ ul {
   font-style: normal;
   font-weight: bold;
   font-size: 22px;
-  line-height: 31px; }
+  line-height: 31px;
+  margin: 0 0 10px 0; }
 
 .container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 15px; }
   .container-fluid {
-    width: 100%;
-    padding: 0 15px; }
+    width: 100%; }
 
 .disabled {
   pointer-events: none !important;
@@ -108,6 +108,12 @@ ul {
   .btn-dark-blue:hover {
     background: #324051 !important; }
 
+.btn-light {
+  background: #fff !important;
+  color: #2D313D !important; }
+  .btn-light:hover {
+    background: #fcfcfc !important; }
+
 .c-secondary {
   color: #A1ACBC; }
 
@@ -142,6 +148,9 @@ ul {
     .btn-operations .dropdown-list-item > * {
       display: flex;
       padding: 10px; }
+
+.error {
+  color: #ff2d41; }
 
 .login-form {
   max-width: 350px;
@@ -228,6 +237,8 @@ ul {
     display: flex;
     color: #2D313D;
     margin-bottom: 20px; }
+  .modal .modal-content-item {
+    margin-top: 15px; }
   .modal-open {
     filter: blur(2px); }
   .modal.active {
@@ -253,7 +264,7 @@ ul {
       opacity: 1;
       visibility: visible; }
   .modal-content {
-    padding: 30px;
+    padding: 45px 30px 30px 30px;
     overflow: hidden;
     position: relative;
     background: #fff;
@@ -307,7 +318,16 @@ input {
   display: flex;
   align-items: center;
   width: 100%;
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  position: relative; }
+  .navigation:before {
+    content: '';
+    position: absolute;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #E3E7F4; }
   .navigation-bar {
     display: flex;
     align-items: center; }
@@ -325,9 +345,17 @@ input {
       -o-transition: all .2s ease;
       text-transform: uppercase;
       font-weight: bold; }
+      .navigation-bar > li .tab .icon {
+        margin-right: 10px; }
+        .navigation-bar > li .tab .icon svg {
+          stroke: #a1acbc;
+          fill: transparent; }
       .navigation-bar > li .tab.active {
         color: #005AF5;
         border-bottom-color: #005AF5;
         background: #fff; }
+        .navigation-bar > li .tab.active .icon svg {
+          stroke: blue;
+          fill: transparent; }
 
 /*# sourceMappingURL=style.css.map */
