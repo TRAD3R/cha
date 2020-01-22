@@ -12,6 +12,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx as Writer;
+use Yii;
 use yii\db\Query;
 
 class ListingHelper
@@ -31,12 +32,13 @@ class ListingHelper
     const SKU_PREFIX = 'cha-';
     
     const ACTION_TYPE_UPDATE = 0;
-    const ACTION_TYPE_DELET = 1;
+    const ACTION_TYPE_DELETE = 1;
 
     /** @var Spreadsheet|null */
     private $spreadsheet = null;
     
     private static $progress = '0';
+    private $actionType;
 
     /**
      * Проверка на уникальность имени файла
@@ -47,7 +49,7 @@ class ListingHelper
      */
     public static function isUniqueFilename(string $filename)
     {
-        $dir = \Yii::getAlias("@out");
+        $dir = Yii::getAlias("@out");
         
         return !is_file($dir . DIRECTORY_SEPARATOR . $filename);
     }
@@ -63,16 +65,22 @@ class ListingHelper
     }
 
     /**
-     * @param Product[] $products
+     * @param array $products
      * @param string $newFilename
+     * @param int $actionType
      * @return bool
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
      */
-    public function create(array $products, string $newFilename)
+    public function create(array $products, string $newFilename, $actionType = self::ACTION_TYPE_UPDATE)
     {
         ini_set('max_execution_time', 0);
         $newFilename = empty($newFilename) ? date("Y-M-d-H-i-s", time()) . "." . ListingHelper::FILETYPE : $newFilename;
         $file = \Yii::getAlias('@trad3r_resources') . "/templates/" . self::TEMPLATE_AMAZON;
+        
+        $this->actionType = $actionType;
         
         if(is_file($file)) {
             $this->spreadsheet = IOFactory::load($file);
@@ -120,7 +128,7 @@ class ListingHelper
         $devicesCount = count($devices);
         $devicesFinished = 0;
         
-        $rowNumber = XlsStructure::START_ROW;
+        $rowNumber = self::START_ROW;
         if($devices){
             foreach ($devices as $model) {
                 $this->createIndividualRow($product, $model, $rowNumber);
@@ -157,6 +165,14 @@ class ListingHelper
         return $query->all();
     }
 
+    /**
+     * @param Product $product
+     * @param Device $device
+     * @param $rowNumber
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
     private function createIndividualRow(Product $product, Device $device, $rowNumber)
     {
         /** @var ProductSpecification $productSpecifications */
@@ -194,7 +210,13 @@ class ListingHelper
         ;
 
     }
-    
+
+    /**
+     * @param Product $product
+     * @param Device $device
+     * @param $rowNumber
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
     private function createParentRow(Product $product, Device $device, $rowNumber)
     {
         /** @var ProductSpecification $productSpecifications */
@@ -213,7 +235,15 @@ class ListingHelper
         ;
 
     }
-    
+
+    /**
+     * @param Product $product
+     * @param Device $device
+     * @param $rowNumber
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
     private function createChildRow(Product $product, Device $device, $rowNumber)
     {
         /** @var ProductSpecification $productSpecifications */
@@ -271,9 +301,15 @@ class ListingHelper
         return false;
     }
 
-    private function changeMacros($input = '', Device $device)
+    /**
+     * @param string $input
+     * @param Device $device
+     * @return string|string[]
+     */
+    private function changeMacros($input, Device $device)
     {
-        $output = str_replace(self::MACROS_DEVICE_BRAND, $device->brand->name, $input);
+        $output = $input ?: '';
+        $output = str_replace(self::MACROS_DEVICE_BRAND, $device->brand->name, $output);
         $output = str_replace(self::MACROS_DEVICE_MODEL, $device->title, $output);
         
         return $output;
@@ -288,16 +324,22 @@ class ListingHelper
         return self::SKU_PREFIX . $sku;
     }
 
-    private function actionType($type = self::ACTION_TYPE_UPDATE)
+    private function actionType()
     {
         $types = [
             self::ACTION_TYPE_UPDATE => 'Aktualisierung',
-            self::ACTION_TYPE_DELET => 'Löschung',
+            self::ACTION_TYPE_DELETE => 'Löschung',
         ];
         
-        return $types[$type];
+        return $types[$this->actionType];
     }
 
+    /**
+     * @param Product $product
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
     private function createVariation(Product $product)
     {
         $devices = $this->getLinkedDevices($product->specifications->type->alias);

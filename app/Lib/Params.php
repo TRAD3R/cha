@@ -17,4 +17,5 @@ class Params
     const SORT_ASC = 'sort_asc';
     const SORT_DESC = 'sort_desc';
     const LISTING_TYPE = 'type';
+    const LISTING_ACTION_TYPE = 'actionType';
 }

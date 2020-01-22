@@ -41,6 +41,7 @@ function listingCreate() {
 
     let checked = getIds();
     let url = new URL(location.href);
+    let actionType = $("#action-type").val();
     
     if(checked.length){
         $.ajax({
@@ -49,7 +50,8 @@ function listingCreate() {
             data: {
                 ids: checked.join(','),
                 filename: title,
-                type: url.searchParams.get('type')
+                type: url.searchParams.get('type'),
+                actionType: actionType,
             }
         })
         .done(function (res) {

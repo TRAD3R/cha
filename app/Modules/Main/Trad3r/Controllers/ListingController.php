@@ -51,7 +51,8 @@ class ListingController extends Main
         $params = [
             ListingHelper::FILENAME => $request->post(ListingHelper::FILENAME, date('Y-m-d-H-m-s', time())),
             ListingHelper::IDS => $request->post(ListingHelper::IDS, []),
-            Params::LISTING_TYPE => $request->get(Params::LISTING_TYPE),
+            Params::LISTING_TYPE => $request->post(Params::LISTING_TYPE),
+            Params::LISTING_ACTION_TYPE => $request->post(Params::LISTING_ACTION_TYPE),
         ];
         
         $filename = $params[ListingHelper::FILENAME] . "." . ListingHelper::FILETYPE;
@@ -69,7 +70,7 @@ class ListingController extends Main
         if($params[Params::LISTING_TYPE] === ListingHelper::PRODUCTS) {
             $products = Product::findAll($params[ListingHelper::IDS]);
             
-            if($helper->create($products, $filename)){
+            if($helper->create($products, $filename, $params[Params::LISTING_ACTION_TYPE])){
 
                 return [
                     'status' => Response::STATUS_SUCCESS,

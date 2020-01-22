@@ -1,4 +1,5 @@
-<?php use App\Params; ?>
+<?php use App\Helpers\ListingHelper;
+use App\Params; ?>
 
 </div>
 </main>
@@ -31,9 +32,9 @@
       <div class="">
         <input name="edited-input" id="id-edited-input">
         <span class="">.xlsx</span>
-          <select name="update-type" id="update-type">
-              <option value="0" selected><?=Yii::t('front', 'UPDATE')?></option>
-              <option value="1"><?=Yii::t('front', 'DELETE')?></option>
+          <select name="update-type" id="action-type">
+              <option value="<?=ListingHelper::ACTION_TYPE_UPDATE?>" selected><?=Yii::t('front', 'UPDATE')?></option>
+              <option value="<?=ListingHelper::ACTION_TYPE_DELETE?>"><?=Yii::t('front', 'DELETE')?></option>
           </select>
       </div>
       <div class="modal-content-tools jc-end">
