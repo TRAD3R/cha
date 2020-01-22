@@ -99,6 +99,8 @@
   z-index: 3;
   background: #F6F7FB; }
   .table .cap {
+    display: flex;
+    align-items: center;
     padding: 5px;
     pointer-events: none;
     cursor: default;
@@ -188,13 +190,18 @@
     .table-cell * {
       font-size: 13px; }
     .table-cell .text {
+      display: flex;
+      align-items: center;
       position: absolute;
       white-space: nowrap;
       width: 90%;
-      left: 5px;
       overflow: hidden;
       text-overflow: ellipsis;
-      font-size: 13px; }
+      font-size: 13px;
+      margin: 0;
+      top: 0;
+      left: 5px;
+      height: 38px; }
     .table-cell .no-parent {
       position: absolute;
       left: 5%;
@@ -260,9 +267,10 @@
       background: #F6F7FB; }
       .table-cell .simple-select-main svg {
         opacity: 0; }
-    .table-cell input[type="text"] {
+    .table-cell input[type="text"], .table-cell input {
       width: 100%;
       height: 100%;
+      min-height: auto;
       position: relative;
       border: 1px solid #E3E7F4;
       padding: 5px;
@@ -1055,5 +1063,71 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
     margin-right: 15px; }
   .listing-modal-content > *:first-child {
     flex: 3; }
+  .listing-modal-content .simple-select {
+    width: 100%; }
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  width: 100%; }
+  .progress > * {
+    width: 100%;
+    display: flex; }
+  .progress-value {
+    font-size: 13px; }
+  .progress .procent {
+    display: block;
+    margin: 0 0 10px 0; }
+  .progress-bar {
+    position: relative;
+    width: 100%;
+    height: 25px;
+    background: #E3E7F4; }
+    .progress-bar .progress-line {
+      position: absolute;
+      width: 0;
+      height: 100%;
+      left: 0;
+      top: 0;
+      background: #A1ACBC;
+      transition: all .2s ease;
+      -webkit-transition: all .2s ease;
+      -moz-transition: all .2s ease;
+      -o-transition: all .2s ease; }
+
+.file-list {
+  margin-top: 20px; }
+  .file-list > * {
+    display: inline-block;
+    color: #005AF5;
+    transition: all .2s ease;
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -o-transition: all .2s ease; }
+    .file-list > *:hover {
+      color: #3464e0; }
+    .file-list > *:not(:last-child) {
+      margin-bottom: 15px; }
+  .file-list .file {
+    position: relative;
+    padding: 5px 5px 5px 30px; }
+    .file-list .file:before {
+      position: absolute;
+      content: '';
+      left: 0;
+      top: 50%;
+      margin-top: -9px;
+      display: block;
+      width: 18px;
+      height: 18px;
+      background-image: url(../images/download.svg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center; }
+
+.content-list {
+  position: relative;
+  max-height: 250px;
+  overflow: hidden auto; }
 
 /*# sourceMappingURL=style.css.map */

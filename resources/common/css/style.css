@@ -46,7 +46,8 @@ ul {
   font-style: normal;
   font-weight: bold;
   font-size: 22px;
-  line-height: 31px; }
+  line-height: 31px;
+  margin: 0 0 10px 0; }
 
 .container {
   max-width: 1400px;
@@ -143,6 +144,9 @@ ul {
       display: flex;
       padding: 10px; }
 
+.error {
+  color: #ff2d41; }
+
 .login-form {
   max-width: 350px;
   width: 100%; }
@@ -228,6 +232,8 @@ ul {
     display: flex;
     color: #2D313D;
     margin-bottom: 20px; }
+  .modal .modal-content-item:not(:last-child) {
+    margin-bottom: 15px; }
   .modal-open {
     filter: blur(2px); }
   .modal.active {
@@ -253,7 +259,7 @@ ul {
       opacity: 1;
       visibility: visible; }
   .modal-content {
-    padding: 30px;
+    padding: 45px 30px 30px 30px;
     overflow: hidden;
     position: relative;
     background: #fff;
