@@ -1,5 +1,6 @@
 const TABLE_BODY = $('.table-body');
 const LISTING_FILE = $(".showed-listing-file");
+var inProgress = false;
 
 $(document).ready(function () {
     $("#select-all").on('click', selectAll);
@@ -25,19 +26,20 @@ let Listing = {
 function getProgress() {
     /** todo реализоваь прогрессбар */
     $.ajax({
-        url: 'listings/progress'
-    }).done(function (res) {
-        if(res.status === 'success'){
-            // LISTING_FILE.text(res.progress);
+        url: 'listings/progress',
+        async: true,
+        success: function (res) {
+            if (res.status === 'success') {
+                // LISTING_FILE.text(res.progress);
+            }
         }
-    })
-    
+    });
 }
 
 function listingCreate() {
     hideModal();
     let title = $('#id-edited-input').val();
-    let inProgress = true;
+    inProgress = true;
 
     let checked = getIds();
     let url = new URL(location.href);
@@ -47,24 +49,20 @@ function listingCreate() {
         $.ajax({
             url: '/listings/create',
             method: "POST",
+            async: true,
             data: {
                 ids: checked.join(','),
                 filename: title,
                 type: url.searchParams.get('type'),
                 actionType: actionType,
-            }
-        })
-        .done(function (res) {
+            }, success: function (res) {
                 if(res.status === 'success'){
                     LISTING_FILE.attr("href", res.href);
                     LISTING_FILE.text(res.file);
                 }else{
                     LISTING_FILE.text(res.error);
                 }
-        })
-        .always(function () {
-            inProgress = false;
-            clearInterval(showProgress);
+            }
         });
         
         let showProgress = setInterval(function () {

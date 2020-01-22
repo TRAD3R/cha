@@ -24,6 +24,7 @@ class ListingHelper
     const FILETYPE = 'xlsx';
     const FILENAME = 'filename';
     const IDS = 'ids';
+    const PROGRESS_FILE = "/files/progress";
 
     const START_ROW = 4;
 
@@ -56,12 +57,12 @@ class ListingHelper
 
     private function setProgress(int $total, int $finished)
     {
-        self::$progress = number_format($finished / $total * 100, 2);
+        file_put_contents(Yii::getAlias("@Web") . self::PROGRESS_FILE, number_format($finished / $total * 100, 2));
     }
 
     public function getProgress()
     {
-        return self::$progress;
+        return file_get_contents(Yii::getAlias("@Web") . self::PROGRESS_FILE);
     }
 
     /**
