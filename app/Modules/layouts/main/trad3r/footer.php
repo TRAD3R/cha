@@ -31,6 +31,10 @@
       <div class="">
         <input name="edited-input" id="id-edited-input">
         <span class="">.xlsx</span>
+          <select name="update-type" id="update-type">
+              <option value="0" selected><?=Yii::t('front', 'UPDATE')?></option>
+              <option value="1"><?=Yii::t('front', 'DELETE')?></option>
+          </select>
       </div>
       <div class="modal-content-tools jc-end">
         <button type="button" class="btn btn-primary" onclick="listingCreate()">Создать </button>

@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Params;
 use App\Request;
 use App\Response;
+use Yii;
 
 class ListingController extends Main
 {
@@ -50,21 +51,58 @@ class ListingController extends Main
         $params = [
             ListingHelper::FILENAME => $request->post(ListingHelper::FILENAME, date('Y-m-d-H-m-s', time())),
             ListingHelper::IDS => $request->post(ListingHelper::IDS, []),
+            Params::LISTING_TYPE => $request->get(Params::LISTING_TYPE),
         ];
+        
         $filename = $params[ListingHelper::FILENAME] . "." . ListingHelper::FILETYPE;
-        $helper = new ListingHelper();
-        $products = Product::findAll($params[ListingHelper::IDS]);
-        if($helper->create($products, $filename)){
-            
+        
+        if(!ListingHelper::isUniqueFilename($filename)){
             return [
-                'status' => Response::STATUS_SUCCESS,
-                'href' => App::i()->getFile()->mdUrl("/out/" . $filename),
-                'file' => $filename,
+                'status' => Response::STATUS_FAIL,
+                'error'  => Yii::t('front', 'FILENAME_IS_NOT_UNIQUE', ['filename' => $filename])
             ];
+        }
+        
+        $helper = new ListingHelper();
+        $products = null;
+        
+        if($params[Params::LISTING_TYPE] === ListingHelper::PRODUCTS) {
+            $products = Product::findAll($params[ListingHelper::IDS]);
+            
+            if($helper->create($products, $filename)){
+
+                return [
+                    'status' => Response::STATUS_SUCCESS,
+                    'href' => App::i()->getFile()->mdUrl("/out/" . $filename),
+                    'file' => $filename,
+                ];
+            }
+            
+        }elseif($params[Params::LISTING_TYPE] === ListingHelper::PRODUCTS){
+            
+        }elseif($params[Params::LISTING_TYPE] === ListingHelper::LINES){
+
         }
 
         return [
             'status' => Response::STATUS_FAIL,
+        ];
+    }
+
+    /** @todo Реализовать прогрессбар */
+    public function actionProgress()
+    {
+        /** @var Request $request */
+        $request = $this->getRequest();
+        
+        if(!$request->isAjax()){
+            $this->getResponse()->set404();
+        }
+        
+        $this->getResponse()->setJsonFormat();
+        return [
+            'status' => Response::STATUS_SUCCESS,
+            'progress' => (new ListingHelper())->getProgress(),
         ];
     }
 }

@@ -22,11 +22,25 @@ let Listing = {
     }
 };
 
+function getProgress() {
+    /** todo реализоваь прогрессбар */
+    $.ajax({
+        url: 'listings/progress'
+    }).done(function (res) {
+        if(res.status === 'success'){
+            // LISTING_FILE.text(res.progress);
+        }
+    })
+    
+}
+
 function listingCreate() {
     hideModal();
     let title = $('#id-edited-input').val();
+    let inProgress = true;
 
     let checked = getIds();
+    let url = new URL(location.href);
     
     if(checked.length){
         $.ajax({
@@ -35,16 +49,25 @@ function listingCreate() {
             data: {
                 ids: checked.join(','),
                 filename: title,
-            },
-            success: function (res) {
-                if(res.status){
+                type: url.searchParams.get('type')
+            }
+        })
+        .done(function (res) {
+                if(res.status === 'success'){
                     LISTING_FILE.attr("href", res.href);
                     LISTING_FILE.text(res.file);
                 }else{
-                    console.log(res.error);
+                    LISTING_FILE.text(res.error);
                 }
-            }
         })
+        .always(function () {
+            inProgress = false;
+            clearInterval(showProgress);
+        });
+        
+        let showProgress = setInterval(function () {
+            getProgress();
+        }, 1000)
     }
     
 }
