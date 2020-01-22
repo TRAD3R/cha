@@ -19,7 +19,8 @@ $project_rules = [
         
         
         'listings/'                                     => 'listing/index',
-        'listings/create'                               => 'listing/create',
+        'listings/<action>'                             => 'listing/<action>',
+//        'listings/create'                               => 'listing/create',
     ]
 ];
 

@@ -89,6 +89,11 @@ class File extends BaseObject
         return [$name . self::PREFIX_RESIZE, self::DEFAULT_EXT];
     }
 
+    public function getFullUrl(string $filename)
+    {
+        return App::i()->getConfig()->getFaceDomain() . $filename;
+    }
+
     /**
      * @param string $path
      *
