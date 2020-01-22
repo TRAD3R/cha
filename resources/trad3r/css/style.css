@@ -430,7 +430,7 @@ button {
   position: absolute;
   top: 50%;
   margin-top: -14px;
-  left: 0;
+  left: 7px;
   z-index: 1;
   opacity: 0;
   transition: all .1s ease;
@@ -859,7 +859,7 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
   width: 100%;
   max-width: 400px;
   position: fixed;
-  top: 10px;
+  top: 3px;
   right: 15px;
   z-index: 10;
   display: flex; }
@@ -947,10 +947,11 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
       -moz-transition: all .2s ease;
       -o-transition: all .2s ease;
       width: 100%;
-      border: 2px solid transparent; }
-      .search-select .search-select-container .search-select-input:focus {
+      border: 2px solid transparent;
+      border-radius: 0; }
+      .search-select .search-select-container .search-select-input:focus, .search-select .search-select-container .search-select-input.is-active {
         border: 2px solid #005AF5; }
-        .search-select .search-select-container .search-select-input:focus::placeholder {
+        .search-select .search-select-container .search-select-input:focus::placeholder, .search-select .search-select-container .search-select-input.is-active::placeholder {
           color: #2D313D; }
     .search-select .search-select-container .search-select-results li.active-result {
       border-radius: 0;
@@ -1089,7 +1090,7 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
       height: 100%;
       left: 0;
       top: 0;
-      background: #A1ACBC;
+      background: #005AF5;
       transition: all .2s ease;
       -webkit-transition: all .2s ease;
       -moz-transition: all .2s ease;
@@ -1110,7 +1111,8 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
       margin-bottom: 15px; }
   .file-list .file {
     position: relative;
-    padding: 5px 5px 5px 30px; }
+    padding: 5px 5px 5px 30px;
+    margin-right: 15px; }
     .file-list .file:before {
       position: absolute;
       content: '';

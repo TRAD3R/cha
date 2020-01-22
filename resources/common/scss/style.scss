@@ -55,7 +55,7 @@ ul {
   padding: 0 15px;
   &-fluid {
     width: 100%;
-    padding: 0 15px;
+    //padding: 0 15px;
   }
 }
 
@@ -126,6 +126,14 @@ ul {
   }
   &:hover {
     background: darken($darkBlue, 10%)!important;
+  }
+}
+
+.btn-light {
+  background: $light!important;
+  color: $dark!important;
+  &:hover {
+    background: darken($light, 1%)!important;
   }
 }
 
@@ -274,9 +282,7 @@ ul {
       margin-bottom: 20px;
     }
     &-item {
-      &:not(:last-child) {
-        margin-bottom: 15px;
-      }
+      margin-top: 15px;
     }
   }
   &-open {
@@ -375,6 +381,16 @@ input {
   align-items: center;
   width: 100%;
   margin-bottom: 20px;
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: $gray;
+  }
   &-bar {
     display: flex;
     align-items: center;
@@ -393,10 +409,23 @@ input {
         -o-transition: all .2s ease;
         text-transform: uppercase;
         font-weight: bold;
+        .icon {
+          margin-right: 10px;
+          svg {
+            stroke: #a1acbc;
+            fill: transparent;
+          }
+        }
         &.active {
           color: $primary;
           border-bottom-color: $primary;
           background: $light;
+          .icon {
+            svg {
+              stroke: blue;
+              fill: transparent;
+            }
+          }
         }
       }
     }
