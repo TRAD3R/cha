@@ -234,11 +234,11 @@ $(function () {
     $(document).on('click.simple-select', '.simple-select .simple-select-item:not(.is-active)', function (e) {
         let val = $(this).data('value');
         let select = $(this).closest('.simple-select');
-        let text = $(this).text();
+        let text = $(this).html();
 
         select.removeClass('is-active');
         select.find('.simple-select-item').removeClass('is-active');
-        select.find('.simple-select-selected').text(text);
+        select.find('.simple-select-selected').html(text);
         select.find('input').val(val).change();
         $(this).addClass('is-active').blur();//blur для закрытия списка, из-за стилей, которые позволяют открыть список при фокусе на эл. списка
     });
@@ -246,9 +246,18 @@ $(function () {
         if (!$(e.target).closest('.simple-select').length) {
             $('.simple-select').removeClass('is-active');
         }
-        if (!$(e.target).closest('.dropdown').length) {
-            $('.dropdown').removeClass('is-active');
+        if (!$(e.target).closest('.selectmenu').length) {
+            $('.selectmenu').removeClass('is-active');
         }
+        if (!$(e.target).closest('.dropdown').length) {
+            $('.dropdown').removeClass('active');
+        }
+        if (!$(e.target).closest('.header-divisions-wrapper').length) {
+            $('.search-order-input').removeClass('active-mobile');
+        }
+        // if (!$(e.target).closest('.notification-message-btn').length) {
+        //     $('.notification-message').removeClass('is-active');
+        // }
     });
     $(document).on('keydown.simple-select', '.simple-select', function(event) {
         let $dropdown = $(this);
