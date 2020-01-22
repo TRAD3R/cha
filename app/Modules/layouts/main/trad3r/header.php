@@ -1,5 +1,7 @@
 <?php
-?>
+
+use App\Helpers\ListingHelper;
+use App\Params; ?>
 <main class="page">
   <div class="container-fluid">
     <nav class="navigation">
@@ -10,7 +12,7 @@
                       echo 'active';
                   }
                 ?>
-            ">Девайсы</a>
+            "><?=Yii::t('front', 'DEVICES')?></a>
         </li>
         <li>
           <a href="/products" class="tab
@@ -19,16 +21,16 @@
                     echo 'active';
                 }
           ?>
-            ">Товары</a>
+            "><?=Yii::t('front', 'PRODUCTS')?></a>
         </li>
         <li>
-          <a href="/listing" class="tab
+          <a href="/listings?<?=Params::LISTING_TYPE.'='.ListingHelper::PRODUCTS?>" class="tab
             <?php 
                 if(App\App::i()->getController()->id == 'listing') {
                     echo 'active';
                 } 
           ?>
-            ">Листинг</a>
+            "><?=Yii::t('front', 'LISTINGS')?></a>
         </li>
       </ul>
     </nav>

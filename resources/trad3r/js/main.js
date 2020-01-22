@@ -352,6 +352,8 @@ $(document).ready(function() {
     });
 
     $('.preloader').addClass('hidden-el');
+    
+    
 
 
     $("#listing-to-device").on('click', function(){

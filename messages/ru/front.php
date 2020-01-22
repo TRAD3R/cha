@@ -58,7 +58,12 @@ return [
     'ADD_NEW_ROW' => 'добавить новую запись',
     'KEYWORDS' => 'ключевые слова',
     'CREATE_LISTING' => 'создать листинг',
-    '' => '',
+    'DEVICES' => 'гаджеты',
+    'PRODUCTS' => 'товары',
+    'LISTINGS' => 'листинги',
+    'FILENAME_IS_NOT_UNIQUE' => 'не уникальное имя файла ({filename})',
+    'UPDATE' => 'обновление',
+    'DELETE' => 'удаление',
     '' => '',
     '' => '',
 ];

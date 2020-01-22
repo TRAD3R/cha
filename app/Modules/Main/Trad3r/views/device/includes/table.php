@@ -16,13 +16,22 @@ use yii\web\View;
  * @var int $totalCount
  * @var array $params
  * @var int $offset
- * @var array $models
  */
+$selected = '';
+if($params[Params::GADGET]){
+    $selected = $devices[0]->brand->name . " " . $devices[0]->title;
+}
  ?>
 <div class="page page-devices">
 
   <div class="search-select">
-    <?php echo $this->render("@layouts/common/search_select", ["list"=> $models, 'showReset' => $params[Params::GADGET]]); ?>
+    <?php 
+        echo $this->render("@layouts/common/search_select", [
+                'showReset' => $params[Params::GADGET],
+                'urlReset' => '/devices',
+                'selected' => $selected,
+            ]
+        ); ?>
   </div>
 
   <div class="table" id="horizontal-scroller">

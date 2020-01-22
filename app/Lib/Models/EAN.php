@@ -15,6 +15,7 @@ use yii\db\ActiveRecord;
  * @property int        $date_updated   [datetime]
  * @property string     $ean            [varchar(50)]
  * @property boolean    $is_used        [bit(1)]
+ * @property string     $comment        [varchar(255)]
  */
 class EAN extends ActiveRecord
 {

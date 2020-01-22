@@ -7,6 +7,7 @@ use App\Config\Config;
 use App\Config\ConfigManager;
 use yii\helpers\ArrayHelper;
 use App\Request;
+use yii\web\IdentityInterface;
 
 class App
 {
@@ -132,6 +133,22 @@ class App
         $file = \Yii::$container->get(File::class);
 
         return $file;
+    }
+
+    /**
+     * @return null|\App\Models\User|IdentityInterface
+     */
+    public function getCurrentUser()
+    {
+        return \Yii::$app->user->identity;
+    }
+
+    /**
+     * @return \yii\base\Module
+     */
+    public function getCurrentModule()
+    {
+        return \Yii::$app->controller->module;
     }
 
 }
