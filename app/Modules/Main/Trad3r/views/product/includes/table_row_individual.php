@@ -105,7 +105,7 @@ $specifications = $product->specifications;
         ]); ?>
     </div>
     <div class="table-cell editable text" data-id="<?=ProductTableStructure::PRICE?>">
-        <input class="input-text" type="text" value="<?=PriceHelper::toFloat($specifications->price)?>">
+        <input class="input-text" type="number" value="<?=PriceHelper::toFloat($specifications->price)?>">
     </div>
     <div class="table-cell editable text" data-id="<?=ProductTableStructure::QUANTITY?>">
         <input class="input-text" type="text" value="<?=$specifications->quantity?>">

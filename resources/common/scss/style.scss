@@ -46,6 +46,7 @@ ul {
   font-weight: bold;
   font-size: 22px;
   line-height: 31px;
+  margin: 0 0 10px 0;
 }
 
 .container {
@@ -173,6 +174,10 @@ ul {
 }
 
 
+.error {
+  color: $red;
+}
+
 .login-form {
   max-width: 350px;
   width: 100%;
@@ -268,6 +273,11 @@ ul {
       color: $dark;
       margin-bottom: 20px;
     }
+    &-item {
+      &:not(:last-child) {
+        margin-bottom: 15px;
+      }
+    }
   }
   &-open {
     filter: blur(2px);
@@ -299,7 +309,7 @@ ul {
     }
   }
   &-content {
-    padding: 30px;
+    padding: 45px 30px 30px 30px;
     overflow: hidden;
     position: relative;
     background: #fff;
