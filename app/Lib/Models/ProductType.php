@@ -12,6 +12,7 @@ use yii\db\ActiveRecord;
  * @package App\Models
  * @property int        $id             [integer(11)]
  * @property string     $type           [varchar(50)]
+ * @property string     $alias          [varchar(50)]
  */
 class ProductType extends ActiveRecord
 {

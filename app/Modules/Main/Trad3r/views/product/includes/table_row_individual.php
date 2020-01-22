@@ -197,10 +197,4 @@ $specifications = $product->specifications;
         <span class="text"><?=$specifications->browseNode->product_type?></span>
     </div>
     <div class="table-cell editable select" data-id="<?=ProductTableStructure::VARIATION_THEME?>">
-        <?php echo $this->render('@layouts/common/chosen-select', [
-            'name' => ProductTableStructure::VARIATION_THEME,
-            'placeholder' => Yii::t('front', 'VARIATION_THEME'),
-            'isMultiple' => false,
-            'selected'  => $specifications->variation_theme_id ? [$specifications->variation_theme_id => $specifications->variationTheme->title] : [],
-        ]); ?>
     </div>

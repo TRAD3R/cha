@@ -12,5 +12,6 @@ class ProductAsset extends AssetBundle
 
     public $js = [
         'js/product.js',
+        'js/search_models.js',
     ];
 }

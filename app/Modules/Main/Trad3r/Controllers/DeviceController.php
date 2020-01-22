@@ -25,26 +25,23 @@ class DeviceController extends Main
         $request = $this->getRequest();
         
         $params = [
-            Params::GADGET      => (int)$request->get(Params::GADGET),
-            Params::PAGE        => $request->get(Params::PAGE) ?: 1,
-            Params::PER_PAGE    => $request->get(Params::PER_PAGE) ?: DeviceHelper::PER_PAGE,
-            Params::SORT_ASC    => $request->getArrayStr(Params::SORT_ASC),
-            Params::SORT_DESC   => $request->getArrayStr(Params::SORT_DESC),
+            Params::GADGET          => (int)$request->get(Params::GADGET),
+            Params::PAGE            => $request->get(Params::PAGE) ?: 1,
+            Params::PER_PAGE        => $request->get(Params::PER_PAGE) ?: DeviceHelper::PER_PAGE,
+            Params::SORT_ASC        => $request->getArrayStr(Params::SORT_ASC),
+            Params::SORT_DESC       => $request->getArrayStr(Params::SORT_DESC),
         ];
         
         $offset = ($params[Params::PAGE] - 1) * $params[Params::PER_PAGE];
         
         $devices = new DeviceHelper();
         $devices = $devices->getDevices($params, $offset);
-        
-        $models = DeviceRepository::getAllModelsAsArray();
 
         return $this->render('index', [
             'devices' => $devices['devices'],
             'totalCount' => $devices['total'],
             'params' => $params,
             'offset' => $offset,
-            'models' => $models,
         ]);
     }
 
@@ -171,6 +168,23 @@ class DeviceController extends Main
         return [
             'status' => Response::STATUS_SUCCESS,
             'list' => DeviceHelper::getSpecificationList($id),
+        ];
+    }
+    
+    public function actionSearch()
+    {
+        /** @var Request $request */
+        $request = $this->getRequest();
+
+        if(!$request->isAjax() || !$request->isGet()) {
+            $this->getResponse()->set404();
+        }
+        
+        $models = DeviceRepository::getAllModelsAsArray();
+        
+        return [
+            'status' => Response::STATUS_SUCCESS,
+            'models' => $models
         ];
     }
    
