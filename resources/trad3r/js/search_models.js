@@ -42,65 +42,6 @@ $(document).ready(function(){
         }  // switch
     });	// keyup
 
-    // клик по результату подбора телефонов
-    //считываем нажатие клавиш, уже после вывода подсказки
-    $("#InputSearch").keydown(function(I){
-        switch(I.keyCode) {
-            // по нажатию клавиш прячем подсказку
-            case 13: // enter
-                return false;
-                break;
-            // делаем переход по подсказке стрелочками клавиатуры
-            case 38: // стрелка вверх
-            case 40: // стрелка вниз
-                I.preventDefault();
-                if(suggest_count){
-                    //делаем выделение пунктов в слое, переход по стрелочкам
-                    key_activate( I.keyCode-39 );
-                } // if
-                break;
-        } // switch
-    }); // keydown
-
-// делаем обработку клика по лупе
-    $('.form-group').on('click', ".search-action", function(){
-
-
-        if($('#InputSearch').val().trim() != ''){
-            getboons();
-        } //if
-
-    });
-
-    // если кликаем в любом месте сайта, нужно спрятать подсказку и окно результата
-    $('section, div').click(function(e){
-        if($(this).hasClass("result") || $(this).hasClass("result-window") ) {
-            console.log(120);
-            // клик по элементу поля
-            e.preventDefault();
-            e.stopPropagation();
-            $('ul li a').each(function(){
-                if($(this).is(':hover')){
-                    $("#InputSearch").val($(this).text());
-                    $(".result-window").fadeOut(350).html('');
-                    suggest_count = 0;
-                    getboons();
-                } // if
-            });
-        }else{
-          $(".result-window").hide();
-          $(".result_window_search").hide();
-          $(".result").removeClass('trd_search_animate');
-            e.stopPropagation();
-        } // if
-    }); // click
-
-    // если кликаем на поле input и есть пункты подсказки, то показываем скрытый слой
-    $('body').on('click', "#InputSearch", function(event){
-      if(suggest_count && $(this).val().length > 1)
-        $(".result-window").show();
-      event.stopPropagation();
-    }); // click
 }); // ready
 
 // создание массива с телефонами

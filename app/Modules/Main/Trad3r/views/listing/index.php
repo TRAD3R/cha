@@ -53,21 +53,21 @@ use App\Params;
         <span class="btn-text">Тип листинга</span>
         <div class="dropdown-list">
           <ul>
-            <li class="dropdown-list-item">
+            <li class="dropdown-list-item <?=($params[Params::LISTING_TYPE]==ListingHelper::PRODUCTS)?'is-active':'';  ?>">
                 <button id="listing-to-product" type="button">
                     <a href="?<?=Params::LISTING_TYPE.'='.ListingHelper::PRODUCTS?>">
                         <?=Yii::t('front', 'PRODUCTS')?>
                     </a>
                 </button>
             </li>
-            <li class="dropdown-list-item">
+            <li class="dropdown-list-item <?=($params[Params::LISTING_TYPE]==ListingHelper::DEVICES)?'is-active':'';  ?>">
                 <button id="listing-to-device" type="button">
                     <a href="?<?=Params::LISTING_TYPE.'='.ListingHelper::DEVICES?>">
                         <?=Yii::t('front', 'DEVICES')?>
                     </a>
                 </button>
             </li>
-            <li class="dropdown-list-item">
+            <li class="dropdown-list-item <?=($params[Params::LISTING_TYPE]==ListingHelper::LINES)?'is-active':'';  ?>">
                 <button id="listing-to-line" type="button">
                     <a href="?<?=Params::LISTING_TYPE.'='.ListingHelper::LINES?>">
                         <?=Yii::t('front', 'LINE')?>

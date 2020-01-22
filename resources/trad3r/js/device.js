@@ -9,6 +9,7 @@ class Device extends Gadget
     getSelectInput() {
         let url = '/devices/specification/list/' + this.el.data('id');
         super.getSelectInput(url);
+        // this.el.find('.simple-select').addClass('is-active');
     }
 
     deleteRow() {
