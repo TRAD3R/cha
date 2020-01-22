@@ -6,6 +6,7 @@
  * @var int             $totalCount
  */
 
+use App\Helpers\ListingHelper;
 use App\Helpers\TextHelper;
 use App\Html;
 use App\Models\Product;
@@ -52,9 +53,26 @@ use App\Params;
         <span class="btn-text">Тип листинга</span>
         <div class="dropdown-list">
           <ul>
-            <li class="dropdown-list-item"><button id="listing-to-product" type="button">Листинг к товару</button></li>
-            <li class="dropdown-list-item"><button id="listing-to-device" type="button">Листинг к девайсу</button></li>
-            <li class="dropdown-list-item"><button id="listing-to-line" type="button">Листинг к линейкам</li>
+            <li class="dropdown-list-item">
+                <button id="listing-to-product" type="button">
+                    <a href="?<?=Params::LISTING_TYPE.'='.ListingHelper::PRODUCTS?>">
+                        <?=Yii::t('front', 'PRODUCTS')?>
+                    </a>
+                </button>
+            </li>
+            <li class="dropdown-list-item">
+                <button id="listing-to-device" type="button">
+                    <a href="?<?=Params::LISTING_TYPE.'='.ListingHelper::DEVICES?>">
+                        <?=Yii::t('front', 'DEVICES')?>
+                    </a>
+                </button>
+            </li>
+            <li class="dropdown-list-item">
+                <button id="listing-to-line" type="button">
+                    <a href="?<?=Params::LISTING_TYPE.'='.ListingHelper::LINES?>">
+                        <?=Yii::t('front', 'LINE')?>
+                    </a>
+                </button></li>
           </ul>
         </div>
       </div>
@@ -69,6 +87,6 @@ use App\Params;
   </div>
   <div class="showed-listing">
     <div class="preloader"></div>
-    <a href="#" class="showed-listing-file">File listing.xlsx</a>
+    <a href="#" class="showed-listing-file"></a>
   </div>
 </div>

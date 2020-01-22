@@ -1,5 +1,7 @@
 <?php
-?>
+
+use App\Helpers\ListingHelper;
+use App\Params; ?>
 <main class="page">
   <div class="container-fluid">
     <nav class="navigation">
@@ -22,7 +24,7 @@
             "><?=Yii::t('front', 'PRODUCTS')?></a>
         </li>
         <li>
-          <a href="/listings" class="tab
+          <a href="/listings?<?=Params::LISTING_TYPE.'='.ListingHelper::PRODUCTS?>" class="tab
             <?php 
                 if(App\App::i()->getController()->id == 'listing') {
                     echo 'active';

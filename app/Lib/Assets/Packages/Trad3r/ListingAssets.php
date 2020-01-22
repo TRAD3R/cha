@@ -15,7 +15,8 @@ class ListingAssets extends AssetBundle
     public $sourcePath = "@trad3r_resources";
 
     public $js = [
-      'js/main.js'
+      'js/main.js',
+      'js/listing.js',
     ];
 
     public $css = [
