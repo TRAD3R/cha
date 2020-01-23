@@ -3,7 +3,9 @@
  * @var $product Product
  */
 
+use App\App;
 use App\Helpers\PriceHelper;
+use App\Helpers\TextHelper;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductSpecification;
@@ -143,26 +145,16 @@ $specifications = $product->specifications;
         <textarea class="input-text" data-id="<?=$specifications->bulletpoint_5?>" hidden><?=$specifications->bulletpoint_5?></textarea>
         <span class="text"><?=$specifications->bulletpoint_5?></span>
     </div>
-    <?php /** @var ProductImage $image */?>
-    <?php foreach ($product->images as $image): ?>
-        <div class="table-cell editable text" data-id="<?=ProductTableStructure::IMAGE?>">
-            <textarea class="input-text" data-id="<?=$image->id?>" hidden><?=$image->image?></textarea>
-            <span class="text"><?=$image->image?></span>
-        </div>
-    <?php endforeach; ?>
-    <?php
-        $lastIM = ProductTableStructure::IMAGE_COUNT - count($product->images);
-        if($lastIM > 0):
-            for ($i = ProductTableStructure::IMAGE_COUNT - $lastIM + 1; $i <= ProductTableStructure::IMAGE_COUNT; $i++):
-    ?>
-                <div class="table-cell editable text" data-id="<?=ProductTableStructure::IMAGE?>">
-                    <textarea class="input-text" data-id="<?=(0-$i)?>" hidden></textarea>
-                    <span class="text"></span>
-                </div>
-    <?php
-            endfor;
-        endif;
-    ?>
+    <?php for ($i = 1; $i <= ProductTableStructure::IMAGE_COUNT; $i++):
+        if($product->specifications):
+            $type = $product->specifications->type->type;
+            $src = TextHelper::createUsingFilename($type . "_" . $i);
+            ?>
+            <div class="table-cell image">
+                <img src="<?=App::i()->getFile()->mdUrl("/accessories/using/" . $src)?>" alt="">
+            </div>
+        <?php endif;?>
+    <?php endfor;?>
     <div class="table-cell editable select" data-id="<?=ProductTableStructure::SWATCH_IMAGE?>">
         <?php echo $this->render('@layouts/common/chosen-select', [
             'name' => ProductTableStructure::SWATCH_IMAGE,

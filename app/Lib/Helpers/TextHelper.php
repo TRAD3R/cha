@@ -13,4 +13,13 @@ class TextHelper
 
         return $firstChar . mb_substr($string, 1);
     }
+
+    public static function createUsingFilename($type)
+    {
+        $str = strtolower($type);
+        $str = preg_replace("/[^a-z0-9-_]/", "_", $str);
+        $str .= ".jpg";
+        
+        return $str;
+    }
 }
