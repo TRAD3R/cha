@@ -65,11 +65,12 @@ class Product extends ActiveRecord
     
     public function getChildren()
     {
-        return self::find()
-            ->where(['parent_id' => $this->id])
-            ->orderBy('id ASC')
-            ->all()
-            ;
+//        return self::find()
+//            ->where(['parent_id' => $this->id])
+//            ->orderBy('id ASC')
+//            ->all()
+//            ;
+        return $this->hasMany(Product::class, ['parent_id' => 'id']);
     }
 
 }

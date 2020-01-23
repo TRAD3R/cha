@@ -85,7 +85,7 @@ use App\Params;
           <path d="M10.4811 10.6735H14.4811" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </span>
-        <span class="btn-text" onclick="showModal('archive')"><?=Yii::t('front', 'ARCHIVE')?></span>
+        <span class="btn-text" onclick="showArchive()"><?=Yii::t('front', 'ARCHIVE')?></span>
       </button>
     </div>
     <div class="table-btn-tool__item">
