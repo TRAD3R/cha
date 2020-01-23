@@ -72,10 +72,21 @@ use App\Params;
                     <a href="?<?=Params::LISTING_TYPE.'='.ListingHelper::LINES?>">
                         <?=Yii::t('front', 'LINE')?>
                     </a>
-                </button></li>
+                </button>
+            </li>
           </ul>
         </div>
       </div>
+      <button type="button" class="btn btn-light">
+        <span class="icon">
+          <svg width="25" height="21" viewBox="0 0 25 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21.4811 6.67352V19.6735H3.48108V6.67352" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M23.4811 1.67352H1.48108V6.67352H23.4811V1.67352Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M10.4811 10.6735H14.4811" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="btn-text" onclick="showArchive()"><?=Yii::t('front', 'ARCHIVE')?></span>
+      </button>
     </div>
     <div class="table-btn-tool__item">
       <?=Html::renderPaginator([

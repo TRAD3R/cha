@@ -69,13 +69,13 @@ class ListingController extends Main
         
         if($params[Params::LISTING_TYPE] === ListingHelper::PRODUCTS) {
             $products = Product::findAll($params[ListingHelper::IDS]);
-            
-            if($helper->create($products, $filename, $params[Params::LISTING_ACTION_TYPE])){
-
+            $createFile = $helper->create($products, $filename, $params[Params::LISTING_ACTION_TYPE]);
+            if($createFile['status']){
                 return [
                     'status' => Response::STATUS_SUCCESS,
                     'href' => App::i()->getFile()->mdUrl("/out/" . $filename),
                     'file' => $filename,
+                    'errors' => $createFile['errors'],
                 ];
             }
             
@@ -104,6 +104,24 @@ class ListingController extends Main
         return [
             'status' => Response::STATUS_SUCCESS,
             'progress' => (new ListingHelper())->getProgress(),
+        ];
+    }
+    
+    public function actionArchive()
+    {
+        /** @var Request $request */
+        $request = $this->getRequest();
+
+        if(!$request->isAjax()){
+            $this->getResponse()->set404();
+        }
+        
+        $files = ListingHelper::getAllFiles();
+
+        $this->getResponse()->setJsonFormat();
+        return [
+            'status' => Response::STATUS_SUCCESS,
+            'files' => $files,
         ];
     }
 }
