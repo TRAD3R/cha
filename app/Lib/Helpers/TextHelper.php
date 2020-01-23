@@ -14,9 +14,9 @@ class TextHelper
         return $firstChar . mb_substr($string, 1);
     }
 
-    public static function createUsingFilename($type)
+    public static function createUsingFilename($sku, $num)
     {
-        $str = strtolower($type);
+        $str = strtolower($sku . "-using-" . $num);
         $str = preg_replace("/[^a-z0-9-_]/", "_", $str);
         $str .= ".jpg";
         

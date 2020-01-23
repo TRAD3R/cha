@@ -127,9 +127,9 @@ $specifications = $product->specifications;
         <pre class="text"><?=$specifications->bulletpoint_5?></pre>
     </div>
     <?php for ($i = 1; $i <= ProductTableStructure::IMAGE_COUNT; $i++):
-        if($product->parent_id):
-            $type = $product->parent->specifications->type->type;
-            $src = TextHelper::createUsingFilename($type . "_" . $i);
+        if($specifications):
+            $sku = $specifications->sku;
+            $src = TextHelper::createUsingFilename($sku, $i);
     ?>
             <div class="table-cell image">
                 <img src="<?=App::i()->getFile()->mdUrl("/accessories/using/" . $src)?>" alt="">

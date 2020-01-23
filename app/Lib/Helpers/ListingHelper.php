@@ -40,6 +40,7 @@ class ListingHelper
 
     private static $progress = '0';
     private $actionType;
+    private $errors = [];
 
     /**
      * Проверка на уникальность имени файла
@@ -208,6 +209,7 @@ class ListingHelper
             ->setCellValue(XlsStructure::COLUMN_PRODUCT_TYPE . $rowNumber, $productSpecifications->browseNode->product_type)
             ->setCellValue(XlsStructure::COLUMN_PRODUCT_PRICE . $rowNumber, PriceHelper::toFloat($productSpecifications->price))
             ->setCellValue(XlsStructure::COLUMN_PRODUCT_QUANTITY . $rowNumber, $productSpecifications->quantity)
+            ->setCellValue(XlsStructure::COLUMN_MAIN_IMAGE . $rowNumber, $this->getMainImage())
             ->setCellValue(XlsStructure::COLUMN_SWATCHES . $rowNumber, App::i()->getFile()->getFullUrl("/images/swatches/" . $productSpecifications->swatch->filename))
             ->setCellValue(XlsStructure::COLUMN_PRODCT_DESCRIPTION . $rowNumber, $this->changeMacros($productSpecifications->description, $device))
             ->setCellValue(XlsStructure::COLUMN_PART_NUMBER . $rowNumber, $this->creatSku($productSpecifications->barcode, $device->id))
