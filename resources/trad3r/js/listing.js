@@ -67,6 +67,12 @@ function listingCreate() {
                 if(res.status === 'success'){
                     LISTING_FILE.attr("href", res.href);
                     LISTING_FILE.text(res.file);
+                    if(res.errors){
+                        let errors = res.errors;
+                        for (let i in errors){
+                            addError(errors[i]);
+                        }
+                    }
                 }else{
                     addError(res.error);
                 }

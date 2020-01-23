@@ -69,13 +69,13 @@ class ListingController extends Main
         
         if($params[Params::LISTING_TYPE] === ListingHelper::PRODUCTS) {
             $products = Product::findAll($params[ListingHelper::IDS]);
-            
-            if($helper->create($products, $filename, $params[Params::LISTING_ACTION_TYPE])){
-
+            $createFile = $helper->create($products, $filename, $params[Params::LISTING_ACTION_TYPE]);
+            if($createFile['status']){
                 return [
                     'status' => Response::STATUS_SUCCESS,
                     'href' => App::i()->getFile()->mdUrl("/out/" . $filename),
                     'file' => $filename,
+                    'errors' => $createFile['errors'],
                 ];
             }
             

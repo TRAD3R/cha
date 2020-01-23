@@ -2,6 +2,7 @@
 namespace App\Helpers;
 
 use App\App;
+use App\Lib\Helpers\FileHelper;
 use App\Models\Device;
 use App\Models\DeviceSpecification;
 use App\Models\EAN;
@@ -87,7 +88,7 @@ class ListingHelper
      * @param array $products
      * @param string $newFilename
      * @param int $actionType
-     * @return bool
+     * @return array
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      * @throws \yii\base\InvalidConfigException
@@ -113,10 +114,16 @@ class ListingHelper
                 }
             }
 
-            return $this->save($newFilename);
+            return [
+                'status' => $this->save($newFilename),
+                'errors' => $this->errors
+            ];
         }
 
-        return false;
+        return [
+            'status' => false,
+            'errors' => $this->errors
+        ];
     }
 
     private function setFileProperties()
@@ -141,6 +148,12 @@ class ListingHelper
         return true;
     }
 
+    /**
+     * @param Product $product
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
     private function createIndividual(Product $product)
     {
         $devices = $this->getLinkedDevices($product->specifications->type->alias);
@@ -209,7 +222,15 @@ class ListingHelper
             ->setCellValue(XlsStructure::COLUMN_PRODUCT_TYPE . $rowNumber, $productSpecifications->browseNode->product_type)
             ->setCellValue(XlsStructure::COLUMN_PRODUCT_PRICE . $rowNumber, PriceHelper::toFloat($productSpecifications->price))
             ->setCellValue(XlsStructure::COLUMN_PRODUCT_QUANTITY . $rowNumber, $productSpecifications->quantity)
-            ->setCellValue(XlsStructure::COLUMN_MAIN_IMAGE . $rowNumber, $this->getMainImage())
+            ->setCellValue(XlsStructure::COLUMN_MAIN_IMAGE . $rowNumber, $this->getMainImage($device, $productSpecifications->sku))
+            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_1 . $rowNumber, $this->getUsingImage($productSpecifications->sku, 1))
+            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_2 . $rowNumber, $this->getUsingImage($productSpecifications->sku, 2))
+            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_3 . $rowNumber, $this->getUsingImage($productSpecifications->sku, 3))
+            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_4 . $rowNumber, $this->getUsingImage($productSpecifications->sku, 4))
+            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_5 . $rowNumber, $this->getUsingImage($productSpecifications->sku, 5))
+            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_6 . $rowNumber, $this->getUsingImage($productSpecifications->sku, 6))
+            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_7 . $rowNumber, $this->getUsingImage($productSpecifications->sku, 7))
+            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_8 . $rowNumber, $this->getUsingImage($productSpecifications->sku, 18))
             ->setCellValue(XlsStructure::COLUMN_SWATCHES . $rowNumber, App::i()->getFile()->getFullUrl("/images/swatches/" . $productSpecifications->swatch->filename))
             ->setCellValue(XlsStructure::COLUMN_PRODCT_DESCRIPTION . $rowNumber, $this->changeMacros($productSpecifications->description, $device))
             ->setCellValue(XlsStructure::COLUMN_PART_NUMBER . $rowNumber, $this->creatSku($productSpecifications->barcode, $device->id))
@@ -281,7 +302,16 @@ class ListingHelper
             ->setCellValue(XlsStructure::COLUMN_PRODUCT_TYPE . $rowNumber, $product->parent->specifications->browseNode->product_type)
             ->setCellValue(XlsStructure::COLUMN_PRODUCT_PRICE . $rowNumber, PriceHelper::toFloat($productSpecifications->price))
             ->setCellValue(XlsStructure::COLUMN_PRODUCT_QUANTITY . $rowNumber, $productSpecifications->quantity)
+            ->setCellValue(XlsStructure::COLUMN_MAIN_IMAGE . $rowNumber, $this->getMainImage($device, $productSpecifications->sku))
             ->setCellValue(XlsStructure::COLUMN_SWATCHES . $rowNumber, App::i()->getFile()->getFullUrl("/images/swatches/" . $productSpecifications->swatch->filename))
+            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_1 . $rowNumber, $this->getUsingImage($productSpecifications->sku, 1))
+            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_2 . $rowNumber, $this->getUsingImage($productSpecifications->sku, 2))
+            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_3 . $rowNumber, $this->getUsingImage($productSpecifications->sku, 3))
+            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_4 . $rowNumber, $this->getUsingImage($productSpecifications->sku, 4))
+            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_5 . $rowNumber, $this->getUsingImage($productSpecifications->sku, 5))
+            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_6 . $rowNumber, $this->getUsingImage($productSpecifications->sku, 6))
+            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_7 . $rowNumber, $this->getUsingImage($productSpecifications->sku, 7))
+            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_8 . $rowNumber, $this->getUsingImage($productSpecifications->sku, 18))
             ->setCellValue(XlsStructure::COLUMN_STATUS . $rowNumber, XlsStructure::STATUS_CHILD)
             ->setCellValue(XlsStructure::COLUMN_PARENT_SKU . $rowNumber, self::SKU_PREFIX . $device->id)
             ->setCellValue(XlsStructure::COLUMN_RELATIONSHIP . $rowNumber, XlsStructure::RELATIONSHIP)
@@ -377,6 +407,31 @@ class ListingHelper
     private function creatSku(string $barcode, int $id)
     {
         return $barcode . "-" . $id;
+    }
+
+    private function getMainImage(Device $device, string $sku)
+    {
+        $str = $device->specifications->type->type . "/" . $device->brand->name . "-" . $device->title . "-" . $sku;
+        $str = strtolower($str);
+        $filename = FileHelper::createFilename($str);
+        
+        if(!is_file(Yii::getAlias("@accessories") . "/" . $filename)){
+            $this->errors[] = Yii::t('front', 'NOT_ISSET_FILE', ['filename' => "/images/accessories/" . $filename]);
+            $filename = '';
+        }
+        return $filename;
+    }
+
+    private function getUsingImage(string $sku, $num)
+    {
+        $filename = TextHelper::createUsingFilename($sku, $num);
+
+        if(!is_file(Yii::getAlias("@usings") . "/" . $filename)){
+            $this->errors[] = Yii::t('front', 'NOT_ISSET_FILE', ['filename' => "/images/accessories/usings/" . $filename]);
+            $filename = '';
+        }
+        return $filename;
+        
     }
 
 

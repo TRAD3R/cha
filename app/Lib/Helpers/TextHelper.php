@@ -5,6 +5,8 @@
 namespace App\Helpers;
 
 
+use App\Lib\Helpers\FileHelper;
+
 class TextHelper
 {
     public static function upperFirstChar($string)
@@ -17,9 +19,9 @@ class TextHelper
     public static function createUsingFilename($sku, $num)
     {
         $str = strtolower($sku . "-using-" . $num);
-        $str = preg_replace("/[^a-z0-9-_]/", "_", $str);
-        $str .= ".jpg";
         
-        return $str;
+        return FileHelper::createFilename($str);
     }
+    
+    
 }
