@@ -55,6 +55,23 @@ class ListingHelper
         return !is_file($dir . DIRECTORY_SEPARATOR . $filename);
     }
 
+    /**
+     * @return array
+     */
+    public static function getAllFiles()
+    {
+        $files = array_diff(scandir(Yii::getAlias("@out")), array('..', '.', '.gitignore'));
+        
+        $res = [];
+        
+        if($files){
+            foreach ($files as $file) {
+                $res[$file] = App::i()->getFile()->getFullUrl("/out/" . $file);
+            }
+        }
+        return $res;
+    }
+
     private function setProgress(int $total, int $finished)
     {
         file_put_contents(Yii::getAlias("@Web") . self::PROGRESS_FILE, number_format($finished / $total * 100, 2));

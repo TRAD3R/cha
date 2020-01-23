@@ -92,23 +92,14 @@ use App\Params; ?>
           Файлы:
         </p>
         <div class="content-list file-list">
-          <a href="#" class="file">Listing_example.xls</a>
+          <a id="file-list" href="#" class="file"></a>
         </div>
       </div>
       <div class="modal-content-item error-list-wrapper">
         <p class="dr-h2">
           Ошибки:
         </p>
-        <div class="content-list error-list">
-          <p class="error">Ошибка! Lorem ipsum dolor sit amet.</p>
-          <p class="error">Ошибка! Lorem ipsum dolor sit amet.</p>
-          <p class="error">Ошибка! Lorem ipsum dolor sit amet.</p>
-          <p class="error">Ошибка! Lorem ipsum dolor sit amet.</p>
-          <p class="error">Ошибка! Lorem ipsum dolor sit amet.</p>
-          <p class="error">Ошибка! Lorem ipsum dolor sit amet.</p>
-          <p class="error">Ошибка! Lorem ipsum dolor sit amet.</p>
-          <p class="error">Ошибка! Lorem ipsum dolor sit amet.</p>
-          <p class="error">Ошибка! Lorem ipsum dolor sit amet.</p>
+        <div id="errors" class="content-list error-list">
         </div>
       </div>
     </div>
@@ -121,7 +112,7 @@ use App\Params; ?>
   <div id="modal-content-archive" class="modal-content">
     <div class="modal-content-wrapper">
       <p class="dr-h2"><?=Yii::t('front', 'ARCHIVE')?></p>
-      <div class="content-list file-list archive-file-list">
+      <div id="listing-files" class="content-list file-list archive-file-list">
         <a href="#" class="file">Listing_example.xls</a>
         <a href="#" class="file">Listing_example.xls</a>
         <a href="#" class="file">Listing_example.xls</a>

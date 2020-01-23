@@ -1,5 +1,8 @@
 const TABLE_BODY = $('.table-body');
-const LISTING_FILE = $(".showed-listing-file");
+const LISTING_FILE = $("#file-list");
+const ERRORS = $("#errors");
+const OLD_LISTINGS_FIELD = $("#listing-files");
+
 var inProgress = false;
 
 $(document).ready(function () {
@@ -40,6 +43,9 @@ function listingCreate() {
     hideModal();
     let title = $('#id-edited-input').val();
     inProgress = true;
+    ERRORS.html('');
+    LISTING_FILE.text('');
+    LISTING_FILE.attr('href', "#");
 
     let checked = getIds();
     let url = new URL(location.href);
@@ -62,16 +68,27 @@ function listingCreate() {
                     LISTING_FILE.attr("href", res.href);
                     LISTING_FILE.text(res.file);
                 }else{
-                    LISTING_FILE.text(res.error);
+                    addError(res.error);
                 }
+                
+                clearInterval(showProgress);
             }
         });
         
         let showProgress = setInterval(function () {
             getProgress();
         }, 1000)
+    }else{
+        addError("Не выбрано ни одного гаджета");
     }
     
+}
+
+function addError(msg) {
+    let error = document.createElement("p");
+    error.classList.add('error');
+    error.innerText = msg;
+    ERRORS.append(error);
 }
 
 /**
@@ -96,3 +113,38 @@ function selectAll() {
         $(this).prop("checked", state);
     })
 }
+
+function showArchive() {
+    OLD_LISTINGS_FIELD.html('');
+    
+    $.ajax({
+        url: "listings/archive",
+        method: "GET",
+        success: function (res) {
+            if(res.status === "success"){
+                let files = res.files;
+                
+                if(Object.keys(files).length){
+                    for (let filename in files){
+                        let link = createLink(filename, files[filename]);
+                        
+                        OLD_LISTINGS_FIELD.append(link);
+                    }
+                }else{
+                    OLD_LISTINGS_FIELD.innerText = "Еще не создано ни одного листинга"
+                }
+            }
+        }
+    });
+    showModal('archive');
+}
+
+function createLink(filename, href) {
+    let link = document.createElement("a");
+    link.href = href;
+    link.innerText = filename;
+    link.classList.add("file");
+    
+    return link;
+}
+

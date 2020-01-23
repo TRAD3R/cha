@@ -106,4 +106,22 @@ class ListingController extends Main
             'progress' => (new ListingHelper())->getProgress(),
         ];
     }
+    
+    public function actionArchive()
+    {
+        /** @var Request $request */
+        $request = $this->getRequest();
+
+        if(!$request->isAjax()){
+            $this->getResponse()->set404();
+        }
+        
+        $files = ListingHelper::getAllFiles();
+
+        $this->getResponse()->setJsonFormat();
+        return [
+            'status' => Response::STATUS_SUCCESS,
+            'files' => $files,
+        ];
+    }
 }
