@@ -12,9 +12,7 @@ use yii\db\ActiveRecord;
  * @package App\Models
  * 
  * @property int                    $id                 [integer(11)]
- * @property int                    $date_created       [datetime]
- * @property int                    $date_updated       [datetime]
- * @property string                 $name               [varchar(255)]
+ * @property string                 $title              [varchar(255)]
  * @property int                    $parent_id          [integer(11)]
  * @property Product                $parent
  * @property ProductSpecification   $specifications
@@ -35,17 +33,6 @@ class Product extends ActiveRecord
         return [
             Timestamp::class
         ];
-    }
-
-    public function beforeDelete()
-    {
-        if(!parent::beforeDelete()) {
-            return false;
-        }
-
-        $specifications = $this->specifications;
-
-        return $specifications->delete();
     }
 
     public function getParent()
