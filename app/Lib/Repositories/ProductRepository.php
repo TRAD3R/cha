@@ -34,4 +34,13 @@ class ProductRepository
 
         return $arr;
     }
+
+    public static function findAllParentOrIndiv()
+    {
+        return Product::find()
+            ->where(['parent_id' => null])
+            ->orWhere(['parent_id' => -1])
+            ->all()
+        ;
+    }
 }

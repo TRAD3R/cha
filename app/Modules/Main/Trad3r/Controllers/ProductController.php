@@ -34,7 +34,7 @@ class ProductController extends Main
         $products = $products->getProducts($params, $offset);
         
         return $this->render('index', [
-            'products' => $products['products'],
+            'products' => $products['items'],
             'totalCount' => $products['total'],
             'params' => $params,
             'offset' => $offset

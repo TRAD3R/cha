@@ -33,7 +33,7 @@ class ListingTest extends Unit
     public function testCreateListing()
     {
         $this->specify('Создание листинга амазон', function (){
-            expect('Проверка наличия файла', ListingHelper::create([]));
+            expect('Проверка наличия файла', ListingHelper::createListing([]));
         });
     }
 }

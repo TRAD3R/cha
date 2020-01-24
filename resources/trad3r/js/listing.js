@@ -77,13 +77,13 @@ function listingCreate() {
                     addError(res.error);
                 }
                 
-                clearInterval(showProgress);
+                // clearInterval(showProgress);
             }
         });
         
-        let showProgress = setInterval(function () {
-            getProgress();
-        }, 1000)
+        // let showProgress = setInterval(function () {
+        //     getProgress();
+        // }, 1000)
     }else{
         addError("Не выбрано ни одного гаджета");
     }
