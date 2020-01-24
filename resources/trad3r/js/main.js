@@ -354,7 +354,7 @@ $(document).ready(function() {
 });
 
 function sort(type, param) {
-    Device.addSort(type, param);
+    gadget.addSort(type, param);
 }
 
 /*dropdown*/

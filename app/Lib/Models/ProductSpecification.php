@@ -11,6 +11,8 @@ use yii\db\ActiveRecord;
  * Class ProductSpecification
  * @package App\Models
  * @property int                $product_id             [integer(11)]
+ * @property int                $date_created           [datetime]
+ * @property int                $date_updated           [datetime]
  * @property int                $type_id                [integer(11)]
  * @property int                $product_brand_id       [integer(11)]
  * @property int                $manufacturer_id        [integer(11)]
@@ -53,6 +55,17 @@ class ProductSpecification extends ActiveRecord
     public static function tableName()
     {
         return 'product_specifications';
+    }
+
+    public function beforeDelete()
+    {
+        if(!parent::beforeDelete()) {
+            return false;
+        }
+
+        $specifications = $this->specifications;
+
+        return $specifications->delete();
     }
     
     public function getProduct()
