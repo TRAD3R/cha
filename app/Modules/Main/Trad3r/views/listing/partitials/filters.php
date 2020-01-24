@@ -12,7 +12,7 @@ use App\Models\Product; ?>
             <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"></path>
             </svg>
           </span>
-    <div class="dropdown-list">
+    <div class="dropdown-list" id="product-list">
         <div class="column-tool-total">
             <button type="button" class="btn-select-all"><?=Yii::t('front', 'SELECT_ALL')?></button>
             <button type="button" class="btn-remove-all disabled"><?=Yii::t('front', 'UNCHECK_ALL')?></button>
@@ -46,4 +46,4 @@ use App\Models\Product; ?>
     </div>
 </div>
 
-<button type="button" class="btn btn-primary w-auto">Фильтр</button>
+<button type="button" id="btn-filter" class="btn btn-primary w-auto">Фильтр</button>
