@@ -45,3 +45,5 @@ use App\Models\Product; ?>
         <input type="date" id="date-end" value="">
     </div>
 </div>
+
+<button type="button" class="btn btn-primary w-auto">Фильтр</button>
