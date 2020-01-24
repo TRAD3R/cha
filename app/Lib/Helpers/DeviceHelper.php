@@ -56,11 +56,16 @@ class DeviceHelper
 
         $this->query
             ->addOrderBy('d.id ASC')
-            ->limit($params[Params::PER_PAGE])
             ->offset($offset);
         
+        if($params[Params::PER_PAGE]){
+            $this->query->limit($params[Params::PER_PAGE]);
+        }
+        
+            
+        
         return [
-            'devices' => $this->query->all(),
+            'items' => $this->query->all(),
             'total'   => $total
         ];
     }
