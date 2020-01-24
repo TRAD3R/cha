@@ -137,10 +137,32 @@ ul {
   }
 }
 
+
+.bg-secondary {
+  background: $secondary;
+}
+.bg-primary {
+  background: $primary;
+}
+.bg-light {
+  background: $light;
+}
+.bg-dark {
+  background: $dark;
+}
+
 .c-secondary {
   color: $secondary;
 }
-
+.c-primary {
+  color: $primary;
+}
+.c-light {
+  color: $light;
+}
+.c-dark {
+  color: $dark;
+}
 
 .btn-operations {
   opacity: 0;
@@ -149,7 +171,7 @@ ul {
   display: flex;
   justify-content: center;
   top: 5px;
-  right: 20px;
+  right: 15px;
   z-index: 4;
   transition: all .2s ease;
   -webkit-transition: all .2s ease;
