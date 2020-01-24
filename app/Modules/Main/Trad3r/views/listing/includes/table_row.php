@@ -27,5 +27,5 @@ use yii\web\View;
         <?=$product->id?>
     </div>
     <div class="table-cell">
-        <?=$product->name?>
+        <?=$product->title?>
     </div>

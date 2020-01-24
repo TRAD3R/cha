@@ -22,7 +22,7 @@ $specifications = $product->specifications;
     <div class="table-cell" data-id="<?=ProductTableStructure::DATE_CREATED?>">
         <?php
         try {
-            $dateCreated = new DateTime($product->date_created);
+            $dateCreated = new DateTime($specifications->date_created);
             echo $dateCreated->format('d.m.Y');
         } catch (Exception $e) {
             $e->getMessage();
@@ -113,8 +113,8 @@ $specifications = $product->specifications;
         <input class="input-text" type="text" value="<?=$specifications->quantity?>">
     </div>
     <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::TITLE?>">
-        <textarea class="input-text" hidden><?=$product->name?></textarea>
-        <span class="text"><?=$product->name?></span>
+        <textarea class="input-text" hidden><?=$product->title?></textarea>
+        <span class="text"><?=$product->title?></span>
     </div>
     <div class="table-cell editable textarea" data-id="<?=ProductTableStructure::DESCRIPTION?>">
         <textarea class="input-text" hidden><?=$specifications->description?></textarea>

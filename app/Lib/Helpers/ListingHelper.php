@@ -8,6 +8,8 @@ use App\Models\DeviceSpecification;
 use App\Models\EAN;
 use App\Models\Product;
 use App\Models\ProductSpecification;
+use App\Tables\ListingTableStructure;
+use App\Tables\ProductTableStructure;
 use App\Tables\XlsStructure;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -18,6 +20,11 @@ use yii\db\Query;
 
 class ListingHelper
 {
+    const PER_PAGE = 100;
+
+    /** @var Query|null $query */
+    private $query = null;
+    
     const PRODUCTS = 'products';
     const DEVICES = 'devices';
     const LINES = 'lines';
@@ -209,14 +216,14 @@ class ListingHelper
     {
         /** @var ProductSpecification $productSpecifications */
         $productSpecifications = $product->specifications;
-        $newEan = $this->getNewEan("{$product->name} | {$device->brand->name} {$device->title}");
+        $newEan = $this->getNewEan("{$product->title} | {$device->brand->name} {$device->title}");
 
         $this->spreadsheet->setActiveSheetIndex(0)
             ->setCellValue(XlsStructure::COLUMN_BROWSE_NODE . $rowNumber, $productSpecifications->browseNode->node)
             ->setCellValue(XlsStructure::COLUMN_SKU . $rowNumber, $this->creatSku($productSpecifications->barcode, $device->id))
             ->setCellValue(XlsStructure::COLUMN_BARCODE . $rowNumber, $newEan)
             ->setCellValue(XlsStructure::COLUMN_BARCODE_TYPE . $rowNumber, $productSpecifications->barcodeType->type)
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_TITLE . $rowNumber, $this->changeMacros($product->name, $device))
+            ->setCellValue(XlsStructure::COLUMN_PRODUCT_TITLE . $rowNumber, $this->changeMacros($product->title, $device))
             ->setCellValue(XlsStructure::COLUMN_PRODUCT_BRAND . $rowNumber, $productSpecifications->productBrand->name)
             ->setCellValue(XlsStructure::COLUMN_MANUFACTURER . $rowNumber, $productSpecifications->manufacturer->name)
             ->setCellValue(XlsStructure::COLUMN_PRODUCT_TYPE . $rowNumber, $productSpecifications->browseNode->product_type)
@@ -266,7 +273,7 @@ class ListingHelper
         $this->spreadsheet->setActiveSheetIndex(0)
             ->setCellValue(XlsStructure::COLUMN_BROWSE_NODE . $rowNumber, $productSpecifications->browseNode->node)
             ->setCellValue(XlsStructure::COLUMN_SKU . $rowNumber, self::SKU_PREFIX . $device->id)
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_TITLE . $rowNumber, $this->changeMacros($product->name, $device))
+            ->setCellValue(XlsStructure::COLUMN_PRODUCT_TITLE . $rowNumber, $this->changeMacros($product->title, $device))
             ->setCellValue(XlsStructure::COLUMN_PRODUCT_BRAND . $rowNumber, $product->children[0]->specifications->productBrand->name)
             ->setCellValue(XlsStructure::COLUMN_MANUFACTURER . $rowNumber, $product->children[0]->specifications->manufacturer->name)
             ->setCellValue(XlsStructure::COLUMN_PRODUCT_TYPE . $rowNumber, $productSpecifications->browseNode->product_type)
@@ -289,14 +296,14 @@ class ListingHelper
     {
         /** @var ProductSpecification $productSpecifications */
         $productSpecifications = $product->specifications;
-        $newEan = $this->getNewEan("{$product->name} | {$device->brand->name} {$device->title}");
+        $newEan = $this->getNewEan("{$product->title} | {$device->brand->name} {$device->title}");
 
         $this->spreadsheet->setActiveSheetIndex(0)
             ->setCellValue(XlsStructure::COLUMN_BROWSE_NODE . $rowNumber, $product->parent->specifications->browseNode->node)
             ->setCellValue(XlsStructure::COLUMN_SKU . $rowNumber, $this->creatSku($productSpecifications->barcode, $device->id))
             ->setCellValue(XlsStructure::COLUMN_BARCODE . $rowNumber, $newEan)
             ->setCellValue(XlsStructure::COLUMN_BARCODE_TYPE . $rowNumber, $productSpecifications->barcodeType->type)
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_TITLE . $rowNumber, $this->changeMacros($product->name, $device))
+            ->setCellValue(XlsStructure::COLUMN_PRODUCT_TITLE . $rowNumber, $this->changeMacros($product->title, $device))
             ->setCellValue(XlsStructure::COLUMN_PRODUCT_BRAND . $rowNumber, $productSpecifications->productBrand->name)
             ->setCellValue(XlsStructure::COLUMN_MANUFACTURER . $rowNumber, $productSpecifications->manufacturer->name)
             ->setCellValue(XlsStructure::COLUMN_PRODUCT_TYPE . $rowNumber, $product->parent->specifications->browseNode->product_type)
@@ -432,6 +439,24 @@ class ListingHelper
         }
         return $filename;
         
+    }
+
+    private function addSort($params, $type)
+    {
+        $uniqParam = $type == 'ASC' ? 1 : 2;
+
+        foreach ($params as $param) {
+            switch ($param) {
+                case ListingTableStructure::DATE_CREATED:
+                    $this->query
+                        ->addOrderBy("l.date_created $type");
+                    break;
+                case ListingTableStructure::TITLE:
+                    $this->query
+                        ->addOrderBy("l.title $type");
+                    break;
+            }
+        }
     }
 
 

@@ -5,6 +5,7 @@ namespace App\Helpers;
 
 
 use App\Models\BarcodeType;
+use App\Models\BrowseNode;
 use App\Models\DeviceType;
 use App\Models\Manufacturer;
 use App\Models\MeasureUnit;
@@ -131,7 +132,7 @@ class ProductHelper
                     $specifications->link('productBrand', $brand);
                     break;
                 case ProductTableStructure::TITLE:
-                    $product->name = $value;
+                    $product->title = $value;
                     break;
                 case ProductTableStructure::DESCRIPTION:
                     $specifications->description = $value;
@@ -320,78 +321,66 @@ class ProductHelper
         
         foreach ($params as $param) {
             switch ($param) {
+                case ProductTableStructure::DATE_CREATED:
+                    $this->query
+                        ->addOrderBy("s.date_created $type");
+                    break;
                 case ProductTableStructure::DEVICE_TYPE:
                     $this->query
-                        ->innerJoin('device_type dt' . $uniqParam, "dt{$uniqParam}.id = s.type_id")
+                        ->innerJoin(DeviceType::tableName() . ' dt' . $uniqParam, "dt{$uniqParam}.id = s.type_id")
                         ->addOrderBy("dt{$uniqParam}.type $type");
                     break;
                 case ProductTableStructure::BRAND:
                     $this->query
-                        ->innerJoin('device_brand db' . $uniqParam, "db{$uniqParam}.id = d.brand_id")
-                        ->addOrderBy("db{$uniqParam}.name $type");
+                        ->innerJoin(ProductBrand::tableName() . ' pb' . $uniqParam, "pb{$uniqParam}.id = s.brand_id")
+                        ->addOrderBy("pb{$uniqParam}.name $type");
+                    break;
+                case ProductTableStructure::TYPE:
+                    $this->query
+                        ->innerJoin(ProductType::tableName() . ' pt' . $uniqParam, "pt{$uniqParam}.id = s.type_id")
+                        ->addOrderBy("pt{$uniqParam}.type $type");
                     break;
                 case ProductTableStructure::TITLE:
                     $this->query
-                        ->addOrderBy("d.title $type");
+                        ->addOrderBy("p.title $type");
                     break;
-                case DeviceTableStructure::DEVICE_YEAR:
+                case ProductTableStructure::MERCHANT:
                     $this->query
-                        ->addOrderBy("s.year $type");
+                        ->innerJoin(Merchant::tableName() . ' m' . $uniqParam, "m{$uniqParam}.id = s.merchant_id")
+                        ->addOrderBy("m{$uniqParam}.name $type");
                     break;
-                case DeviceTableStructure::DEVICE_LENGTH:
+                case ProductTableStructure::MANUFACTURER:
                     $this->query
-                        ->addOrderBy("s.length $type");
+                        ->innerJoin(Manufacturer::tableName() . ' mn' . $uniqParam, "mn{$uniqParam}.id = s.manufacturer_id")
+                        ->addOrderBy("mn{$uniqParam}.name $type");
                     break;
-                case DeviceTableStructure::DEVICE_WIDTH:
-                    $this->query
-                        ->addOrderBy("s.width $type");
-                    break;
-                case DeviceTableStructure::DEVICE_DEPTH:
-                    $this->query
-                        ->addOrderBy("s.depth $type");
-                    break;
-                case DeviceTableStructure::DEVICE_SCREEN_SIZE:
-                    $this->query
-                        ->addOrderBy("s.screensize $type");
-                    break;
-                case DeviceTableStructure::DEVICE_CARD_MEMORY:
-                    $this->query
-                        ->innerJoin('card_memory cm' . $uniqParam, "cm{$uniqParam}.id = s.card_memory_id")
-                        ->addOrderBy("cm{$uniqParam}.size $type");
-                    break;
-                case DeviceTableStructure::DEVICE_35_JACK:
-                    $this->query
-                        ->addOrderBy("s.jack_35 $type");
-                    break;
-                case DeviceTableStructure::DEVICE_BLUETOOTH:
-                    $this->query
-                        ->addOrderBy("s.bluetooth $type");
-                    break;
-                case DeviceTableStructure::DEVICE_USB_TYPE:
-                    $this->query
-                        ->innerJoin('usb_type ut' . $uniqParam, "ut{$uniqParam}.id = s.usb_type_id")
-                        ->addOrderBy("ut{$uniqParam}.type $type");
-                    break;
-                case DeviceTableStructure::DEVICE_USB_STANDARD:
-                    $this->query
-                        ->innerJoin('usb_standard us' . $uniqParam, "us{$uniqParam}.id = s.usb_standard_id")
-                        ->addOrderBy("us{$uniqParam}.standard $type");
-                    break;
-                case DeviceTableStructure::DEVICE_WIRELESS_CHARGE:
-                    $this->query
-                        ->addOrderBy("s.wireless_charge $type");
-                    break;
-                case DeviceTableStructure::DEVICE_FAST_CHARGE:
-                    $this->query
-                        ->addOrderBy("s.fasst_charge $type");
-                    break;
-                case DeviceTableStructure::DEVICE_REMOVABLE_BATTERY:
-                    $this->query
-                        ->addOrderBy("s.removable_battery $type");
-                    break;
-                case DeviceTableStructure::PRICE:
+                case ProductTableStructure::PRICE:
                     $this->query
                         ->addOrderBy("s.price $type");
+                    break;
+                case ProductTableStructure::BARCODE:
+                    $this->query
+                        ->addOrderBy("s.barcode $type");
+                    break;
+                case ProductTableStructure::BARCODE_TYPE:
+                    $this->query
+                        ->innerJoin(BarcodeType::tableName() . ' bt' . $uniqParam, "bt{$uniqParam}.id = s.barcode_type_id")
+                        ->addOrderBy("bt{$uniqParam}.type $type");
+                    break;
+                case ProductTableStructure::BROWSE_NODE:
+                    $this->query
+                        ->innerJoin(BrowseNode::tableName() . ' bn' . $uniqParam, "bn{$uniqParam}.id = s.browsenode_id")
+                        ->addOrderBy("bn{$uniqParam}.node $type");
+                    break;
+                case ProductTableStructure::AMAZON_PRODUCT_TYPE:
+                    $this->query
+                        ->innerJoin(BrowseNode::tableName() . ' bn1' . $uniqParam, "bn1{$uniqParam}.id = s.browsenode_id")
+                        ->addOrderBy("bn1{$uniqParam}.product_type $type");
+                    break;
+                case ProductTableStructure::VARIATION_THEME:
+                    $this->query
+                        ->innerJoin(VariationTheme::tableName() . ' vt' . $uniqParam, "vt{$uniqParam}.id = s.variation_theme_id")
+                        ->addOrderBy("vt{$uniqParam}.title $type");
                     break;
             }
         }

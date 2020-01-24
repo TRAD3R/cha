@@ -1,6 +1,6 @@
 class Gadget
 {
-    constructor(page, perPage, sortAsc, sortDesc) {
+    constructor(page = 1, perPage = 100, sortAsc = '', sortDesc = '') {
         this.el = null;
         this.row = null;
         this.deviceId = 0;
@@ -227,7 +227,7 @@ class Gadget
     strToArray(string) {
         let res = [];
 
-        if( string.length > 0)
+        if( string && string.length > 0)
             res = string.split(',').map(item => {
                 return parseInt(item, 10);
             });
