@@ -67,7 +67,7 @@ class ProductHelper
             ;
         
         return [
-            'products' => $this->query->all(),
+            'items' => $this->query->all(),
             'total'   => $total
         ];
     }

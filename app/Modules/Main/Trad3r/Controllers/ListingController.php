@@ -6,10 +6,13 @@ namespace Main\Trad3r\Controllers;
 
 use App\App;
 use App\Controller\Main;
+use App\Helpers\DeviceHelper;
 use App\Helpers\ListingHelper;
 use App\Helpers\ProductHelper;
+use App\Models\Device;
 use App\Models\Product;
 use App\Params;
+use App\Repositories\ProductRepository;
 use App\Request;
 use App\Response;
 use Yii;
@@ -17,7 +20,7 @@ use Yii;
 class ListingController extends Main
 {
     public $enableCsrfValidation = false;
-    
+
     public function actionIndex()
     {
         /** @var Request $request */
@@ -32,57 +35,76 @@ class ListingController extends Main
         ];
 
         $offset = ($params[Params::PAGE] - 1) * $params[Params::PER_PAGE];
-        
-        $products = (new ProductHelper())->getProducts([], 0);
+
+
+        $products = [];
+
+        switch($params[Params::LISTING_TYPE]){
+            case ListingHelper::DEVICES:
+                $products =(new ProductHelper())->getProducts([], 0);
+                $gadgets = (new DeviceHelper())->getDevices($params, $offset);
+                break;
+            case ListingHelper::PRODUCTS:
+            default:
+                $gadgets = (new ProductHelper())->getProducts($params, $offset);
+        }
+
+
         return $this->render('index', [
-            'products' => $products['products'],
-            'totalCount' => $products['total'],
+            'gadgets' => $gadgets['items'],
+            'totalCount' => $gadgets['total'],
+            'products' => $products['items'],
             'params' => $params,
             'offset' => $offset
         ]);
     }
-    
+
     public function actionCreate()
     {
         $this->getResponse()->setJsonFormat();
         /** @var Request $request */
         $request = $this->getRequest();
-        
+
         $params = [
             ListingHelper::FILENAME => $request->post(ListingHelper::FILENAME, date('Y-m-d-H-m-s', time())),
             ListingHelper::IDS => $request->post(ListingHelper::IDS, []),
             Params::LISTING_TYPE => $request->post(Params::LISTING_TYPE),
             Params::LISTING_ACTION_TYPE => $request->post(Params::LISTING_ACTION_TYPE),
         ];
-        
+
         $filename = $params[ListingHelper::FILENAME] . "." . ListingHelper::FILETYPE;
-        
+
         if(!ListingHelper::isUniqueFilename($filename)){
             return [
                 'status' => Response::STATUS_FAIL,
                 'error'  => Yii::t('front', 'FILENAME_IS_NOT_UNIQUE', ['filename' => $filename])
             ];
         }
-        
+
         $helper = new ListingHelper();
+        $createFile = [];
         $products = null;
-        
+        $devices = null;
+
         if($params[Params::LISTING_TYPE] === ListingHelper::PRODUCTS) {
             $products = Product::findAll($params[ListingHelper::IDS]);
-            $createFile = $helper->create($products, $filename, $params[Params::LISTING_ACTION_TYPE]);
-            if($createFile['status']){
-                return [
-                    'status' => Response::STATUS_SUCCESS,
-                    'href' => App::i()->getFile()->mdUrl("/out/" . $filename),
-                    'file' => $filename,
-                    'errors' => $createFile['errors'],
-                ];
-            }
+            $createFile = $helper->createListing($products, $filename, $params[Params::LISTING_ACTION_TYPE]);
             
-        }elseif($params[Params::LISTING_TYPE] === ListingHelper::PRODUCTS){
+        }elseif($params[Params::LISTING_TYPE] === ListingHelper::DEVICES){
+            $products = ProductRepository::findAllParentOrIndiv();
+            $createFile = $helper->createListing($products, $filename, $params[Params::LISTING_ACTION_TYPE], $params[ListingHelper::IDS]);
             
         }elseif($params[Params::LISTING_TYPE] === ListingHelper::LINES){
 
+        }
+
+        if($createFile['status']){
+            return [
+                'status' => Response::STATUS_SUCCESS,
+                'href' => App::i()->getFile()->mdUrl("/out/" . $filename),
+                'file' => $filename,
+                'errors' => $createFile['errors'],
+            ];
         }
 
         return [
@@ -95,18 +117,18 @@ class ListingController extends Main
     {
         /** @var Request $request */
         $request = $this->getRequest();
-        
+
         if(!$request->isAjax()){
             $this->getResponse()->set404();
         }
-        
+
         $this->getResponse()->setJsonFormat();
         return [
             'status' => Response::STATUS_SUCCESS,
             'progress' => (new ListingHelper())->getProgress(),
         ];
     }
-    
+
     public function actionArchive()
     {
         /** @var Request $request */
@@ -115,7 +137,7 @@ class ListingController extends Main
         if(!$request->isAjax()){
             $this->getResponse()->set404();
         }
-        
+
         $files = ListingHelper::getAllFiles();
 
         $this->getResponse()->setJsonFormat();
