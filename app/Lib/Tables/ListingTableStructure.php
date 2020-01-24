@@ -7,13 +7,16 @@ use Yii;
 
 class ListingTableStructure extends AbstractTS
 {
+    const SEQUENCE_NUMBER = 0;
+    const SELECT_ALL = 100;
+    
     public static function getTitles()
     {
         return [
-          self::GROUP_CUSTOM => [
-              self::ID => Yii::t('front', 'ID'),
-              self::TITLE => Yii::t('front', 'TITLE'),
-          ],
+          self::SEQUENCE_NUMBER => Yii::t('front', 'SECUENCE_NUMBER'),
+          self::SELECT_ALL => Yii::t('front', 'SELECT_ALL'),
+          self::DATE_CREATED => Yii::t('front', 'DATE_CREATED'),
+          self::TITLE => Yii::t('front', 'TITLE'),
         ];
     }
 
@@ -24,7 +27,7 @@ class ListingTableStructure extends AbstractTS
     public static function getSortedColumns()
     {
         return [
-            self::ID,
+            self::DATE_CREATED,
             self::TITLE,
         ];
     }

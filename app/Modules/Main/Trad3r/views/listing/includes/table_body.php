@@ -14,7 +14,10 @@ use yii\web\View;
   <div class="table-body">
     <?php foreach ($products as $key => $product):?>
           <div class="table-row" data-id="<?=$product->id?>">
-              <?=$this->render('table_row', compact('product'))?>
+              <?=$this->render('table_row', [
+                      'key' => ++$key,
+                  'product' => $product,
+              ])?>
           </div>
     <?php endforeach; ?>
   </div>
