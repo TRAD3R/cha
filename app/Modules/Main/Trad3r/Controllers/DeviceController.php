@@ -38,7 +38,7 @@ class DeviceController extends Main
         $devices = $devices->getDevices($params, $offset);
 
         return $this->render('index', [
-            'devices' => $devices['devices'],
+            'devices' => $devices['items'],
             'totalCount' => $devices['total'],
             'params' => $params,
             'offset' => $offset,

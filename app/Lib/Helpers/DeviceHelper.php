@@ -52,16 +52,38 @@ class DeviceHelper
             }
         }
         
+        if($params[Params::PRODUCTS]){
+            $this->query
+                ->innerJoin('');
+            /** todo: реализовать функционал сортировки по продуктам */
+        }
+        
         $total = $this->query->count();
+        
+//        $timeline = DeviceRepository::getTimeline($this->query);
+//
+//        $from = strtotime($params[Params::SORT_DATE_FROM] ?: $timeline['from']);
+//        $to = strtotime($params[Params::SORT_DATE_TO] ?: $timeline['to']);
+//        
+//        $this->query
+//            ->andWhere('s.date_created >= :datefrom', [':datefrom' =>  date("Y-m-d", $from)])
+//            ->andWhere('s.date_created <= :dateto', ['dateto' => date("Y-m-d", $to)])
+//            ;
+        
 
         $this->query
             ->addOrderBy('d.id ASC')
-            ->limit($params[Params::PER_PAGE])
             ->offset($offset);
         
+        if($params[Params::PER_PAGE]){
+            $this->query->limit($params[Params::PER_PAGE]);
+        }
+        
         return [
-            'devices' => $this->query->all(),
-            'total'   => $total
+            'items' => $this->query->all(),
+            'total' => $total,
+//            Params::SORT_DATE_FROM  => $from,
+//            Params::SORT_DATE_TO  => $to,
         ];
     }
     

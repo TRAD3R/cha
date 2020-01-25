@@ -145,13 +145,12 @@ ul {
 .btn-operations {
   opacity: 0;
   visibility: hidden;
-  position: fixed;
+  position: absolute;
   display: flex;
   justify-content: center;
   top: 5px;
-  right: 50%;
-  margin-right: -15%;
-  z-index: 3;
+  right: 20px;
+  z-index: 4;
   transition: all .2s ease;
   -webkit-transition: all .2s ease;
   -moz-transition: all .2s ease;

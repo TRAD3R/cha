@@ -1,16 +1,28 @@
 <?php
 /**
  * @var View $this
- * @var Product $product
+ * @var Device|Product $product
+ * @var int $key
  */
 
+use App\Models\Device;
+use App\Models\DeviceBrand;
 use App\Models\Product;
 use yii\web\View;
 
+$specifications = $product->specifications;
+
+if(get_class($product) == Product::class) {
+    $title = $product->title;
+}else{
+    /** @var DeviceBrand $brand */
+    $brand = $product->getBrand()->one();
+    $title = $brand->name . " " . $product->title;
+}
 ?>
 
     <div class="table-cell sequence-number">
-      1
+      <?=$key?>
     </div>
     <div class="table-cell text-center checkbox">
       <label class="checkbox">
@@ -24,8 +36,14 @@ use yii\web\View;
       </label>
     </div>
     <div class="table-cell">
-        <?=$product->id?>
+        <?php
+        try {
+            $dateCreated = new DateTime($specifications->date_created);
+            echo $dateCreated->format('d.m.Y');
+        } catch (Exception $e) {
+        }
+        ?>
     </div>
     <div class="table-cell">
-        <?=$product->title?>
+        <?=$title?>
     </div>

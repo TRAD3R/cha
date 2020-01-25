@@ -50,6 +50,7 @@ function listingCreate() {
     let checked = getIds();
     let url = new URL(location.href);
     let actionType = $("#action-type").val();
+    let products = getSelectedProducts();
 
     showModal("log");
 
@@ -63,6 +64,7 @@ function listingCreate() {
                 filename: title,
                 type: url.searchParams.get('type'),
                 actionType: actionType,
+                products: products
             }, success: function (res) {
                 if(res.status === 'success'){
                     LISTING_FILE.attr("href", res.href);
@@ -77,17 +79,49 @@ function listingCreate() {
                     addError(res.error);
                 }
                 
-                clearInterval(showProgress);
+                // clearInterval(showProgress);
             }
         });
         
-        let showProgress = setInterval(function () {
-            getProgress();
-        }, 1000)
+        // let showProgress = setInterval(function () {
+        //     getProgress();
+        // }, 1000)
     }else{
         addError("Не выбрано ни одного гаджета");
     }
     
+}
+
+function getSelectedProducts() {
+    let products = [];
+    
+    $("#product-list").find("input[type='checkbox']:checked").each(function () {
+        products.push($(this).data('id'));
+    });
+    
+    return products.join(",");
+}
+
+function getPerPage() {
+    let perPage = 100;
+    
+    let activeItem = $('.pagination').find(".simple-select-item.is-active");
+
+    if(activeItem) {
+        perPage = activeItem.data('value');
+    }
+    
+    return perPage;
+}
+
+function filterListing() {
+    let from = $("#date-start").val();
+    let to = $("#date-end").val();
+
+    let products = getSelectedProducts();
+    let perPage = getPerPage();
+    let url = "listings?type=devices&date_from=" + from + "&date_to=" + to + "&products=" + products + "&per_page=" + perPage;
+    location.href = url;
 }
 
 function addError(msg) {

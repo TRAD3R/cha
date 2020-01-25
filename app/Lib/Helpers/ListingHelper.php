@@ -8,6 +8,8 @@ use App\Models\DeviceSpecification;
 use App\Models\EAN;
 use App\Models\Product;
 use App\Models\ProductSpecification;
+use App\Repositories\DeviceRepository;
+use App\Repositories\ProductRepository;
 use App\Tables\ListingTableStructure;
 use App\Tables\ProductTableStructure;
 use App\Tables\XlsStructure;
@@ -34,7 +36,7 @@ class ListingHelper
     const IDS = 'ids';
     const PROGRESS_FILE = "/files/progress";
 
-    const START_ROW = 4;
+    private $currentRowNumber = 4;
 
     const MACROS_DEVICE_BRAND = '{DEVICE_BRAND}';
     const MACROS_DEVICE_MODEL = '{DEVICE_NAME}';
@@ -49,6 +51,8 @@ class ListingHelper
     private static $progress = '0';
     private $actionType;
     private $errors = [];
+    
+    private $selectedDevices = [];       // id девайсов, которые выбрала Ира на странице
 
     /**
      * Проверка на уникальность имени файла
@@ -90,9 +94,26 @@ class ListingHelper
     {
         return file_get_contents(Yii::getAlias("@Web") . self::PROGRESS_FILE);
     }
+    
+//    public function createDevices($deviceIds, string $newFilename, $actionType = self::ACTION_TYPE_UPDATE)
+//    {
+//        ini_set('max_execution_time', 0);
+//
+//        if($this->getFilename($newFilename)) {
+//            
+//            $this->selectedDevices = $deviceIds;
+//            
+//            $products = $this->getLinkedProducts($deviceIds);
+//            return [
+//                'status' => $this->save($newFilename),
+//                'errors' => $this->errors
+//            ];
+//        }
+//        
+//    }
 
     /**
-     * @param array $products
+     * @param Product[] $products
      * @param string $newFilename
      * @param int $actionType
      * @return array
@@ -101,23 +122,26 @@ class ListingHelper
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */
-    public function create(array $products, string $newFilename, $actionType = self::ACTION_TYPE_UPDATE)
+    public function createListing($products, $newFilename, $actionType = self::ACTION_TYPE_UPDATE, $deviceIds = [])
     {
         ini_set('max_execution_time', 0);
-        $newFilename = empty($newFilename) ? date("Y-M-d-H-i-s", time()) . "." . ListingHelper::FILETYPE : $newFilename;
-        $file = \Yii::getAlias('@trad3r_resources') . "/templates/" . self::TEMPLATE_AMAZON;
 
         $this->actionType = $actionType;
 
-        if(is_file($file)) {
-            $this->spreadsheet = IOFactory::load($file);
-            $this->setFileProperties();
-
+        if($this->getFilename($newFilename)) {   
+            
+            if($deviceIds) {
+                $this->selectedDevices = is_array($deviceIds) ? $deviceIds : explode(",", $deviceIds);
+            }
+            
             foreach ($products as $product) {
+                $deviceTypeIds = ProductRepository::getDeviceTypeIds($product);
+                $devices = $this->getLinkedDevices($product->specifications->type->alias, $deviceTypeIds);
+
                 if($product->parent_id == Product::TYPE_INDIVIDUAL) {
-                    $this->createIndividual($product);
+                    $this->createIndividual($product, $devices);
                 }else{
-                    $this->createVariation($product);
+                    $this->createVariation($product, $devices);
                 }
             }
 
@@ -161,19 +185,16 @@ class ListingHelper
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */
-    private function createIndividual(Product $product)
+    private function createIndividual(Product $product, $devices)
     {
-        $devices = $this->getLinkedDevices($product->specifications->type->alias);
-        $devicesCount = count($devices);
         $devicesFinished = 0;
 
-        $rowNumber = self::START_ROW;
         if($devices){
             foreach ($devices as $model) {
-                $this->createIndividualRow($product, $model, $rowNumber);
-                $rowNumber++;
+                $this->createIndividualRow($product, $model, $this->currentRowNumber);
+                $this->currentRowNumber++;
                 $devicesFinished++;
-                $this->setProgress($devicesCount, $devicesFinished);
+//                $this->setProgress($devices['total'], $devicesFinished);
             }
         }
     }
@@ -182,7 +203,7 @@ class ListingHelper
      * @param string $type
      * @return Device[]|null
      */
-    private function getLinkedDevices(string $type)
+    private function getLinkedDevices(string $type = '', $deviceTypeIds)
     {
         $query = Device::find()
             ->alias('d')
@@ -196,11 +217,17 @@ class ListingHelper
             case 'usb-c':
                 $query
                     ->innerJoin('usb_type ut', "ut.id = ds.usb_type_id")
-                    ->andWhere(['ut.alias' => $type])
+                    ->andWhere(['ut.alias' => $type, "ds.type_id" => $deviceTypeIds])
                 ;
                 break;
         }
-        $query->limit(150);
+        
+        if($this->selectedDevices){
+            $query->andWhere(['d.id' => $this->selectedDevices]);
+        }
+        $sql = $query->createCommand()->rawSql;
+        
+//        $query->limit(150);
         return $query->all();
     }
 
@@ -388,25 +415,22 @@ class ListingHelper
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */
-    private function createVariation(Product $product)
+    private function createVariation(Product $product, $devices)
     {
-        $devices = $this->getLinkedDevices($product->specifications->type->alias);
-        $devicesCount = count($devices);
         $devicesFinished = 0;
         $children = $product->children;
 
-        $rowNumber = self::START_ROW;
         if($devices){
             foreach ($devices as $model) {
-                $this->createParentRow($product, $model, $rowNumber);
-                $rowNumber++;
+                $this->createParentRow($product, $model, $this->currentRowNumber);
+                $this->currentRowNumber++;
                 foreach ($children as $child) {
-                    $this->createChildRow($child, $model, $rowNumber);
-                    $rowNumber++;
+                    $this->createChildRow($child, $model, $this->currentRowNumber);
+                    $this->currentRowNumber++;
                 }
 
                 $devicesFinished++;
-                $this->setProgress($devicesCount, $devicesFinished);
+//                $this->setProgress($devices['total'], $devicesFinished);
             }
         }
     }
@@ -457,6 +481,21 @@ class ListingHelper
                     break;
             }
         }
+    }
+
+    private function getFilename(&$newFilename)
+    {
+        $newFilename = empty($newFilename) ? date("Y-M-d-H-i-s", time()) . "." . ListingHelper::FILETYPE : $newFilename;
+        $file = \Yii::getAlias('@trad3r_resources') . "/templates/" . self::TEMPLATE_AMAZON;
+
+        if(is_file($file)) {
+            $this->spreadsheet = IOFactory::load($file);
+            $this->setFileProperties();
+            
+            return true;
+        }
+        
+        return false;
     }
 
 
