@@ -8,6 +8,7 @@ use App\Models\DeviceSpecification;
 use App\Models\EAN;
 use App\Models\Product;
 use App\Models\ProductSpecification;
+use App\Repositories\DeviceRepository;
 use App\Tables\ListingTableStructure;
 use App\Tables\ProductTableStructure;
 use App\Tables\XlsStructure;
@@ -182,16 +183,15 @@ class ListingHelper
      */
     private function createIndividual(Product $product)
     {
-        $devices = $this->getLinkedDevices($product->specifications->type->alias);
-        $devicesCount = count($devices);
+        $devices = DeviceRepository::getAllDevicesLinkToProduct([$product], $this->selectedDevices);
         $devicesFinished = 0;
 
-        if($devices){
-            foreach ($devices as $model) {
+        if($devices['items']){
+            foreach ($devices['items'] as $model) {
                 $this->createIndividualRow($product, $model, $this->currentRowNumber);
                 $this->currentRowNumber++;
                 $devicesFinished++;
-                $this->setProgress($devicesCount, $devicesFinished);
+                $this->setProgress($devices['total'], $devicesFinished);
             }
         }
     }
@@ -413,13 +413,12 @@ class ListingHelper
      */
     private function createVariation(Product $product)
     {
-        $devices = $this->getLinkedDevices($product->specifications->type->alias);
-        $devicesCount = count($devices);
+        $devices = DeviceRepository::getAllDevicesLinkToProduct([$product], $this->selectedDevices);
         $devicesFinished = 0;
         $children = $product->children;
 
-        if($devices){
-            foreach ($devices as $model) {
+        if($devices['items']){
+            foreach ($devices['items'] as $model) {
                 $this->createParentRow($product, $model, $this->currentRowNumber);
                 $this->currentRowNumber++;
                 foreach ($children as $child) {
@@ -428,7 +427,7 @@ class ListingHelper
                 }
 
                 $devicesFinished++;
-                $this->setProgress($devicesCount, $devicesFinished);
+                $this->setProgress($devices['total'], $devicesFinished);
             }
         }
     }

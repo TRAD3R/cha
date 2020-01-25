@@ -12,6 +12,7 @@ use App\Helpers\ProductHelper;
 use App\Models\Device;
 use App\Models\Product;
 use App\Params;
+use App\Repositories\DeviceRepository;
 use App\Repositories\ProductRepository;
 use App\Request;
 use App\Response;
@@ -32,6 +33,9 @@ class ListingController extends Main
             Params::PER_PAGE    => $request->get(Params::PER_PAGE) ?: ProductHelper::PER_PAGE,
             Params::SORT_ASC    => $request->getArrayStr(Params::SORT_ASC),
             Params::SORT_DESC   => $request->getArrayStr(Params::SORT_DESC),
+            Params::SORT_DATE_FROM   => $request->get(Params::SORT_DATE_FROM),
+            Params::SORT_DATE_TO   => $request->get(Params::SORT_DATE_TO),
+            Params::PRODUCTS   => $request->getArrayStr(Params::PRODUCTS),
         ];
 
         $offset = ($params[Params::PAGE] - 1) * $params[Params::PER_PAGE];
@@ -42,20 +46,28 @@ class ListingController extends Main
         switch($params[Params::LISTING_TYPE]){
             case ListingHelper::DEVICES:
                 $products =(new ProductHelper())->getProducts([], 0);
-                $gadgets = (new DeviceHelper())->getDevices($params, $offset);
+                if($params[Params::PRODUCTS]) {
+                    $selectedProducts = Product::find()->where(["IN", 'id', $params[Params::PRODUCTS]])->all();
+                }else{
+                    $selectedProducts = [];
+                }
+                    
+                $gadgets = DeviceRepository::getAllDevicesLinkToProduct($selectedProducts, [], $params, $offset);
                 break;
             case ListingHelper::PRODUCTS:
             default:
                 $gadgets = (new ProductHelper())->getProducts($params, $offset);
         }
-
+        
+        $params[Params::SORT_DATE_FROM] = $gadgets[Params::SORT_DATE_FROM];
+        $params[Params::SORT_DATE_TO] = $gadgets[Params::SORT_DATE_TO];
 
         return $this->render('index', [
             'gadgets' => $gadgets['items'],
             'totalCount' => $gadgets['total'],
             'products' => $products['items'],
             'params' => $params,
-            'offset' => $offset
+            'offset' => $offset,
         ]);
     }
 

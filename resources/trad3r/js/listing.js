@@ -90,6 +90,26 @@ function listingCreate() {
     
 }
 
+function getSelectedProducts() {
+    let products = [];
+    
+    $("#product-list").find("input[type='checkbox']:checked").each(function () {
+        products.push($(this).data('id'));
+    });
+    
+    return products.join(",");
+}
+
+function filterListing() {
+    let from = $("#date-start").val();
+    let to = $("#date-end").val();
+
+    let products = getSelectedProducts();
+    
+    let url = "listings?type=devices&date_from=" + from + "&date_to=" + to + "&products=" + products;
+    location.href = url;
+}
+
 function addError(msg) {
     let error = document.createElement("p");
     error.classList.add('error');
