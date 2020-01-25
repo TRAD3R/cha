@@ -9,6 +9,7 @@ use App\Models\EAN;
 use App\Models\Product;
 use App\Models\ProductSpecification;
 use App\Repositories\DeviceRepository;
+use App\Repositories\ProductRepository;
 use App\Tables\ListingTableStructure;
 use App\Tables\ProductTableStructure;
 use App\Tables\XlsStructure;
@@ -130,14 +131,17 @@ class ListingHelper
         if($this->getFilename($newFilename)) {   
             
             if($deviceIds) {
-                $this->selectedDevices = $deviceIds;
+                $this->selectedDevices = is_array($deviceIds) ? $deviceIds : explode(",", $deviceIds);
             }
             
             foreach ($products as $product) {
+                $deviceTypeIds = ProductRepository::getDeviceTypeIds($product);
+                $devices = $this->getLinkedDevices($product->specifications->type->alias, $deviceTypeIds);
+
                 if($product->parent_id == Product::TYPE_INDIVIDUAL) {
-                    $this->createIndividual($product);
+                    $this->createIndividual($product, $devices);
                 }else{
-                    $this->createVariation($product);
+                    $this->createVariation($product, $devices);
                 }
             }
 
@@ -181,17 +185,16 @@ class ListingHelper
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */
-    private function createIndividual(Product $product)
+    private function createIndividual(Product $product, $devices)
     {
-        $devices = DeviceRepository::getAllDevicesLinkToProduct([$product], $this->selectedDevices);
         $devicesFinished = 0;
 
-        if($devices['items']){
-            foreach ($devices['items'] as $model) {
+        if($devices){
+            foreach ($devices as $model) {
                 $this->createIndividualRow($product, $model, $this->currentRowNumber);
                 $this->currentRowNumber++;
                 $devicesFinished++;
-                $this->setProgress($devices['total'], $devicesFinished);
+//                $this->setProgress($devices['total'], $devicesFinished);
             }
         }
     }
@@ -200,7 +203,7 @@ class ListingHelper
      * @param string $type
      * @return Device[]|null
      */
-    private function getLinkedDevices(string $type = '')
+    private function getLinkedDevices(string $type = '', $deviceTypeIds)
     {
         $query = Device::find()
             ->alias('d')
@@ -214,16 +217,17 @@ class ListingHelper
             case 'usb-c':
                 $query
                     ->innerJoin('usb_type ut', "ut.id = ds.usb_type_id")
-                    ->andWhere(['ut.alias' => $type])
+                    ->andWhere(['ut.alias' => $type, "ds.type_id" => $deviceTypeIds])
                 ;
                 break;
         }
         
         if($this->selectedDevices){
-            $query->andWhere(["IN", 'd.id', $this->selectedDevices]);
+            $query->andWhere(['d.id' => $this->selectedDevices]);
         }
+        $sql = $query->createCommand()->rawSql;
         
-        $query->limit(150);
+//        $query->limit(150);
         return $query->all();
     }
 
@@ -411,14 +415,13 @@ class ListingHelper
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */
-    private function createVariation(Product $product)
+    private function createVariation(Product $product, $devices)
     {
-        $devices = DeviceRepository::getAllDevicesLinkToProduct([$product], $this->selectedDevices);
         $devicesFinished = 0;
         $children = $product->children;
 
-        if($devices['items']){
-            foreach ($devices['items'] as $model) {
+        if($devices){
+            foreach ($devices as $model) {
                 $this->createParentRow($product, $model, $this->currentRowNumber);
                 $this->currentRowNumber++;
                 foreach ($children as $child) {
@@ -427,7 +430,7 @@ class ListingHelper
                 }
 
                 $devicesFinished++;
-                $this->setProgress($devices['total'], $devicesFinished);
+//                $this->setProgress($devices['total'], $devicesFinished);
             }
         }
     }
