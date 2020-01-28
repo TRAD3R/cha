@@ -38,11 +38,11 @@ use App\Models\Product; ?>
 <div class="input-date-range">
     <div class="form-group inline-form">
         <label for="date-from"><?=Yii::t('front', 'FROM')?>:</label>
-        <input type="date" id="date-start" value="">
+        <input type="date" id="date-start" class="bg-light" value="">
     </div>
     <div class="form-group inline-form">
         <label for="date-from"><?=Yii::t('front', 'TO')?>:</label>
-        <input type="date" id="date-end" value="">
+        <input type="date" id="date-end" class="bg-light" value="">
     </div>
 </div>
 

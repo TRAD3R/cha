@@ -163,5 +163,4 @@ $specifications = $product->specifications;
     </div>
     <div class="table-cell">
     </div>
-    <div class="table-cell">
-    </div>
+

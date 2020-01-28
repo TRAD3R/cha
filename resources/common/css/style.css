@@ -114,8 +114,29 @@ ul {
   .btn-light:hover {
     background: #fcfcfc !important; }
 
+.bg-secondary {
+  background: #A1ACBC; }
+
+.bg-primary {
+  background: #005AF5; }
+
+.bg-light {
+  background: #fff; }
+
+.bg-dark {
+  background: #2D313D; }
+
 .c-secondary {
   color: #A1ACBC; }
+
+.c-primary {
+  color: #005AF5; }
+
+.c-light {
+  color: #fff; }
+
+.c-dark {
+  color: #2D313D; }
 
 .btn-operations {
   opacity: 0;
@@ -124,7 +145,7 @@ ul {
   display: flex;
   justify-content: center;
   top: 5px;
-  right: 20px;
+  right: 15px;
   z-index: 4;
   transition: all .2s ease;
   -webkit-transition: all .2s ease;
