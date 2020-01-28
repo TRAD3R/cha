@@ -28,13 +28,6 @@ class Product extends ActiveRecord
         return 'products';
     }
 
-    public function behaviors()
-    {
-        return [
-            Timestamp::class
-        ];
-    }
-
     public function getParent()
     {
         return $this->hasOne(Product::class, ['id' => 'parent_id']);

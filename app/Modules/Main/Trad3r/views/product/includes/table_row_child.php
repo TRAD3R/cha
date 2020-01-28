@@ -132,7 +132,7 @@ $specifications = $product->specifications;
             $src = TextHelper::createUsingFilename($sku, $i);
     ?>
             <div class="table-cell image">
-                <img src="<?=App::i()->getFile()->mdUrl("/accessories/using/" . $src)?>" alt="">
+                <img src="<?=App::i()->getFile()->mdUrl("/images/accessories/using/" . $src)?>" alt="">
             </div>
         <?php endif;?>
     <?php endfor;?>
@@ -163,5 +163,4 @@ $specifications = $product->specifications;
     </div>
     <div class="table-cell">
     </div>
-    <div class="table-cell">
-    </div>
+

@@ -1,5 +1,5 @@
 <?php
-/** 
+/**
  * @var Product[]   $products
  * @var array      $params
  */
@@ -23,7 +23,7 @@ use App\Params; ?>
             <?php foreach ($products as $product): ?>
                 <li class="dropdown-list-item">
                     <label class="checkbox">
-                        <input type="checkbox" class="product" data-id="<?=$product->id?>" 
+                        <input type="checkbox" class="product" data-id="<?=$product->id?>"
                             <?= in_array($product->id, $params[Params::PRODUCTS]) ? "checked" : ""?>
                         />
                         <span class="checkbox-box">

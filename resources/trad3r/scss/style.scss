@@ -139,7 +139,9 @@
     min-height: 30px;
   }
   &-content {
-    display: grid;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
     width: 100%;
     overflow: auto hidden;
     &::-webkit-scrollbar-track {
@@ -164,6 +166,7 @@
     position: relative;
     display: flex;
     width: 100%;
+    min-width: max-content;
     flex-direction: row;
     z-index: 1;
     box-shadow: 0 10px 20px transparentize($gray, 0.6);
@@ -190,10 +193,14 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    min-width: max-content;
+    overflow-y: auto;
     &-wrapper {
       max-height: 70vh;
       min-height: 70vh;
-      overflow: hidden auto;
+      display: flex;
+      flex-wrap: nowrap;
+      flex-direction: column;
       &::-webkit-scrollbar-track {
         -webkit-box-shadow: none;
         //background-color: $gray;
@@ -225,8 +232,10 @@
   &-cell {
     position: relative;
     min-height: 35px;
-    min-width: 155px;
+    min-width: 200px;
+    max-width: 200px;
     display: flex;
+    flex: 1;
     align-items: center;
     border: 1px solid $gray;
     background: $light;
@@ -378,11 +387,9 @@
   &-row {
     position: relative;
     padding-left: 40px;
-    display: grid;
-    //grid-template-columns: repeat(auto-fill,minmax(150px, 1fr));
-    //grid-column: 1 end;
-    grid-auto-flow: column;
+    display: flex;
     width: 100%;
+    flex-wrap: nowrap;
     transition: all .2s ease;
     -webkit-transition: all .2s ease;
     -moz-transition: all .2s ease;
@@ -889,7 +896,7 @@ button {
 
 .table-btn-tool {
   position: relative;
-  padding-left: 40px;
+  padding: 0 15px 0 40px;
   display: flex;
   width: 100%;
   justify-content: space-between;
