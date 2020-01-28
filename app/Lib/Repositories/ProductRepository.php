@@ -3,6 +3,7 @@
 
 namespace App\Repositories;
 
+use App\Models\DeviceType;
 use App\Models\Product;
 use Yii;
 
@@ -42,5 +43,18 @@ class ProductRepository
             ->orWhere(['parent_id' => -1])
             ->all()
         ;
+    }
+
+    public static function getDeviceTypeIds(Product $product)
+    {
+        $deviceTypes = $product->specifications->deviceTypes;
+        
+        $ids = [];
+        /** @var DeviceType $deviceType */
+        foreach ($deviceTypes as $deviceType) {
+            $ids[] = $deviceType->id;
+        }
+        
+        return $ids;
     }
 }
