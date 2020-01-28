@@ -92,7 +92,7 @@ use App\Params; ?>
           Файлы:
         </p>
         <div class="content-list file-list">
-          <a id="file-list" href="#" class="file"></a>
+          
         </div>
       </div>
       <div class="modal-content-item error-list-wrapper">
