@@ -265,7 +265,7 @@ class ListingHelper
             ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_6 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 6))
             ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_7 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 7))
             ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_8 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 18))
-            ->setCellValue(XlsStructure::COLUMN_SWATCHES . $rowNumber, App::i()->getFile()->getFullUrl("/images/swatches/" . $productSpecifications->swatch->filename))
+            ->setCellValue(XlsStructure::COLUMN_SWATCHES . $rowNumber, $productSpecifications->swatch_id ? App::i()->getFile()->getFullUrl("/images/swatches/" . $productSpecifications->swatch->filename) : '')
             ->setCellValue(XlsStructure::COLUMN_PRODCT_DESCRIPTION . $rowNumber, $this->changeMacros($productSpecifications->description, $device))
             ->setCellValue(XlsStructure::COLUMN_PART_NUMBER . $rowNumber, $this->creatSku($productSpecifications->barcode, $device->id))
             ->setCellValue(XlsStructure::COLUMN_UPDATE_DELETE . $rowNumber, $this->actionType())
@@ -458,11 +458,13 @@ class ListingHelper
         $filename = TextHelper::createUsingFilename($sku, $num);
         $filepath = "/images/accessories/usings/";
 
+        $url = App::i()->getFile()->getFullUrl($filepath . $filename);
+        
         if(!is_file(Yii::getAlias("@usings") . "/" . $filename)){
             $this->errors[] = Yii::t('front', 'NOT_ISSET_FILE', ['filename' => $filepath . $filename]);
-            $filename = '';
+            $url = '';
         }
-        $url = App::i()->getFile()->getFullUrl($filepath . $filename);
+        
         
         return $url;
         
