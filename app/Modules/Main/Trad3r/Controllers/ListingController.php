@@ -135,9 +135,11 @@ class ListingController extends Main
         }
 
         $this->getResponse()->setJsonFormat();
+        echo 25;
+        exit;
         return [
             'status' => Response::STATUS_SUCCESS,
-            'progress' => (new ListingHelper())->getProgress(),
+            'progress' => file_get_contents(Yii::getAlias('@web') . "/files/progress"),
         ];
     }
 
