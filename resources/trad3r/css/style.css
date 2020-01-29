@@ -152,17 +152,21 @@
         text-align: center;
         justify-content: center; }
   .table-body {
-    position: relative;
+    position: absolute;
     display: flex;
     flex-direction: column;
     min-width: max-content;
-    overflow-y: auto; }
+    overflow-y: auto;
+    overflow-x: auto;
+    height: 100%; }
     .table-body-wrapper {
       max-height: 70vh;
       min-height: 70vh;
       display: flex;
       flex-wrap: nowrap;
-      flex-direction: column; }
+      flex-direction: column;
+      width: max-content;
+      position: relative; }
       .table-body-wrapper::-webkit-scrollbar-track {
         -webkit-box-shadow: none; }
       .table-body-wrapper::-webkit-scrollbar {
