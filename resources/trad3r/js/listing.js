@@ -1,5 +1,5 @@
 const TABLE_BODY = $('.table-body');
-const LISTING_FILE = $("#file-list");
+const LISTING_FILE = $(".file-list");
 const ERRORS = $("#errors");
 const OLD_LISTINGS_FIELD = $("#listing-files");
 
@@ -39,13 +39,21 @@ function getProgress() {
     });
 }
 
+function showFileUrl(res) {
+    let link = document.createElement('a');
+    link.classList.add("file");
+    link.href = res.href;
+    link.innerText = res.file;
+    
+    LISTING_FILE.append(link);
+}
+
 function listingCreate() {
     hideModal();
     let title = $('#id-edited-input').val();
     inProgress = true;
     ERRORS.html('');
-    LISTING_FILE.text('');
-    LISTING_FILE.attr('href', "#");
+    LISTING_FILE.html('');
 
     let checked = getIds();
     let url = new URL(location.href);
@@ -67,8 +75,8 @@ function listingCreate() {
                 products: products
             }, success: function (res) {
                 if(res.status === 'success'){
-                    LISTING_FILE.attr("href", res.href);
-                    LISTING_FILE.text(res.file);
+                    showFileUrl(res);
+                    
                     if(res.errors){
                         let errors = res.errors;
                         for (let i in errors){
