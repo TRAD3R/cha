@@ -1,5 +1,14 @@
-<?php use App\Helpers\ListingHelper;
-use App\Params; ?>
+<?php 
+
+use App\Helpers\ListingHelper;
+use App\Html;
+use App\Params;
+use yii\web\View;
+
+/**
+ * @var View $this;
+ */
+?>
 
 </div>
 </main>
@@ -79,14 +88,9 @@ use App\Params; ?>
   </div>
   <div id="modal-content-log" class="modal-content">
     <div class="modal-content-wrapper">
-      <div class="progress">
-        <div class="progress-value">
-          <p class="procent">20%</p>
+        <div class="progress">
+            <?=$this->render('@layouts/common/progress', ["progress" => 0])?>
         </div>
-        <div class="progress-bar">
-          <div class="progress-line" style="width: 20%;"></div>
-        </div>
-      </div>
       <div class="modal-content-item file-list-wrapper">
         <p class="dr-h2">
           Файлы:

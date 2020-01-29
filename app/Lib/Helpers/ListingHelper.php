@@ -89,11 +89,6 @@ class ListingHelper
     {
         file_put_contents(Yii::getAlias("@Web") . self::PROGRESS_FILE, number_format($finished / $total * 100, 2));
     }
-
-    public function getProgress()
-    {
-        return file_get_contents(Yii::getAlias("@Web") . self::PROGRESS_FILE);
-    }
     
 //    public function createDevices($deviceIds, string $newFilename, $actionType = self::ACTION_TYPE_UPDATE)
 //    {
@@ -127,6 +122,8 @@ class ListingHelper
         ini_set('max_execution_time', 0);
 
         $this->actionType = $actionType;
+
+        $this->setProgress(1, 0);
 
         if($this->getFilename($newFilename)) {   
             
@@ -190,11 +187,12 @@ class ListingHelper
         $devicesFinished = 0;
 
         if($devices){
+            $deviceTotal = count($devices);
             foreach ($devices as $model) {
                 $this->createIndividualRow($product, $model, $this->currentRowNumber);
                 $this->currentRowNumber++;
                 $devicesFinished++;
-//                $this->setProgress($devices['total'], $devicesFinished);
+                $this->setProgress($deviceTotal, $devicesFinished);
             }
         }
     }
@@ -421,6 +419,7 @@ class ListingHelper
         $children = $product->children;
 
         if($devices){
+            $deviceTotal = count($devices);
             foreach ($devices as $model) {
                 $this->createParentRow($product, $model, $this->currentRowNumber);
                 $this->currentRowNumber++;
@@ -430,7 +429,7 @@ class ListingHelper
                 }
 
                 $devicesFinished++;
-//                $this->setProgress($devices['total'], $devicesFinished);
+                $this->setProgress($deviceTotal, $devicesFinished);
             }
         }
     }
