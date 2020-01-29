@@ -28,15 +28,12 @@ let Listing = {
 
 function getProgress() {
     /** todo реализоваь прогрессбар */
-    $.ajax({
-        url: 'listings/progress',
-        async: true,
-        success: function (res) {
-            if (res.status === 'success') {
-                // LISTING_FILE.text(res.progress);
-            }
-        }
-    });
+    $.post('progress.php',{},
+         function (res) {
+             $("#progress-p").text(res + "%");
+             $("#progress-bar").css("width", res + "%");
+         }
+    );
 }
 
 function showFileUrl(res) {
@@ -86,14 +83,14 @@ function listingCreate() {
                 }else{
                     addError(res.error);
                 }
-                
-                // clearInterval(showProgress);
+            }, complete: function () {
+                clearInterval(showProgress);
             }
         });
         
-        // let showProgress = setInterval(function () {
-        //     getProgress();
-        // }, 1000)
+        let showProgress = setInterval(function () {
+            getProgress();
+        }, 300)
     }else{
         addError("Не выбрано ни одного гаджета");
     }
