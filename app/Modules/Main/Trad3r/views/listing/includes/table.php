@@ -79,7 +79,7 @@ use yii\web\View;
                     </ul>
                 </div>
             </div>
-            <button type="button" class="btn btn-light">
+            <button type="button" class="btn btn-light" onclick="showArchive()">
         <span class="icon">
           <svg width="25" height="21" viewBox="0 0 25 21" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M21.4811 6.67352V19.6735H3.48108V6.67352" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -87,7 +87,7 @@ use yii\web\View;
           <path d="M10.4811 10.6735H14.4811" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </span>
-                <span class="btn-text" onclick="showArchive()"><?=Yii::t('front', 'ARCHIVE')?></span>
+                <span class="btn-text" ><?=Yii::t('front', 'ARCHIVE')?></span>
             </button>
         </div>
         <div class="table-btn-tool__item">
