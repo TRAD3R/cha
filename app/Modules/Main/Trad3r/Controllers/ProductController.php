@@ -144,6 +144,7 @@ class ProductController extends Main
         return [
             'status' => Response::STATUS_SUCCESS,
             'row' => $row,
+            'id' => $product->id
         ];
     }
 

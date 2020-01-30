@@ -57,17 +57,13 @@ class ProductSpecification extends ActiveRecord
         return 'product_specifications';
     }
 
-    public function beforeDelete()
+    public function behaviors()
     {
-        if(!parent::beforeDelete()) {
-            return false;
-        }
-
-        $specifications = $this->specifications;
-
-        return $specifications->delete();
+        return [
+            Timestamp::class
+        ];
     }
-    
+
     public function getProduct()
     {
         return $this->hasOne(Product::class, ['id' => 'product_id']);
