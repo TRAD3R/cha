@@ -83,6 +83,8 @@ function listingCreate() {
                 }else{
                     addError(res.error);
                 }
+            }, error: function (xhr) {
+                addError(xhr.responseJSON.message);
             }, complete: function () {
                 clearInterval(showProgress);
             }

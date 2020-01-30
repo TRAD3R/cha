@@ -93,18 +93,18 @@ class ListingController extends Main
             ];
         }
 
-        $helper = new ListingHelper();
+        $helper = new ListingHelper($filename, $params[Params::LISTING_ACTION_TYPE]);
         $createFile = [];
         $products = null;
         $devices = null;
 
         if($params[Params::LISTING_TYPE] === ListingHelper::PRODUCTS) {
             $products = Product::findAll($params[ListingHelper::IDS]);
-            $createFile = $helper->createListing($products, $filename, $params[Params::LISTING_ACTION_TYPE]);
+            $createFile = $helper->createListing($products);
             
         }elseif($params[Params::LISTING_TYPE] === ListingHelper::DEVICES){
             $products = ProductRepository::findAllParentOrIndiv();
-            $createFile = $helper->createListing($products, $filename, $params[Params::LISTING_ACTION_TYPE], $params[ListingHelper::IDS]);
+            $createFile = $helper->createListing($products, $params[ListingHelper::IDS]);
             
         }elseif($params[Params::LISTING_TYPE] === ListingHelper::LINES){
 
