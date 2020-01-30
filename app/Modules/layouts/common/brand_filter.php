@@ -23,7 +23,7 @@ $brands = DeviceBrand::find()->all();
   <div class="column-tool-body">
     <div class="column-tool-total">
       <button type="button" class="btn-select-all" onclick="selectAllBrands()">Выбрать все</button>
-      <button type="button" class="btn-remove-all disabled" onclick="resetAllBrands()">Убрать все</button>
+      <button type="button" class="btn-remove-all <?=$params[Params::BRANDS]?"":"disabled"?>" onclick="resetAllBrands()">Убрать все</button>
     </div>
     <ul class="column-tool-list" id="all-brands">
         <?php 
