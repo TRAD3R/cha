@@ -65,15 +65,17 @@ class Product extends Gadget
                 value = $(this).find('textarea').val();
             }else if($(this).hasClass(Gadget.getCheckboxClass())) {
                 value = $(this).find('input').prop('checked') ? 1 : 0;
-            }else if($(this).hasClass(Gadget.getMultiSelectClass())) {
+            }else if($(this).hasClass(Gadget.getSelectClass())) {
                 let selected = [];
-                $(this).find('.search-choice, .chosen-single').each(function () {
-                    selected.push($(this).find('span').text());
-                });
+                if($(this).hasClass('edited')) {
+                    $(this).find('.search-choice, .chosen-single').each(function () {
+                        selected.push($(this).find('span').text());
+                    });
+                }else{
+                    selected.push($(this).find("span.item-selected").text());
+                }
                 value = selected.join(",");
                 
-            }else if($(this).hasClass(Gadget.getSelectClass())) {
-                value = $(this).find('input').eq(0).val();
             }
             data[$(this).data('id')] = value;
         });
@@ -86,7 +88,6 @@ class Product extends Gadget
     }
 
     updateRow() {
-        console.log("update");
         super.updateRow('/products/');
     }
 
