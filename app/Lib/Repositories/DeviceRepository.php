@@ -62,6 +62,10 @@ class DeviceRepository
                     break;
             }
         }
+        
+        if($params[Params::BRANDS]){
+            $query->andWhere(["IN", "d.brand_id", $params[Params::BRANDS]]);
+        }
 
         if($params[Params::LISTING_SELECTED_DEVICE]){
             $query

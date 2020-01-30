@@ -35,6 +35,7 @@ use yii\web\View;
             <?php echo $this->render('table_head', [
                 'sortedColumnsAsc' => $params[Params::SORT_ASC],
                 'sortedColumnsDesc' =>$params[Params::SORT_DESC],
+                'params' => $params,
             ]); ?>
             <?php echo $this->render('table_body', [
                 'products' => $gadgets,

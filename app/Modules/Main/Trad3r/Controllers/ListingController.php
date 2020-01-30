@@ -36,6 +36,7 @@ class ListingController extends Main
             Params::SORT_DATE_FROM   => $request->get(Params::SORT_DATE_FROM),
             Params::SORT_DATE_TO   => $request->get(Params::SORT_DATE_TO),
             Params::PRODUCTS   => $request->getArrayStr(Params::PRODUCTS),
+            Params::BRANDS   => $request->getArrayStr(Params::BRANDS),
             Params::LISTING_SELECTED_DEVICE => $request->get(Params::LISTING_SELECTED_DEVICE),
         ];
 

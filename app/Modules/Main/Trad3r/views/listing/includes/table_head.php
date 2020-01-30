@@ -7,6 +7,7 @@ use App\Tables\ListingTableStructure;
 /**
  * @var array $sortedColumnsAsc
  * @var array $sortedColumnsDesc
+ * @var array $params
  */
 $ths = ListingTableStructure::getTitles();
 $sortedColumns = ListingTableStructure::getSortedColumns();
@@ -45,7 +46,9 @@ $sortedColumns = ListingTableStructure::getSortedColumns();
             'isSortedColumn' => true,
             'key' => ListingTableStructure::TITLE,
             'sortedColumnsAsc' => $sortedColumnsAsc,
-            'sortedColumnsDesc' => $sortedColumnsDesc
+            'sortedColumnsDesc' => $sortedColumnsDesc,
+            'isShowFilters' => true,
+            'params' => $params
         ])?>
     </div>
   </div>
