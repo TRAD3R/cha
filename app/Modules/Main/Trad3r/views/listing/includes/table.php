@@ -17,11 +17,25 @@ use yii\web\View;
 
 
 <div class="page page-listing">
+    <div class="search-select">
+        <?php
+        if($params[Params::LISTING_TYPE] === ListingHelper::DEVICES) {
+            echo $this->render("@layouts/common/search_select", [
+                    'showReset' => $params[Params::GADGET],
+                    'urlReset' => '/listings?' . Params::LISTING_TYPE . "=" . ListingHelper::DEVICES,
+                    'selected' => $selected,
+                ]
+            );
+        }
+        ?>
+    </div>
+    
     <div class="table" id="horizontal-scroller">
         <div class="table-content">
             <?php echo $this->render('table_head', [
                 'sortedColumnsAsc' => $params[Params::SORT_ASC],
                 'sortedColumnsDesc' =>$params[Params::SORT_DESC],
+                'params' => $params,
             ]); ?>
             <?php echo $this->render('table_body', [
                 'products' => $gadgets,
@@ -79,7 +93,7 @@ use yii\web\View;
                     </ul>
                 </div>
             </div>
-            <button type="button" class="btn btn-light">
+            <button type="button" class="btn btn-light" onclick="showArchive()">
         <span class="icon">
           <svg width="25" height="21" viewBox="0 0 25 21" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M21.4811 6.67352V19.6735H3.48108V6.67352" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -87,7 +101,7 @@ use yii\web\View;
           <path d="M10.4811 10.6735H14.4811" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </span>
-                <span class="btn-text" onclick="showArchive()"><?=Yii::t('front', 'ARCHIVE')?></span>
+                <span class="btn-text" ><?=Yii::t('front', 'ARCHIVE')?></span>
             </button>
         </div>
         <div class="table-btn-tool__item">

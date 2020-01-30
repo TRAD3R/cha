@@ -88,6 +88,8 @@ function searchModelsInArray(str) {
 
 // вывод окна-подсказки
 function showWindowResult(arr) {
+    let url = "";
+    
 	if(arr.length > 0){
 		suggest_count = arr.length;
 		// перед показом слоя подсказки, его обнуляем
@@ -95,8 +97,13 @@ function showWindowResult(arr) {
 		res_window.append('<ul>');
 		for(var i in arr){
 			if(arr[i] != ''){
+                if(location.href.indexOf("listings?")){
+                    url = location.href + "&selected_device=" + arr[i].id;
+                }else{
+                    url = "/devices?devices=" + arr[i].id;
+                }
 				// добавляем слою позиции
-				res_window.append('<li><a href="/devices?gadget=' + arr[i].id + '">'+ arr[i].title +'</a></li>');
+				res_window.append('<li><a href=' + url + '>'+ arr[i].title +'</a></li>');
 			}
 		}
 		

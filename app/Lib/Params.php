@@ -21,4 +21,6 @@ class Params
     const LISTING_TYPE = 'type';
     const LISTING_ACTION_TYPE = 'actionType';
     const PRODUCTS = 'products';
+    const BRANDS = 'brands';
+    const LISTING_SELECTED_DEVICE = 'selected_device';
 }
