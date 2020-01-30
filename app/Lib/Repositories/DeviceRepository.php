@@ -63,7 +63,11 @@ class DeviceRepository
             }
         }
 
-        if($selectedDeviceIds){
+        if($params[Params::LISTING_SELECTED_DEVICE]){
+            $query
+                ->andWhere(['d.id' => $params[Params::LISTING_SELECTED_DEVICE]])
+            ;
+        }elseif($selectedDeviceIds){
             $query->andWhere(["IN", 'd.id', $selectedDeviceIds]);
         }
 
@@ -76,6 +80,7 @@ class DeviceRepository
             ->andWhere('ds.date_created >= :datefrom', [':datefrom' =>  date("Y-m-d", $from)])
             ->andWhere('ds.date_created <= :dateto', ['dateto' => date("Y-m-d", $to)])
         ;
+        
         $total = $query->count();
 
         $query

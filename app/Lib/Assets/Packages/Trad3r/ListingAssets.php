@@ -16,7 +16,9 @@ class ListingAssets extends AssetBundle
 
     public $js = [
       'js/main.js',
-      'js/listing.js',
+      'js/listing.js', 
+      'js/search_models.js',
+
     ];
 
     public $css = [

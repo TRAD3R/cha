@@ -9,25 +9,7 @@ $(document).ready(function () {
     $("#select-all").on('click', selectAll);
 });
 
-let Listing = {
-    create: function () {
-        let url = 'listings/create';
-        $.ajax({
-            url: url,
-            method: "post",
-            data: {
-                filename: 'new_file1',
-                products: '1,2'
-            },
-            success: function (res) {
-                console.log(res)
-            }
-        })
-    }
-};
-
 function getProgress() {
-    /** todo реализоваь прогрессбар */
     $.post('progress.php',{},
          function (res) {
              $("#progress-p").text(res + "%");
@@ -114,7 +96,7 @@ function getPerPage() {
     
     let activeItem = $('.pagination').find(".simple-select-item.is-active");
 
-    if(activeItem) {
+    if(activeItem.length > 0) {
         perPage = activeItem.data('value');
     }
     
@@ -127,8 +109,7 @@ function filterListing() {
 
     let products = getSelectedProducts();
     let perPage = getPerPage();
-    let url = "listings?type=devices&date_from=" + from + "&date_to=" + to + "&products=" + products + "&per_page=" + perPage;
-    location.href = url;
+    location.href = "listings?type=devices&date_from=" + from + "&date_to=" + to + "&products=" + products + "&per_page=" + perPage;
 }
 
 function addError(msg) {
