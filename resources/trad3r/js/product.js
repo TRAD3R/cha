@@ -67,9 +67,13 @@ class Product extends Gadget
                 value = $(this).find('input').prop('checked') ? 1 : 0;
             }else if($(this).hasClass(Gadget.getSelectClass())) {
                 let selected = [];
-                $(this).find('.search-choice, .chosen-single').each(function () {
-                    selected.push($(this).find('span').text());
-                });
+                if($(this).hasClass('edited')) {
+                    $(this).find('.search-choice, .chosen-single').each(function () {
+                        selected.push($(this).find('span').text());
+                    });
+                }else{
+                    selected.push($(this).find("span.item-selected").text());
+                }
                 value = selected.join(",");
                 
             }
