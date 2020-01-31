@@ -56,11 +56,14 @@ class ProductHelper
             self::addSort($params[Params::SORT_DESC], 'DESC');
         }
 
-        $total = $this->query->count();
+        
         
         $individualParentid = Product::TYPE_INDIVIDUAL;
         $this->query
-            ->andWhere("p.parent_id IS NULL OR p.parent_id = {$individualParentid}")
+            ->andWhere("p.parent_id IS NULL OR p.parent_id = {$individualParentid}");
+        
+        $total = $this->query->count();
+        $this->query
             ->addOrderBy('p.id ASC')
             ->limit($params[Params::PER_PAGE])
             ->offset($offset)
