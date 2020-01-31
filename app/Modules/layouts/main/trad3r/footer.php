@@ -117,37 +117,6 @@ use yii\web\View;
     <div class="modal-content-wrapper">
       <p class="dr-h2"><?=Yii::t('front', 'ARCHIVE')?></p>
       <div id="listing-files" class="content-list file-list archive-file-list">
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
-        <a href="#" class="file">Listing_example.xls</a>
       </div>
     </div>
     <div class="btn btn-box btn-close-modal"  onclick="hideModal()">

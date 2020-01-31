@@ -99,6 +99,7 @@ class Gadget
                     gadget.body.removeClass('edited-body');
                     
                     $('.btn-operations').removeClass("is-active");
+                    $('body').removeClass('operations-process');
                     $("#new-device").removeClass(Gadget.getHiddenClass());
                 }
             }

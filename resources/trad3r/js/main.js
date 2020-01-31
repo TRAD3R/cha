@@ -119,7 +119,7 @@ function editRow(gadget) {
  */
 function scrollToEditedRow(row) {
     removeDoubleBtn(row);
-    $('.table-body-wrapper').animate({scrollTop: row.offset().top + 50}, 500);
+    $('.table-body').animate({scrollTop: row.offset().top + 50}, 500);
     row.find('.editable').first().dblclick();
 }
 
