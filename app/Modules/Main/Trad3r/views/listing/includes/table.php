@@ -17,11 +17,25 @@ use yii\web\View;
 
 
 <div class="page page-listing">
+    <div class="search-select">
+        <?php
+        if($params[Params::LISTING_TYPE] === ListingHelper::DEVICES) {
+            echo $this->render("@layouts/common/search_select", [
+                    'showReset' => $params[Params::GADGET],
+                    'urlReset' => '/listings?' . Params::LISTING_TYPE . "=" . ListingHelper::DEVICES,
+                    'selected' => $selected,
+                ]
+            );
+        }
+        ?>
+    </div>
+    
     <div class="table" id="horizontal-scroller">
         <div class="table-content">
             <?php echo $this->render('table_head', [
                 'sortedColumnsAsc' => $params[Params::SORT_ASC],
                 'sortedColumnsDesc' =>$params[Params::SORT_DESC],
+                'params' => $params,
             ]); ?>
             <?php echo $this->render('table_body', [
                 'products' => $gadgets,

@@ -2,6 +2,7 @@ const TABLE_BODY = $('.table-body');
 const LISTING_FILE = $(".file-list");
 const ERRORS = $("#errors");
 const OLD_LISTINGS_FIELD = $("#listing-files");
+const ALL_BRANDS_LIST = $("#all-brands");
 
 var inProgress = false;
 
@@ -9,25 +10,26 @@ $(document).ready(function () {
     $("#select-all").on('click', selectAll);
 });
 
-let Listing = {
-    create: function () {
-        let url = 'listings/create';
-        $.ajax({
-            url: url,
-            method: "post",
-            data: {
-                filename: 'new_file1',
-                products: '1,2'
-            },
-            success: function (res) {
-                console.log(res)
-            }
-        })
-    }
-};
+function selectAllBrands() {
+    checkUncheckBrands(true);
+    $(".btn-select-all").addClass("disabled");
+    $(".btn-remove-all").removeClass('disabled');
+}
+
+function resetAllBrands() {
+    checkUncheckBrands(false);
+    $(".btn-select-all").removeClass('disabled');
+    $(".btn-remove-all").addClass('disabled');
+}
+
+function checkUncheckBrands(state)
+{
+    ALL_BRANDS_LIST.each(function () {
+        $(this).prop("checked", state);
+    })
+}
 
 function getProgress() {
-    /** todo реализоваь прогрессбар */
     $.post('progress.php',{},
          function (res) {
              $("#progress-p").text(res + "%");
@@ -83,6 +85,8 @@ function listingCreate() {
                 }else{
                     addError(res.error);
                 }
+            }, error: function (xhr) {
+                addError(xhr.responseJSON.message);
             }, complete: function () {
                 clearInterval(showProgress);
             }
@@ -107,12 +111,22 @@ function getSelectedProducts() {
     return products.join(",");
 }
 
+function getSelectedBrands() {
+    let brands = [];
+
+    ALL_BRANDS_LIST.find("input[type='checkbox']:checked").each(function () {
+        brands.push($(this).data('id'));
+    });
+
+    return brands.join(",");
+}
+
 function getPerPage() {
     let perPage = 100;
     
     let activeItem = $('.pagination').find(".simple-select-item.is-active");
 
-    if(activeItem) {
+    if(activeItem.length > 0) {
         perPage = activeItem.data('value');
     }
     
@@ -125,8 +139,8 @@ function filterListing() {
 
     let products = getSelectedProducts();
     let perPage = getPerPage();
-    let url = "listings?type=devices&date_from=" + from + "&date_to=" + to + "&products=" + products + "&per_page=" + perPage;
-    location.href = url;
+    let brands = getSelectedBrands();
+    location.href = "listings?type=devices&date_from=" + from + "&date_to=" + to + "&products=" + products + "&per_page=" + perPage + "&brands=" + brands;
 }
 
 function addError(msg) {

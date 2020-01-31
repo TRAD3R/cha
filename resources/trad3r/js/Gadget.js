@@ -13,6 +13,7 @@ class Gadget
     }
 
     static getSelectClass(){ return 'select'; }
+    static getMultiSelectClass(){ return 'multi-select'; }
     static getTextClass(){ return 'text'; }
     static getTextareaClass(){ return 'textarea'; }
     static getCheckboxClass(){ return 'checkbox'; }
@@ -87,7 +88,8 @@ class Gadget
     }
 
     deleteRow(url = '') {
-        let id = this.row.data('id');
+        let id = this.row.attr("data-id");
+        
         $.ajax({
             url: url + id,
             method: 'GET',
@@ -115,6 +117,7 @@ class Gadget
             success: function (res) {
                 if(res.status === 'success'){
                     that.row.html(res.row);
+                    that.row.attr("data-id", res.id)
                     that.row.removeClass('edited-row');
                     that.body.removeClass('edited-body');
                 }

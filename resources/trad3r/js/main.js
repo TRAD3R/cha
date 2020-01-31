@@ -2,7 +2,7 @@
  * Клонирование строки
  */
 
-BOX_WRAPPER.on('click', '#btnDublicateRow', function () {
+$('body').on('click', '#btnDublicateRow', function () {
     gadget.row = $(this).closest('.table-row');
     gadget.body = $(this).closest('.table-body');
     gadget.body
@@ -15,7 +15,7 @@ BOX_WRAPPER.on('click', '#btnDublicateRow', function () {
 /**
  * Удаление строки
  */
-BOX_WRAPPER.on('click', '#btnDeleteRow', function () {
+$('body').on('click', '#btnDeleteRow', function () {
     gadget.row = $(this).closest('.table-row');
     gadget.body = $(this).closest('.table-body');
     gadget.deleteRow();

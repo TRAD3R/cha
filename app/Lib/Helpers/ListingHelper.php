@@ -13,9 +13,13 @@ use App\Repositories\ProductRepository;
 use App\Tables\ListingTableStructure;
 use App\Tables\ProductTableStructure;
 use App\Tables\XlsStructure;
+use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx as Writer;
 use Yii;
 use yii\db\Query;
@@ -23,6 +27,7 @@ use yii\db\Query;
 class ListingHelper
 {
     const PER_PAGE = 100;
+    const PER_CICLE = 500; // Количество товаров для очередной записи в файл
 
     /** @var Query|null $query */
     private $query = null;
@@ -47,12 +52,30 @@ class ListingHelper
 
     /** @var Spreadsheet|null */
     private $spreadsheet = null;
+    private $newFilename = null;
+    
+    /** @var \Box\Spout\Writer\XLSX\Writer|null  */
+    private $writer = null;
 
     private static $progress = '0';
     private $actionType;
     private $errors = [];
+    private $tempFile = "";
+    private $csvRows = [];
     
     private $selectedDevices = [];       // id девайсов, которые выбрала Ира на странице
+    
+    private $totalGadgets = 1;
+    private $finishedGadgets = 0;
+    
+    public function __construct($newFilename, $actionType = self::ACTION_TYPE_UPDATE)
+    {
+        $this->tempFile = Yii::getAlias("@Web") . "/files/temp.csv";
+        $this->actionType = $actionType;
+
+        $this->setProgress();
+        $this->getFilename($newFilename);
+    }
 
     /**
      * Проверка на уникальность имени файла
@@ -85,9 +108,9 @@ class ListingHelper
         return $res;
     }
 
-    private function setProgress(int $total, int $finished)
+    private function setProgress()
     {
-        file_put_contents(Yii::getAlias("@Web") . self::PROGRESS_FILE, number_format($finished / $total * 100, 2));
+        file_put_contents(Yii::getAlias("@Web") . self::PROGRESS_FILE, number_format($this->finishedGadgets / $this->totalGadgets * 100, 2));
     }
     
 //    public function createDevices($deviceIds, string $newFilename, $actionType = self::ACTION_TYPE_UPDATE)
@@ -117,39 +140,27 @@ class ListingHelper
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */
-    public function createListing($products, $newFilename, $actionType = self::ACTION_TYPE_UPDATE, $deviceIds = [])
+    public function createListing($products, $deviceIds = [])
     {
         ini_set('max_execution_time', 0);
+        
+        if($deviceIds) {
+            $this->selectedDevices = is_array($deviceIds) ? $deviceIds : explode(",", $deviceIds);
+        }
+        
+        foreach ($products as $product) {
+            $deviceTypeIds = ProductRepository::getDeviceTypeIds($product);
+            $devices = $this->getLinkedDevices($product->specifications->type->alias, $deviceTypeIds);
 
-        $this->actionType = $actionType;
-
-        $this->setProgress(1, 0);
-
-        if($this->getFilename($newFilename)) {   
-            
-            if($deviceIds) {
-                $this->selectedDevices = is_array($deviceIds) ? $deviceIds : explode(",", $deviceIds);
+            if($product->parent_id == Product::TYPE_INDIVIDUAL) {
+                $this->createIndividual($product, $devices);
+            }else{
+                $this->createVariation($product, $devices);
             }
-            
-            foreach ($products as $product) {
-                $deviceTypeIds = ProductRepository::getDeviceTypeIds($product);
-                $devices = $this->getLinkedDevices($product->specifications->type->alias, $deviceTypeIds);
-
-                if($product->parent_id == Product::TYPE_INDIVIDUAL) {
-                    $this->createIndividual($product, $devices);
-                }else{
-                    $this->createVariation($product, $devices);
-                }
-            }
-
-            return [
-                'status' => $this->save($newFilename),
-                'errors' => $this->errors
-            ];
         }
 
         return [
-            'status' => false,
+            'status' => $this->saveToXls(),
             'errors' => $this->errors
         ];
     }
@@ -163,11 +174,19 @@ class ListingHelper
         ;
     }
 
-    private function save(string $newFilename)
+    private function saveToXls()
     {
         try {
-            $writer = IOFactory::createWriter($this->spreadsheet, 'Xlsx');
-            $file = \Yii::getAlias("@out") . DIRECTORY_SEPARATOR . $newFilename;
+            $reader = new Csv();
+            /** Set CSV options */
+            $reader
+                ->setDelimiter("\t")
+                ->setSheetIndex(0)
+                    ;
+            
+            $spreadsheet = $reader->load($this->tempFile);
+            $writer = new Xlsx($spreadsheet);
+            $file = \Yii::getAlias("@out") . DIRECTORY_SEPARATOR . $this->newFilename;
             $writer->save($file);
         }catch(Exception $e){
             return false;
@@ -184,15 +203,16 @@ class ListingHelper
      */
     private function createIndividual(Product $product, $devices)
     {
-        $devicesFinished = 0;
-
         if($devices){
-            $deviceTotal = count($devices);
+            $this->totalGadgets = count($devices) ?: 1;
             foreach ($devices as $model) {
-                $this->createIndividualRow($product, $model, $this->currentRowNumber);
-                $this->currentRowNumber++;
-                $devicesFinished++;
-                $this->setProgress($deviceTotal, $devicesFinished);
+                $this->createIndividualRow($product, $model);
+                
+                $this->finishedGadgets++;
+                $this->setProgress();
+                if($this->finishedGadgets % self::PER_CICLE == 0) {
+                    $this->saveToCsv();
+                }
             }
         }
     }
@@ -237,51 +257,114 @@ class ListingHelper
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */
-    private function createIndividualRow(Product $product, Device $device, $rowNumber)
+    private function createIndividualRow(Product $product, Device $device)
     {
         /** @var ProductSpecification $productSpecifications */
         $productSpecifications = $product->specifications;
         $newEan = $this->getNewEan("{$product->title} | {$device->brand->name} {$device->title}");
 
-        $this->spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue(XlsStructure::COLUMN_BROWSE_NODE . $rowNumber, $productSpecifications->browseNode->node)
-            ->setCellValue(XlsStructure::COLUMN_SKU . $rowNumber, $this->creatSku($productSpecifications->barcode, $device->id))
-            ->setCellValue(XlsStructure::COLUMN_BARCODE . $rowNumber, $newEan)
-            ->setCellValue(XlsStructure::COLUMN_BARCODE_TYPE . $rowNumber, $productSpecifications->barcodeType->type)
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_TITLE . $rowNumber, $this->changeMacros($product->title, $device))
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_BRAND . $rowNumber, $productSpecifications->productBrand->name)
-            ->setCellValue(XlsStructure::COLUMN_MANUFACTURER . $rowNumber, $productSpecifications->manufacturer->name)
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_TYPE . $rowNumber, $productSpecifications->browseNode->product_type)
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_PRICE . $rowNumber, PriceHelper::toFloat($productSpecifications->price))
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_QUANTITY . $rowNumber, $productSpecifications->quantity)
-            ->setCellValue(XlsStructure::COLUMN_MAIN_IMAGE . $rowNumber, $this->getMainImage($device, $productSpecifications->sku))
-            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_1 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 1))
-            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_2 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 2))
-            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_3 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 3))
-            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_4 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 4))
-            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_5 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 5))
-            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_6 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 6))
-            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_7 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 7))
-            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_8 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 18))
-            ->setCellValue(XlsStructure::COLUMN_SWATCHES . $rowNumber, $productSpecifications->swatch_id ? App::i()->getFile()->getFullUrl("/images/swatches/" . $productSpecifications->swatch->filename) : '')
-            ->setCellValue(XlsStructure::COLUMN_PRODCT_DESCRIPTION . $rowNumber, $this->changeMacros($productSpecifications->description, $device))
-            ->setCellValue(XlsStructure::COLUMN_PART_NUMBER . $rowNumber, $this->creatSku($productSpecifications->barcode, $device->id))
-            ->setCellValue(XlsStructure::COLUMN_UPDATE_DELETE . $rowNumber, $this->actionType())
-            ->setCellValue(XlsStructure::COLUMN_BULLETPOINT_1 . $rowNumber, $productSpecifications->bulletpoint_1)
-            ->setCellValue(XlsStructure::COLUMN_BULLETPOINT_2 . $rowNumber, $productSpecifications->bulletpoint_2)
-            ->setCellValue(XlsStructure::COLUMN_BULLETPOINT_3 . $rowNumber, $productSpecifications->bulletpoint_3)
-            ->setCellValue(XlsStructure::COLUMN_BULLETPOINT_4 . $rowNumber, $productSpecifications->bulletpoint_4)
-            ->setCellValue(XlsStructure::COLUMN_BULLETPOINT_5 . $rowNumber, $productSpecifications->bulletpoint_5)
-            ->setCellValue(XlsStructure::COLUMN_KEYWORDS . $rowNumber, $this->changeMacros($productSpecifications->keywords, $device))
-            ->setCellValue(XlsStructure::COLUMN_COMPATIBLE_DEVICE . $rowNumber, "{$device->brand->name} {$device->title}")
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_LENGTH . $rowNumber, $productSpecifications->length)
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_LENGTH_MEASURE . $rowNumber, $productSpecifications->measureUnit->type)
-            ->setCellValue(XlsStructure::COLUMN_CURRENCY . $rowNumber, "EUR")
-            ->setCellValue(XlsStructure::COLUMN_CONDITION_TYPE . $rowNumber, "Neu")
-            ->setCellValue(XlsStructure::COLUMN_NUMBER_OF_ITEMS . $rowNumber, 1)
-            ->setCellValue(XlsStructure::COLUMN_MERCHANT_TYPE . $rowNumber, $productSpecifications->merchant->name)
-        ;
-
+        $this->csvRows[] = [
+            "A" => $productSpecifications->browseNode->node,
+            "B" => $device->id,
+            "C" => $newEan,
+            "D" => $productSpecifications->barcodeType->type,
+            "E" => $this->changeMacros($product->title, $device),
+            "F" => $productSpecifications->productBrand->name,
+            "G" => $productSpecifications->manufacturer->name,
+            "H" => $productSpecifications->browseNode->product_type,
+            "I" => PriceHelper::toFloat($productSpecifications->price),
+            "J" => $productSpecifications->quantity,
+            "K" => $this->getMainImage($device, $productSpecifications->sku),
+            "L" => $this->getUsingImageUrl($productSpecifications->sku, 1),
+            "M" => $this->getUsingImageUrl($productSpecifications->sku, 2),
+            "N" => $this->getUsingImageUrl($productSpecifications->sku, 3),
+            "O" => $this->getUsingImageUrl($productSpecifications->sku, 4),
+            "P" => $this->getUsingImageUrl($productSpecifications->sku, 5),
+            "Q" => $this->getUsingImageUrl($productSpecifications->sku, 6),
+            "R" => $this->getUsingImageUrl($productSpecifications->sku, 7),
+            "S" => $this->getUsingImageUrl($productSpecifications->sku, 8),
+            "T" => $productSpecifications->swatch_id ? App::i()->getFile()->getFullUrl("/images/swatches/" . $productSpecifications->swatch->filename) : '',
+            "U" => "",
+            "V" => "",
+            "W" => "",
+            "X" => "",
+            "Y" => $this->changeMacros($productSpecifications->description, $device),
+            "Z" => $this->creatSku($productSpecifications->barcode, $device->id),
+            "AA" => "",
+            "AB" => $this->actionType(),
+            "AC" => $productSpecifications->bulletpoint_1,
+            "AD" => $productSpecifications->bulletpoint_2,
+            "AE" => $productSpecifications->bulletpoint_3,
+            "AF" => $productSpecifications->bulletpoint_4,
+            "AG" => $productSpecifications->bulletpoint_5,
+            "AH" => $this->changeMacros($productSpecifications->keywords, $device),
+            "AI" => "",
+            "AJ" => "",
+            "AK" => "",
+            "AL" => "",
+            "AM" => "",
+            "AN" => "",
+            "AO" => "",
+            "AP" => "",
+            "AQ" => "",
+            "AR" => "",
+            "AS" => "",
+            "AT" => "",
+            "AU" => "",
+            "AV" => "",
+            "AW" => "",
+            "AX" => "",
+            "AY" => "",
+            "AZ" => "",
+            "BA" => "",
+            "BB" => "",
+            "BC" => "{$device->brand->name} {$device->title}",
+            "BD" => $productSpecifications->length,
+            "BE" => $productSpecifications->measureUnit->type,
+            "BF" => "",
+            "BG" => "",
+            "BH" => "",
+            "BI" => "",
+            "BJ" => "",
+            "BK" => "",
+            "BL" => "",
+            "BM" => "",
+            "BN" => "",
+            "BO" => "",
+            "BP" => "",
+            "BQ" => "",
+            "BR" => "",
+            "BS" => "",
+            "BT" => "",
+            "BU" => "",
+            "BV" => "",
+            "BW" => "",
+            "BX" => "",
+            "BY" => "",
+            "BZ" => "",
+            "CA" => "",
+            "CB" => "",
+            "CC" => "EUR",
+            "CD" => "Neu",
+            "CE" => "",
+            "CF" => "",
+            "CG" => "",
+            "CH" => "",
+            "CI" => "",
+            "CJ" => "",
+            "CK" => 1,
+            "CL" => "",
+            "CM" => "",
+            "CN" => "",
+            "CO" => "",
+            "CP" => "",
+            "CQ" => "",
+            "CR" => "",
+            "CS" => "",
+            "CT" => "",
+            "CU" => "",
+            "CV" => $productSpecifications->merchant->name,
+        ];
     }
 
     /**
@@ -290,22 +373,113 @@ class ListingHelper
      * @param $rowNumber
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    private function createParentRow(Product $product, Device $device, $rowNumber)
+    private function createParentRow(Product $product, Device $device)
     {
         /** @var ProductSpecification $productSpecifications */
         $productSpecifications = $product->specifications;
 
-        $this->spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue(XlsStructure::COLUMN_BROWSE_NODE . $rowNumber, $productSpecifications->browseNode->node)
-            ->setCellValue(XlsStructure::COLUMN_SKU . $rowNumber, self::SKU_PREFIX . $device->id)
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_TITLE . $rowNumber, $this->changeMacros($product->title, $device))
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_BRAND . $rowNumber, $product->children[0]->specifications->productBrand->name)
-            ->setCellValue(XlsStructure::COLUMN_MANUFACTURER . $rowNumber, $product->children[0]->specifications->manufacturer->name)
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_TYPE . $rowNumber, $productSpecifications->browseNode->product_type)
-            ->setCellValue(XlsStructure::COLUMN_STATUS . $rowNumber, XlsStructure::STATUS_PARENT)
-            ->setCellValue(XlsStructure::COLUMN_VARIATION_THEME . $rowNumber, $productSpecifications->variationTheme->title)
-            ->setCellValue(XlsStructure::COLUMN_UPDATE_DELETE . $rowNumber, $this->actionType())
-        ;
+        $this->csvRows[] = [
+            "A" => $productSpecifications->browseNode->node,
+            "B" => $device->id,
+            "C" => "",
+            "D" => "",
+            "E" => $this->changeMacros($product->title, $device),
+            "F" => $productSpecifications->productBrand->name,
+            "G" => $productSpecifications->manufacturer->name,
+            "H" => $productSpecifications->browseNode->product_type,
+            "I" => "",
+            "J" => "",
+            "K" => "",
+            "L" => "",
+            "M" => "",
+            "N" => "",
+            "O" => "",
+            "P" => "",
+            "Q" => "",
+            "R" => "",
+            "S" => "",
+            "T" => "",
+            "U" => XlsStructure::STATUS_PARENT,
+            "V" => "",
+            "W" => "",
+            "X" => $productSpecifications->variationTheme->title,
+            "Y" => "",
+            "Z" => "",
+            "AA" => "",
+            "AB" => $this->actionType(),
+            "AC" => "",
+            "AD" => "",
+            "AE" => "",
+            "AF" => "",
+            "AG" => "",
+            "AH" => "",
+            "AI" => "",
+            "AJ" => "",
+            "AK" => "",
+            "AL" => "",
+            "AM" => "",
+            "AN" => "",
+            "AO" => "",
+            "AP" => "",
+            "AQ" => "",
+            "AR" => "",
+            "AS" => "",
+            "AT" => "",
+            "AU" => "",
+            "AV" => "",
+            "AW" => "",
+            "AX" => "",
+            "AY" => "",
+            "AZ" => "",
+            "BA" => "",
+            "BB" => "",
+            "BC" => "",
+            "BD" => "",
+            "BE" => "",
+            "BF" => "",
+            "BG" => "",
+            "BH" => "",
+            "BI" => "",
+            "BJ" => "",
+            "BK" => "",
+            "BL" => "",
+            "BM" => "",
+            "BN" => "",
+            "BO" => "",
+            "BP" => "",
+            "BQ" => "",
+            "BR" => "",
+            "BS" => "",
+            "BT" => "",
+            "BU" => "",
+            "BV" => "",
+            "BW" => "",
+            "BX" => "",
+            "BY" => "",
+            "BZ" => "",
+            "CA" => "",
+            "CB" => "",
+            "CC" => "",
+            "CD" => "",
+            "CE" => "",
+            "CF" => "",
+            "CG" => "",
+            "CH" => "",
+            "CI" => "",
+            "CJ" => "",
+            "CK" => "",
+            "CL" => "",
+            "CM" => "",
+            "CN" => "",
+            "CO" => "",
+            "CP" => "",
+            "CQ" => "",
+            "CR" => "",
+            "CS" => "",
+            "CT" => "",
+            "CU" => "",
+            "CV" => "",
+        ];
 
     }
 
@@ -317,55 +491,114 @@ class ListingHelper
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */
-    private function createChildRow(Product $product, Device $device, $rowNumber)
+    private function createChildRow(Product $product, Device $device)
     {
         /** @var ProductSpecification $productSpecifications */
         $productSpecifications = $product->specifications;
         $newEan = $this->getNewEan("{$product->title} | {$device->brand->name} {$device->title}");
 
-        $this->spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue(XlsStructure::COLUMN_BROWSE_NODE . $rowNumber, $product->parent->specifications->browseNode->node)
-            ->setCellValue(XlsStructure::COLUMN_SKU . $rowNumber, $this->creatSku($productSpecifications->barcode, $device->id))
-            ->setCellValue(XlsStructure::COLUMN_BARCODE . $rowNumber, $newEan)
-            ->setCellValue(XlsStructure::COLUMN_BARCODE_TYPE . $rowNumber, $productSpecifications->barcodeType->type)
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_TITLE . $rowNumber, $this->changeMacros($product->title, $device))
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_BRAND . $rowNumber, $productSpecifications->productBrand->name)
-            ->setCellValue(XlsStructure::COLUMN_MANUFACTURER . $rowNumber, $productSpecifications->manufacturer->name)
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_TYPE . $rowNumber, $product->parent->specifications->browseNode->product_type)
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_PRICE . $rowNumber, PriceHelper::toFloat($productSpecifications->price))
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_QUANTITY . $rowNumber, $productSpecifications->quantity)
-            ->setCellValue(XlsStructure::COLUMN_MAIN_IMAGE . $rowNumber, $this->getMainImage($device, $productSpecifications->sku))
-            ->setCellValue(XlsStructure::COLUMN_SWATCHES . $rowNumber, App::i()->getFile()->getFullUrl("/images/swatches/" . $productSpecifications->swatch->filename))
-            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_1 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 1))
-            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_2 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 2))
-            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_3 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 3))
-            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_4 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 4))
-            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_5 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 5))
-            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_6 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 6))
-            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_7 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 7))
-            ->setCellValue(XlsStructure::COLUMN_SECONDARY_IMAGE_8 . $rowNumber, $this->getUsingImageUrl($productSpecifications->sku, 18))
-            ->setCellValue(XlsStructure::COLUMN_STATUS . $rowNumber, XlsStructure::STATUS_CHILD)
-            ->setCellValue(XlsStructure::COLUMN_PARENT_SKU . $rowNumber, self::SKU_PREFIX . $device->id)
-            ->setCellValue(XlsStructure::COLUMN_RELATIONSHIP . $rowNumber, XlsStructure::RELATIONSHIP)
-            ->setCellValue(XlsStructure::COLUMN_VARIATION_THEME . $rowNumber, $product->parent->specifications->variationTheme->title)
-            ->setCellValue(XlsStructure::COLUMN_PRODCT_DESCRIPTION . $rowNumber, $this->changeMacros($productSpecifications->description, $device))
-            ->setCellValue(XlsStructure::COLUMN_PART_NUMBER . $rowNumber, $this->creatSku($productSpecifications->barcode, $device->id))
-            ->setCellValue(XlsStructure::COLUMN_UPDATE_DELETE . $rowNumber, $this->actionType())
-            ->setCellValue(XlsStructure::COLUMN_BULLETPOINT_1 . $rowNumber, $productSpecifications->bulletpoint_1)
-            ->setCellValue(XlsStructure::COLUMN_BULLETPOINT_2 . $rowNumber, $productSpecifications->bulletpoint_2)
-            ->setCellValue(XlsStructure::COLUMN_BULLETPOINT_3 . $rowNumber, $productSpecifications->bulletpoint_3)
-            ->setCellValue(XlsStructure::COLUMN_BULLETPOINT_4 . $rowNumber, $productSpecifications->bulletpoint_4)
-            ->setCellValue(XlsStructure::COLUMN_BULLETPOINT_5 . $rowNumber, $productSpecifications->bulletpoint_5)
-            ->setCellValue(XlsStructure::COLUMN_KEYWORDS . $rowNumber, $this->changeMacros($productSpecifications->keywords, $device))
-            ->setCellValue(XlsStructure::COLUMN_COMPATIBLE_DEVICE . $rowNumber, "{$device->brand->name} {$device->title}")
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_LENGTH . $rowNumber, $productSpecifications->length)
-            ->setCellValue(XlsStructure::COLUMN_PRODUCT_LENGTH_MEASURE . $rowNumber, $productSpecifications->measureUnit->type)
-            ->setCellValue(XlsStructure::COLUMN_CURRENCY . $rowNumber, "EUR")
-            ->setCellValue(XlsStructure::COLUMN_CONDITION_TYPE . $rowNumber, "Neu")
-            ->setCellValue(XlsStructure::COLUMN_NUMBER_OF_ITEMS . $rowNumber, 1)
-            ->setCellValue(XlsStructure::COLUMN_MERCHANT_TYPE . $rowNumber, $product->parent->specifications->merchant->name)
-        ;
-
+        $this->csvRows[] = [
+            "A" => $product->parent->specifications->browseNode->node,
+            "B" => $device->id,
+            "C" => $newEan,
+            "D" => $productSpecifications->barcodeType->type,
+            "E" => $this->changeMacros($product->title, $device),
+            "F" => $productSpecifications->productBrand->name,
+            "G" => $productSpecifications->manufacturer->name,
+            "H" => $product->parent->specifications->browseNode->product_type,
+            "I" => PriceHelper::toFloat($productSpecifications->price),
+            "J" => $productSpecifications->quantity,
+            "K" => $this->getMainImage($device, $productSpecifications->sku),
+            "L" => $this->getUsingImageUrl($productSpecifications->sku, 1),
+            "M" => $this->getUsingImageUrl($productSpecifications->sku, 2),
+            "N" => $this->getUsingImageUrl($productSpecifications->sku, 3),
+            "O" => $this->getUsingImageUrl($productSpecifications->sku, 4),
+            "P" => $this->getUsingImageUrl($productSpecifications->sku, 5),
+            "Q" => $this->getUsingImageUrl($productSpecifications->sku, 6),
+            "R" => $this->getUsingImageUrl($productSpecifications->sku, 7),
+            "S" => $this->getUsingImageUrl($productSpecifications->sku, 8),
+            "T" => $productSpecifications->swatch_id ? App::i()->getFile()->getFullUrl("/images/swatches/" . $productSpecifications->swatch->filename) : '',
+            "U" => XlsStructure::STATUS_CHILD,
+            "V" => self::SKU_PREFIX . $device->id,
+            "W" => XlsStructure::RELATIONSHIP,
+            "X" => $product->parent->specifications->variationTheme->title,
+            "Y" => $this->changeMacros($productSpecifications->description, $device),
+            "Z" => $this->creatSku($productSpecifications->barcode, $device->id),
+            "AA" => "",
+            "AB" => $this->actionType(),
+            "AC" => $productSpecifications->bulletpoint_1,
+            "AD" => $productSpecifications->bulletpoint_2,
+            "AE" => $productSpecifications->bulletpoint_3,
+            "AF" => $productSpecifications->bulletpoint_4,
+            "AG" => $productSpecifications->bulletpoint_5,
+            "AH" => $this->changeMacros($productSpecifications->keywords, $device),
+            "AI" => "",
+            "AJ" => "",
+            "AK" => "",
+            "AL" => "",
+            "AM" => "",
+            "AN" => "",
+            "AO" => "",
+            "AP" => "",
+            "AQ" => "",
+            "AR" => "",
+            "AS" => "",
+            "AT" => "",
+            "AU" => "",
+            "AV" => "",
+            "AW" => "",
+            "AX" => "",
+            "AY" => "",
+            "AZ" => "",
+            "BA" => "",
+            "BB" => "",
+            "BC" => "{$device->brand->name} {$device->title}",
+            "BD" => $productSpecifications->length,
+            "BE" => $productSpecifications->measureUnit->type,
+            "BF" => "",
+            "BG" => "",
+            "BH" => "",
+            "BI" => "",
+            "BJ" => "",
+            "BK" => "",
+            "BL" => "",
+            "BM" => "",
+            "BN" => "",
+            "BO" => "",
+            "BP" => "",
+            "BQ" => "",
+            "BR" => "",
+            "BS" => "",
+            "BT" => "",
+            "BU" => "",
+            "BV" => "",
+            "BW" => "",
+            "BX" => "",
+            "BY" => "",
+            "BZ" => "",
+            "CA" => "",
+            "CB" => "",
+            "CC" => "EUR",
+            "CD" => "Neu",
+            "CE" => "",
+            "CF" => "",
+            "CG" => "",
+            "CH" => "",
+            "CI" => "",
+            "CJ" => "",
+            "CK" => 1,
+            "CL" => "",
+            "CM" => "",
+            "CN" => "",
+            "CO" => "",
+            "CP" => "",
+            "CQ" => "",
+            "CR" => "",
+            "CS" => "",
+            "CT" => "",
+            "CU" => "",
+            "CV" => $product->parent->specifications->merchant->name,
+        ];
     }
 
     private function getNewEan(string $comment = '')
@@ -415,21 +648,24 @@ class ListingHelper
      */
     private function createVariation(Product $product, $devices)
     {
-        $devicesFinished = 0;
         $children = $product->children;
 
         if($devices){
-            $deviceTotal = count($devices);
+            $this->totalGadgets = count($devices) ?: 1;
             foreach ($devices as $model) {
-                $this->createParentRow($product, $model, $this->currentRowNumber);
+                $this->createParentRow($product, $model);
                 $this->currentRowNumber++;
                 foreach ($children as $child) {
-                    $this->createChildRow($child, $model, $this->currentRowNumber);
+                    $this->createChildRow($child, $model);
                     $this->currentRowNumber++;
                 }
 
-                $devicesFinished++;
-                $this->setProgress($deviceTotal, $devicesFinished);
+                $this->finishedGadgets++;
+                $this->setProgress();
+
+                if($this->finishedGadgets % self::PER_CICLE == 0) {
+                    $this->saveToCsv();
+                }
             }
         }
     }
@@ -487,20 +723,331 @@ class ListingHelper
         }
     }
 
-    private function getFilename(&$newFilename)
+    /**
+     * @param $newFilename
+     */
+    private function getFilename($newFilename)
     {
-        $newFilename = empty($newFilename) ? date("Y-M-d-H-i-s", time()) . "." . ListingHelper::FILETYPE : $newFilename;
+        $this->newFilename = empty($newFilename) ? date("Y-M-d-H-i-s", time()) . "." . ListingHelper::FILETYPE : $newFilename;
         $file = \Yii::getAlias('@trad3r_resources') . "/templates/" . self::TEMPLATE_AMAZON;
-
-        if(is_file($file)) {
-            $this->spreadsheet = IOFactory::load($file);
-            $this->setFileProperties();
-            
-            return true;
-        }
         
-        return false;
+        $this->addHeaders();
     }
 
+    private function addHeaders()
+    {
+        $headerRow1 = [
+            "TemplateType=Custom",
+            "Version=2017.0320",
+            "Die oberen drei Zeilen sind nur zur Verwendung durch Amazon.de vorgesehen. Verändern oder löschen Sie die obersten drei Zeilen nicht.",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "Bilder",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "Varianten",
+            "",
+            "",
+            "",
+            "Grundlegende",
+            "",
+            "",
+            "",
+            "Artikelerkennungs",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "Ungruppiert",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "Abmessungen",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "Konformitäts",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "Versand",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "Angebot"
+        ];
+        $headerRow2 = [
+            "Kategorisierung des Produktes (Browse Node)",
+            "Verkäufer-SKU",
+            "Hersteller-Barcode  ",
+            "Barcode-Typ",
+            "Produktname",
+            "Marke",
+            "Hersteller",
+            "Produkttyp",
+            "Preis",
+            "Anzahl",
+            "URL Hauptbild",
+            "URL Weiteres Produktbild",
+            "URL Weiteres Produktbild",
+            "URL Weiteres Produktbild",
+            "URL Weiteres Produktbild",
+            "URL Weiteres Produktbild",
+            "URL Weiteres Produktbild",
+            "URL Weiteres Produktbild",
+            "URL Weiteres Produktbild",
+            "URL Musterbild",
+            "Variantenbestandteil",
+            "SKU des übergeordneten Produkts",
+            "Produktbeziehungs-Typ",
+            "Varianten-Design",
+            "Produktbeschreibung",
+            "Hersteller-Teilenummer",
+            "Hersteller-Modellnummer",
+            "Update / Löschen",
+            "Wesentliche Produktmerkmale",
+            "Wesentliche Produktmerkmale",
+            "Wesentliche Produktmerkmale",
+            "Wesentliche Produktmerkmale",
+            "Wesentliche Produktmerkmale",
+            "Allgemeine Schlüsselwörter",
+            "Allgemeine Schlüsselwörter",
+            "Allgemeine Schlüsselwörter",
+            "Allgemeine Schlüsselwörter",
+            "Allgemeine Schlüsselwörter",
+            "Platinum Keywords",
+            "Platinum Keywords",
+            "Platinum Keywords",
+            "Platinum Keywords",
+            "Platinum Keywords",
+            "Produkt-Features",
+            "Produkt-Features",
+            "Produkt-Features",
+            "Produkt-Features",
+            "Produkt-Features",
+            "Farbe",
+            "Standardfarbe",
+            "size_name",
+            "Materialzusammensetzung",
+            "Gehäusematerial",
+            "Formfaktor",
+            "Kompatible Geräte",
+            "Länge des Produkts",
+            "Maßeinheit für Länge des Produkts",
+            "Höhe",
+            "Länge",
+            "Breite",
+            "Maßeinheit der Artikelabmessungen",
+            "Gewicht",
+            "Maßeinheit des Artikelgewichts",
+            "Versandgewicht",
+            "Maßeinheit des auf der Webseite angegebenen Versandgewichts",
+            "Herkunftsland",
+            "Alterswarnung EU-Spielzeugrichtlinie",
+            "Warnhinweis EU-Spielzeugrichtlinie",
+            "Sprache EU-Spielzeugrichtlinie",
+            "Rechtlicher Hinweis",
+            "Sicherheitswarnung",
+            "Datenblatt (zum Energielabel)",
+            "Energielabel",
+            "Versandzentrum-ID",
+            "Höhe Produktverpackung",
+            "Breite Produktverpackung",
+            "Länge Produktverpackung",
+            "Maßeinheit der Verpackungsmaße",
+            "Paketgewicht",
+            "Maßeinheit des Verpackungsgewichts",
+            "Währung",
+            "Zustandstyp des Angebots",
+            "Zustandsbeschreibung",
+            "Maximal bestellbare Menge",
+            "Bearbeitungszeit der Bestellung",
+            "Angebotspreis",
+            "Startdatum für den Angebotspreis",
+            "Enddatum für den Angebotspreis",
+            "Anzahl Artikel",
+            "SKU-Liste für Lieferung zum Wunschtermin",
+            "Maximale Gesamtversandmenge",
+            "Geschenknachricht verfügbar?",
+            "Geschenkverpackung verfügbar",
+            "Datum des Verkaufsstarts",
+            "Release Datum",
+            "Termin zur Nachbestellung",
+            "Artikel Auslaufdatum",
+            "Produkt-ID-Überschreibung",
+            "Steuercode",
+            "Verkäuferversandgruppe"
+        ];
+        $headerRow3 = [
+            "recommended_browse_nodes",
+            "item_sku",
+            "external_product_id",
+            "external_product_id_type",
+            "item_name",
+            "brand_name",
+            "manufacturer",
+            "feed_product_type",
+            "standard_price",
+            "quantity",
+            "main_image_url",
+            "other_image_url1",
+            "other_image_url2",
+            "other_image_url3",
+            "other_image_url4",
+            "other_image_url5",
+            "other_image_url6",
+            "other_image_url7",
+            "other_image_url8",
+            "swatch_image_url",
+            "parent_child",
+            "parent_sku",
+            "relationship_type",
+            "variation_theme",
+            "product_description",
+            "part_number",
+            "model",
+            "update_delete",
+            "bullet_point1",
+            "bullet_point2",
+            "bullet_point3",
+            "bullet_point4",
+            "bullet_point5",
+            "generic_keywords1",
+            "generic_keywords2",
+            "generic_keywords3",
+            "generic_keywords4",
+            "generic_keywords5",
+            "platinum_keywords1",
+            "platinum_keywords2",
+            "platinum_keywords3",
+            "platinum_keywords4",
+            "platinum_keywords5",
+            "special_features1",
+            "special_features2",
+            "special_features3",
+            "special_features4",
+            "special_features5",
+            "color_name",
+            "color_map",
+            "size_name",
+            "material_composition",
+            "material_type",
+            "form_factor",
+            "compatible_devices",
+            "item_display_length",
+            "item_display_length_unit_of_measure",
+            "item_height",
+            "item_length",
+            "item_width",
+            "item_dimensions_unit_of_measure",
+            "item_weight",
+            "item_weight_unit_of_measure",
+            "website_shipping_weight",
+            "website_shipping_weight_unit_of_measure",
+            "country_of_origin",
+            "eu_toys_safety_directive_age_warning",
+            "eu_toys_safety_directive_warning",
+            "eu_toys_safety_directive_language",
+            "legal_disclaimer_description",
+            "safety_warning",
+            "product_efficiency_image_url",
+            "energy_efficiency_image_url",
+            "fulfillment_center_id",
+            "package_height",
+            "package_width",
+            "package_length",
+            "package_dimensions_unit_of_measure",
+            "package_weight",
+            "package_weight_unit_of_measure",
+            "currency",
+            "condition_type",
+            "condition_note",
+            "max_order_quantity",
+            "fulfillment_latency",
+            "sale_price",
+            "sale_from_date",
+            "sale_end_date",
+            "number_of_items",
+            "delivery_schedule_group_id",
+            "max_aggregate_ship_quantity",
+            "offering_can_be_gift_messaged",
+            "offering_can_be_giftwrapped",
+            "product_site_launch_date",
+            "merchant_release_date",
+            "restock_date",
+            "is_discontinued_by_manufacturer",
+            "missing_keyset_reason",
+            "product_tax_code",
+            "merchant_shipping_group_name"
+        ];
+        
+        $this->csvRows[] = $headerRow1;
+        $this->csvRows[] = $headerRow2;
+        $this->csvRows[] = $headerRow3;
+        
+        $this->saveToCsv(true);
 
+    }
+
+    /**
+     * @param array $row
+     */
+    private function saveToCsv($isNew = false)
+    {
+        if($isNew){
+            file_put_contents($this->tempFile, "");
+        }
+        
+        foreach ($this->csvRows as $row) {
+            $data = implode("\t", $row);
+            file_put_contents($this->tempFile, $data . PHP_EOL, FILE_APPEND);
+        }
+        
+        unset($this->csvRows);
+        gc_collect_cycles();
+
+    }
 }
