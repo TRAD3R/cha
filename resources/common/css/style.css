@@ -12,7 +12,7 @@
   font-stretch: normal; }
 body {
   color: #2D313D;
-  background: #F6F7FB;
+  background: #fcfcfc;
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   line-height: 18px;
@@ -146,7 +146,7 @@ ul {
   justify-content: center;
   top: 5px;
   right: 15px;
-  z-index: 4;
+  z-index: 15;
   transition: all .2s ease;
   -webkit-transition: all .2s ease;
   -moz-transition: all .2s ease;
@@ -338,7 +338,7 @@ input {
   display: flex;
   align-items: center;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   position: relative; }
   .navigation:before {
     content: '';

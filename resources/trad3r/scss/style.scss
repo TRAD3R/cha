@@ -122,7 +122,7 @@
   overflow: hidden;
   flex-direction: column;
   z-index: 3;
-  background: $lightGray;
+  background: #fcfcfc;
   .cap {
     display: flex;
     align-items: center;
@@ -264,6 +264,9 @@
     }
     * {
       font-size: 13px;
+    }
+    &.image {
+      padding: 0;
     }
     .text {
       display: flex;
@@ -551,6 +554,14 @@ button {
   -webkit-transition: all .2s ease;
   -moz-transition: all .2s ease;
   -o-transition: all .2s ease;
+  &-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .bage {
+      margin: 0 3px;
+    }
+  }
   &-empty {
     .icon {
       margin: 0!important;
@@ -760,6 +771,7 @@ button {
     left: 0;
     bottom: 50px;
     z-index: 10;
+    padding: 10px 0;
     background: $light;
     box-shadow: 0 10px 20px rgba(161, 172, 188, 0.4);
     min-width: 260px;
@@ -848,17 +860,26 @@ button {
         fill: $secondary;
       }
     }
+    * {
+      font-size: 11px;
+    }
   }
   &-group {
-    margin-top: 25px;
+    margin-top: 10px;
+    padding-top: 10px;
     &:last-child {
-      margin-bottom: 15px;
+      margin-bottom: 10px;
+    }
+    &:not(:first-child) {
+      border-top: 1px solid $gray;
     }
   }
   &-list {
-    max-height: 120px;
+    max-height: 230px;
     overflow: hidden auto;
-
+    .checkbox .checkbox-text {
+      font-weight: normal;
+    }
     > li {
       > .column-tool-item {
         &:not(.checkbox).is-active {
@@ -867,11 +888,13 @@ button {
           background: $lightGray;
         }
       }
+
       > * {
         width: 100%;
         font-size: 14px;
-        padding: 10px 10px 10px 35px;
+        padding: 5px 5px 5px 35px;
         cursor: pointer;
+        margin-right: 10px;
         font-weight: normal;
         &:hover {
           background: $lightGray;
@@ -882,7 +905,7 @@ button {
   &-total {
     display: flex;
     align-items: center;
-    margin: 12px 0 12px 35px;
+    margin: 0 0 0 35px;
     > * {
       padding: 8px 0;
       color: $primary;
@@ -903,9 +926,15 @@ button {
     width: 100%;
     justify-content: flex-end;
     align-items: center;
-    margin: 15px 0;
+    margin: 8px 0;
     > * {
       margin-right: 15px;
+    }
+    button {
+      height: auto;
+      width: auto;
+      padding: 10px 12px;
+      font-size: 13px;
     }
   }
 }
@@ -1321,6 +1350,20 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
       display: none!important;
     }
   }
+  &-item {
+    display: block!important;
+    width: 40px;
+    height: 40px;
+    background-image: url(../images/preloader.gif);
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  &-center {
+    width: 100%;
+    display: flex!important;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .form-group {
@@ -1496,4 +1539,50 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
   position: relative;
   max-height: 250px;
   overflow: hidden auto;
+}
+.page-listing .search-select {
+  top: 65px;
+}
+.input-date-range .form-group input {
+  background: $light;
+}
+.btn-operations .btn-product-dropdown {
+  background: $gray;
+  box-shadow: none;
+  .bage {
+    transform: scale(0.75);
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+  }
+  &-active {
+    .bage {
+      transform: scale(1);
+      opacity: 1;
+      visibility: visible;
+      position: relative;
+    }
+  }
+}
+.bage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $red;
+  color: $light;
+  transition: all .2s ease;
+  -webkit-transition: all .2s ease;
+  -moz-transition: all .2s ease;
+  -o-transition: all .2s ease;
+  padding: 2px 7px;
+  border-radius: 50px;
+  font-size: 12px;
+}
+
+.shown-on-page {
+  padding-left: 40px;
+  font-size: 13px;
+  margin-bottom: 5px;
+  color: $secondary;
 }

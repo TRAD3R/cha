@@ -97,7 +97,7 @@
   overflow: hidden;
   flex-direction: column;
   z-index: 3;
-  background: #F6F7FB; }
+  background: #fcfcfc; }
   .table .cap {
     display: flex;
     align-items: center;
@@ -202,6 +202,8 @@
       height: 100%; }
     .table-cell * {
       font-size: 13px; }
+    .table-cell.image {
+      padding: 0; }
     .table-cell .text {
       display: flex;
       align-items: center;
@@ -412,6 +414,12 @@ button {
   -webkit-transition: all .2s ease;
   -moz-transition: all .2s ease;
   -o-transition: all .2s ease; }
+  .btn-text {
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+    .btn-text .bage {
+      margin: 0 3px; }
   .btn-empty .icon {
     margin: 0 !important; }
   .btn-box {
@@ -571,6 +579,7 @@ button {
     left: 0;
     bottom: 50px;
     z-index: 10;
+    padding: 10px 0;
     background: #fff;
     box-shadow: 0 10px 20px rgba(161, 172, 188, 0.4);
     min-width: 260px;
@@ -644,13 +653,20 @@ button {
     margin-right: 10px; }
     .column-tool-header .icon svg {
       fill: #A1ACBC; }
+  .column-tool-header * {
+    font-size: 11px; }
 .column-tool-group {
-  margin-top: 25px; }
+  margin-top: 10px;
+  padding-top: 10px; }
   .column-tool-group:last-child {
-    margin-bottom: 15px; }
+    margin-bottom: 10px; }
+  .column-tool-group:not(:first-child) {
+    border-top: 1px solid #E3E7F4; }
 .column-tool-list {
-  max-height: 120px;
+  max-height: 230px;
   overflow: hidden auto; }
+  .column-tool-list .checkbox .checkbox-text {
+    font-weight: normal; }
   .column-tool-list > li > .column-tool-item:not(.checkbox).is-active {
     pointer-events: none;
     color: #005AF5;
@@ -658,15 +674,16 @@ button {
   .column-tool-list > li > * {
     width: 100%;
     font-size: 14px;
-    padding: 10px 10px 10px 35px;
+    padding: 5px 5px 5px 35px;
     cursor: pointer;
+    margin-right: 10px;
     font-weight: normal; }
     .column-tool-list > li > *:hover {
       background: #F6F7FB; }
 .column-tool-total {
   display: flex;
   align-items: center;
-  margin: 12px 0 12px 35px; }
+  margin: 0 0 0 35px; }
   .column-tool-total > * {
     padding: 8px 0;
     color: #005AF5;
@@ -684,9 +701,14 @@ button {
   width: 100%;
   justify-content: flex-end;
   align-items: center;
-  margin: 15px 0; }
+  margin: 8px 0; }
   .column-tool-btns > * {
     margin-right: 15px; }
+  .column-tool-btns button {
+    height: auto;
+    width: auto;
+    padding: 10px 12px;
+    font-size: 13px; }
 
 .table-btn-tool {
   position: relative;
@@ -1011,6 +1033,18 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
     background-position: center; }
     .preloader-cell * {
       display: none !important; }
+  .preloader-item {
+    display: block !important;
+    width: 40px;
+    height: 40px;
+    background-image: url(../images/preloader.gif);
+    background-size: cover;
+    background-repeat: no-repeat; }
+  .preloader-center {
+    width: 100%;
+    display: flex !important;
+    align-items: center;
+    justify-content: center; }
 
 .form-group {
   display: flex;
@@ -1144,5 +1178,46 @@ input[type="text"].chosen-search-input, .chosen-container-single .chosen-search 
   position: relative;
   max-height: 250px;
   overflow: hidden auto; }
+
+.page-listing .search-select {
+  top: 65px; }
+
+.input-date-range .form-group input {
+  background: #fff; }
+
+.btn-operations .btn-product-dropdown {
+  background: #E3E7F4;
+  box-shadow: none; }
+  .btn-operations .btn-product-dropdown .bage {
+    transform: scale(0.75);
+    opacity: 0;
+    visibility: hidden;
+    position: absolute; }
+  .btn-operations .btn-product-dropdown-active .bage {
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
+    position: relative; }
+
+.bage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ff2d41;
+  color: #fff;
+  transition: all .2s ease;
+  -webkit-transition: all .2s ease;
+  -moz-transition: all .2s ease;
+  -o-transition: all .2s ease;
+  padding: 2px 7px;
+  border-radius: 50px;
+  font-size: 12px; }
+
+.shown-on-page {
+  padding-left: 40px;
+  font-size: 13px;
+  margin-bottom: 5px;
+  color: #A1ACBC; }
 
 /*# sourceMappingURL=style.css.map */

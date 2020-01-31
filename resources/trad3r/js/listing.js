@@ -174,13 +174,14 @@ function selectAll() {
 }
 
 function showArchive() {
-    OLD_LISTINGS_FIELD.html('');
-    
+    OLD_LISTINGS_FIELD.html('<div class="preloader-center"><div class="preloader-item"></div></div>');
+
     $.ajax({
         url: "listings/archive",
         method: "GET",
         success: function (res) {
             if(res.status === "success"){
+                OLD_LISTINGS_FIELD.html('');
                 let files = res.files;
                 
                 if(Object.keys(files).length){
