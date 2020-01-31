@@ -56,11 +56,14 @@ class ProductHelper
             self::addSort($params[Params::SORT_DESC], 'DESC');
         }
 
-        $total = $this->query->count();
+        
         
         $individualParentid = Product::TYPE_INDIVIDUAL;
         $this->query
-            ->andWhere("p.parent_id IS NULL OR p.parent_id = {$individualParentid}")
+            ->andWhere("p.parent_id IS NULL OR p.parent_id = {$individualParentid}");
+        
+        $total = $this->query->count();
+        $this->query
             ->addOrderBy('p.id ASC')
             ->limit($params[Params::PER_PAGE])
             ->offset($offset)
@@ -86,7 +89,7 @@ class ProductHelper
                         throw new HttpException(403, Yii::t('exception', 'ERROR_DATA_UPDATE'));
                     }
 
-                    $product->link('parent', $parent);
+                    $product->parent_id = $parent->id;
                     break;
                 case ProductTableStructure::TYPE:
                     $type = ProductTypeRepository::findOneByValue($value);
@@ -129,7 +132,7 @@ class ProductHelper
                         $brand->save();
                     }
 
-                    $specifications->link('productBrand', $brand);
+                    $specifications->product_brand_id = $brand->id;
                     break;
                 case ProductTableStructure::TITLE:
                     $product->title = $value;
@@ -164,7 +167,7 @@ class ProductHelper
                         $measureUnit->save();
                     }
                     
-                    $specifications->link('measureUnit', $measureUnit);
+                    $specifications->measure_unit_id = $measureUnit->id;
                     break;
                 case ProductTableStructure::PRICE:
                     $specifications->price = PriceHelper::toInt($value);
@@ -191,7 +194,7 @@ class ProductHelper
                     $swatch = SwatchRepository::findOneByValue($value);
 
                     if($swatch){
-                        $specifications->link('swatch', $swatch);
+                        $specifications->swatch_id = $swatch->id;
                     }
 
                     break;
@@ -207,13 +210,13 @@ class ProductHelper
                         $barcode->save();
                     }
                     
-                    $specifications->link("barcodeType", $barcode); 
+                    $specifications->barcode_type_id = $barcode->id; 
                     break;
                 case ProductTableStructure::BROWSE_NODE:
                     $browseNode = BrowseNodeRepository::findOneByValue($value);
 
                     if($browseNode){
-                        $specifications->link("browseNode", $browseNode);
+                        $specifications->browse_node_id = $browseNode->id;
                     }
 
                     break;
@@ -238,7 +241,7 @@ class ProductHelper
                         }
                     }else{
                         $product->save();
-                        $specifications->link('product', $product);
+                        $specifications->product_id = $product->id;
                         $specifications->save();
                     }
                     

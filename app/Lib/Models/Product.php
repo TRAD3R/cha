@@ -28,13 +28,17 @@ class Product extends ActiveRecord
         return 'products';
     }
 
-    public function behaviors()
+    public function beforeDelete()
     {
-        return [
-            Timestamp::class
-        ];
-    }
+        if(!parent::beforeDelete()) {
+            return false;
+        }
 
+        $specifications = $this->specifications;
+
+        return $specifications->delete();
+    }
+    
     public function getParent()
     {
         return $this->hasOne(Product::class, ['id' => 'parent_id']);

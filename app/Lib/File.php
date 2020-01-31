@@ -174,4 +174,9 @@ class File extends BaseObject
         $ext = mb_strtolower(pathinfo($file, PATHINFO_EXTENSION), 'UTF-8');
         return $ext != 'jpeg' ? $ext : 'jpg';
     }
+    
+    public function getNoImage()
+    {
+        return "/images/no-image.png";
+    }
 }

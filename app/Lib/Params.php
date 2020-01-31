@@ -16,6 +16,11 @@ class Params
     const PER_PAGE = 'per_page';
     const SORT_ASC = 'sort_asc';
     const SORT_DESC = 'sort_desc';
+    const SORT_DATE_FROM = 'date_from';
+    const SORT_DATE_TO = 'date_to';
     const LISTING_TYPE = 'type';
     const LISTING_ACTION_TYPE = 'actionType';
+    const PRODUCTS = 'products';
+    const BRANDS = 'brands';
+    const LISTING_SELECTED_DEVICE = 'selected_device';
 }

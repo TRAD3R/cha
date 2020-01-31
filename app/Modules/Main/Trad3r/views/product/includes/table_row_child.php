@@ -130,9 +130,11 @@ $specifications = $product->specifications;
         if($specifications):
             $sku = $specifications->sku;
             $src = TextHelper::createUsingFilename($sku, $i);
+            $relativeFilepath = "/images/accessories/using/" . $src;
+            $src = is_file(Yii::getAlias("@Web") . $relativeFilepath) ? $relativeFilepath : App::i()->getFile()->getNoImage();
     ?>
             <div class="table-cell image">
-                <img src="<?=App::i()->getFile()->mdUrl("/accessories/using/" . $src)?>" alt="">
+                <img src="<?=App::i()->getFile()->mdUrl($src)?>" alt="">
             </div>
         <?php endif;?>
     <?php endfor;?>

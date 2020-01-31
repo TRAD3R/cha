@@ -1,7 +1,8 @@
 const TABLE_BODY = $('.table-body');
-const LISTING_FILE = $("#file-list");
+const LISTING_FILE = $(".file-list");
 const ERRORS = $("#errors");
 const OLD_LISTINGS_FIELD = $("#listing-files");
+const ALL_BRANDS_LIST = $("#all-brands");
 
 var inProgress = false;
 
@@ -9,34 +10,41 @@ $(document).ready(function () {
     $("#select-all").on('click', selectAll);
 });
 
-let Listing = {
-    create: function () {
-        let url = 'listings/create';
-        $.ajax({
-            url: url,
-            method: "post",
-            data: {
-                filename: 'new_file1',
-                products: '1,2'
-            },
-            success: function (res) {
-                console.log(res)
-            }
-        })
-    }
-};
+function selectAllBrands() {
+    checkUncheckBrands(true);
+    $(".btn-select-all").addClass("disabled");
+    $(".btn-remove-all").removeClass('disabled');
+}
+
+function resetAllBrands() {
+    checkUncheckBrands(false);
+    $(".btn-select-all").removeClass('disabled');
+    $(".btn-remove-all").addClass('disabled');
+}
+
+function checkUncheckBrands(state)
+{
+    ALL_BRANDS_LIST.each(function () {
+        $(this).prop("checked", state);
+    })
+}
 
 function getProgress() {
-    /** todo реализоваь прогрессбар */
-    $.ajax({
-        url: 'listings/progress',
-        async: true,
-        success: function (res) {
-            if (res.status === 'success') {
-                // LISTING_FILE.text(res.progress);
-            }
-        }
-    });
+    $.post('progress.php',{},
+         function (res) {
+             $("#progress-p").text(res + "%");
+             $("#progress-bar").css("width", res + "%");
+         }
+    );
+}
+
+function showFileUrl(res) {
+    let link = document.createElement('a');
+    link.classList.add("file");
+    link.href = res.href;
+    link.innerText = res.file;
+    
+    LISTING_FILE.append(link);
 }
 
 function listingCreate() {
@@ -44,12 +52,12 @@ function listingCreate() {
     let title = $('#id-edited-input').val();
     inProgress = true;
     ERRORS.html('');
-    LISTING_FILE.text('');
-    LISTING_FILE.attr('href', "#");
+    LISTING_FILE.html('');
 
     let checked = getIds();
     let url = new URL(location.href);
     let actionType = $("#action-type").val();
+    let products = getSelectedProducts();
 
     showModal("log");
 
@@ -63,10 +71,11 @@ function listingCreate() {
                 filename: title,
                 type: url.searchParams.get('type'),
                 actionType: actionType,
+                products: products
             }, success: function (res) {
                 if(res.status === 'success'){
-                    LISTING_FILE.attr("href", res.href);
-                    LISTING_FILE.text(res.file);
+                    showFileUrl(res);
+                    
                     if(res.errors){
                         let errors = res.errors;
                         for (let i in errors){
@@ -76,18 +85,62 @@ function listingCreate() {
                 }else{
                     addError(res.error);
                 }
-                
-                // clearInterval(showProgress);
+            }, error: function (xhr) {
+                addError(xhr.responseJSON.message);
+            }, complete: function () {
+                clearInterval(showProgress);
             }
         });
         
-        // let showProgress = setInterval(function () {
-        //     getProgress();
-        // }, 1000)
+        let showProgress = setInterval(function () {
+            getProgress();
+        }, 300)
     }else{
         addError("Не выбрано ни одного гаджета");
     }
     
+}
+
+function getSelectedProducts() {
+    let products = [];
+    
+    $("#product-list").find("input[type='checkbox']:checked").each(function () {
+        products.push($(this).data('id'));
+    });
+    
+    return products.join(",");
+}
+
+function getSelectedBrands() {
+    let brands = [];
+
+    ALL_BRANDS_LIST.find("input[type='checkbox']:checked").each(function () {
+        brands.push($(this).data('id'));
+    });
+
+    return brands.join(",");
+}
+
+function getPerPage() {
+    let perPage = 100;
+    
+    let activeItem = $('.pagination').find(".simple-select-item.is-active");
+
+    if(activeItem.length > 0) {
+        perPage = activeItem.data('value');
+    }
+    
+    return perPage;
+}
+
+function filterListing() {
+    let from = $("#date-start").val();
+    let to = $("#date-end").val();
+
+    let products = getSelectedProducts();
+    let perPage = getPerPage();
+    let brands = getSelectedBrands();
+    location.href = "listings?type=devices&date_from=" + from + "&date_to=" + to + "&products=" + products + "&per_page=" + perPage + "&brands=" + brands;
 }
 
 function addError(msg) {
