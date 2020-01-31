@@ -24,7 +24,7 @@ $params = $params ?: [];
 </button>
 <div class="column-tool-dropdown dropdown">
     <div class="column-tool-dropdown-inner">
-        <div class="column-tool-group">
+        <div class="column-tool-group column-tool-sort">
             <div class="column-tool-header">
                 <div class="icon">
                     <svg width="16" height="10" viewBox="0 0 16 10" xmlns="http://www.w3.org/2000/svg">
@@ -40,21 +40,21 @@ $params = $params ?: [];
                 <ul class="column-tool-list">
                     <li><button type="button" class="column-tool-item sort tool-sort-asc <?=in_array($key, $sortedColumnsAsc) ? 'is-active' : ''?>"
                                 onclick="sort('<?=Params::SORT_ASC?>', <?=$key?>)">
-                            Сортировать от А - Я
+                            А - Я
                         </button>
                     </li>
                     <li><button type="button" class="column-tool-item sort tool-sort-desc <?=in_array($key, $sortedColumnsDesc) ? 'is-active' : ''?>"
                                 onclick="sort('<?=Params::SORT_DESC?>', <?=$key?>)">
-                            Сортировать от Я - А
+                            Я - А
                         </button>
                     </li>
                 </ul>
             </div>
-            <?php
-                if($isShowFilters){
-                    echo $this->render("brand_filter", compact("params"));
-                }
-            ?>
         </div>
+        <?php
+        if($isShowFilters){
+          echo $this->render("brand_filter", compact("params"));
+        }
+        ?>
     </div>
 </div>

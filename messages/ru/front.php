@@ -67,7 +67,7 @@ return [
     'ARCHIVE' => 'Архив файлов',
     'NOT_ISSET_FILE' => 'Не найден файл: {filename}',
     'SELECT_ALL' => 'выбрать все',
-    'SELECT_PRODUCT' => 'выбрать продукт',
+    'SELECT_PRODUCT' => '<span class="bage">{count}</span> Товары',
     'UNCHECK_ALL' => 'убрать все',
     'LISTING_TYPE' => 'тип листинга',
     'FROM' => 'от',

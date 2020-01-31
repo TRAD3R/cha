@@ -7,8 +7,10 @@
 use App\Models\Product;
 use App\Params; ?>
 
-<div class="btn btn-dark-blue dropdown">
-    <span class="btn-text"><?=Yii::t('front', 'SELECT_PRODUCT')?></span>
+<div class="btn btn-product-dropdown dropdown <?=(count($params[Params::PRODUCTS]))?'btn-product-dropdown-active':'' ?>">
+    <span class="btn-text">
+      <?=Yii::t('front', 'SELECT_PRODUCT', ['count'=>count($params[Params::PRODUCTS])])?>
+    </span>
     <span class="icon ml">
             <svg width="11" height="5" viewBox="0 0 11 5" xmlns="http://www.w3.org/2000/svg">
             <path d="M0.803223 0L5.80322 5L10.8032 0H0.803223Z" fill="inherit"></path>
